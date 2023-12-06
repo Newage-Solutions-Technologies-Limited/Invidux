@@ -1,0 +1,6 @@
+@Invidux_HostAddress = http://localhost:5289
+
+GET {{Invidux_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
