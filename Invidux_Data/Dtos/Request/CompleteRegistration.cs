@@ -10,7 +10,7 @@ namespace Invidux_Data.Dtos.Request
     public class CompleteRegistration
     {
         [Required]
-        public string Id { get; set; }
+        public string Email { get; set; }
 
         [Phone]
         public string Phone { get; set; }

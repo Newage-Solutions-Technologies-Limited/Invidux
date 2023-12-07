@@ -10,10 +10,6 @@ namespace Invidux_Data.Dtos.Request
     /// </summary>
     public class VerifyOtp
     {
-        public string Id { get; set; }
-
-        public VerificationType VerificationType { get; set; } = VerificationType.UserRegistration;
-
         [Required]
         public int Otp { get; set; } // The OTP to be verified
     }
