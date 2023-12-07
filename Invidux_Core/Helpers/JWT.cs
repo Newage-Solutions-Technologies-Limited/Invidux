@@ -16,7 +16,7 @@ namespace Invidux_Core.Helpers
             this.config = config;
         }
 
-        private string CreateJWT(AppUser user)
+        public static string CreateJWT(AppUser user)
         {
             var secretKey = config.GetSection("AppSettings:Key").Value;
             var key = new SymmetricSecurityKey(Encoding.UTF8

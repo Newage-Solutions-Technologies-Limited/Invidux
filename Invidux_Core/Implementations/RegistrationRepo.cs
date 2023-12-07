@@ -92,28 +92,37 @@ namespace Invidux_Core.Repository.Implementations
                 if (existingToken.ExpiresOn >= DateTime.UtcNow)
                 {
 
-                    // Set email verification to true for the user
-                    var user = await _userManager.FindByIdAsync(existingToken.UserId);
-                    if (user != null)
+                    if(existingToken.Type == VerificationType.UserRegistration)
                     {
-                        if(user.Status == RegistrationStatus.Pending)
+                        // Set email verification to true for the user
+                        var user = await _userManager.FindByIdAsync(existingToken.UserId);
+                        if (user != null)
                         {
-                            user.EmailConfirmed = true;
-                            user.Status = RegistrationStatus.Active;
-                            await _userManager.UpdateAsync(user);
+                            if (user.Status == RegistrationStatus.Pending)
+                            {
+                                user.EmailConfirmed = true;
+                                user.Status = RegistrationStatus.Active;
+                                await _userManager.UpdateAsync(user);
+                            }
+
+                            // Delete the OTP record from the database
+                            dc.VerificationTokens.Remove(existingToken);
+                            await dc.SaveChangesAsync();
                         }
+
+                        // Delete the OTP record from the database
+                        dc.VerificationTokens.Remove(existingToken);
+                        await dc.SaveChangesAsync();
+
+                        return user.Status.ToString();
                     }
-
-                    // Delete the OTP record from the database
-                    dc.VerificationTokens.Remove(existingToken);
-                    await dc.SaveChangesAsync();
-
-                    // Return true to indicate successful verification
-                    return user.Status.ToString();
+                    return null;
                 }
+                // Return null if the OTP has expired
+                return null;
             }
 
-            // Return false if the OTP does not exist or has expired
+            // Return null if the OTP does not exist
             return null;
         }
 

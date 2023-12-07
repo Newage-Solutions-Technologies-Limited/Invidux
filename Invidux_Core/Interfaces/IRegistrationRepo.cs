@@ -9,7 +9,7 @@ namespace Invidux_Core.Repository.Interfaces
         Task<UserRegistrationDto> Register(RegistrationDTO user);
         Task<bool> CompleteRegistration(CompleteRegistration user);
         Task<string> VerifyOtp(int otp);
-        Task<int> ResendOtp (string email);
+        Task<int> ResendOtp(string email);
         Task<string> UserAlreadyExists(string email);
     }
 }

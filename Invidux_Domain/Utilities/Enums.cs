@@ -30,6 +30,8 @@ namespace Invidux_Domain.Utilities
     public enum VerificationType
     {
         [Description("User Registration")]
-        UserRegistration
+        UserRegistration,
+        [Description("Two Factor")]
+        TwoFactorVerification
     }
 }

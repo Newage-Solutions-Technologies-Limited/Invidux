@@ -15,8 +15,10 @@ using System.Text;
 
 namespace Invidux_Api.Controllers
 {
-    
-    public class AuthController : BaseController
+
+    [Route("api/v1/[controller]")]
+    [ApiController]
+    public class AuthController : ControllerBase
     {
         private readonly IUnitofWork uow;
         public AuthController(IUnitofWork uow)
@@ -28,7 +30,7 @@ namespace Invidux_Api.Controllers
         [ProducesResponseType(typeof(ErrorResponseDTO), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status203NonAuthoritative)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
-        [HttpPost("v1/register")]
+        [HttpPost("register")]
         public async Task<IActionResult> Register(RegistrationDTO user)
         {
             try
@@ -108,7 +110,7 @@ namespace Invidux_Api.Controllers
         [ProducesResponseType(typeof(Response<UserRegistrationDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponseDTO), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
-        [HttpPost("v1/verify-otp")]
+        [HttpPost("verify-email")]
         public async Task<IActionResult> VerifyToken(VerifyOtp otp)
         {
             try
@@ -146,7 +148,7 @@ namespace Invidux_Api.Controllers
 
         [ProducesResponseType(typeof(ErrorResponseDTO), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
-        [HttpPost("v1/request-otp")]
+        [HttpPost("request-otp")]
         public async Task<IActionResult> ResendToken(ResendOtpRequest user)
         {
             try
@@ -178,7 +180,7 @@ namespace Invidux_Api.Controllers
         [ProducesResponseType(typeof(Response<UserRegistrationDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponseDTO), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
-        [HttpPost("v1/complete-registration")]
+        [HttpPost("complete-registration")]
         public async Task<IActionResult> CompleteRegistration(CompleteRegistration user)
         {
             try
@@ -214,7 +216,22 @@ namespace Invidux_Api.Controllers
             }
         }
 
-        
+        [ProducesResponseType(typeof(Response<LoginResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponseDTO), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginDTO user)
+        {
+            return null;
+        }
 
+        [ProducesResponseType(typeof(Response<LoginResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponseDTO), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
+        [HttpPost("verify-otp")]
+        public async Task<IActionResult> Verify2Step(VerifyOtp otp)
+        {
+            return null;
+        }
     }
 }
