@@ -361,3 +361,14 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+*.txt
+
+/Invidux_Core/bin
+/Invidux_Core/obj
+/Invidux_Data/bin
+/Invidux_Data/obj
+/Invidux_Domain/bin
+/Invidux_Domain/obj
+/Invidux/bin
+/Invidux/obj
