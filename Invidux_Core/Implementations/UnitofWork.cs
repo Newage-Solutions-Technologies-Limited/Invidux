@@ -10,22 +10,20 @@ namespace Invidux_Core.Repository.Implementations
         private readonly InviduxDBContext dc;
 
         private readonly UserManager<AppUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<AppUser> _signInManager;
 
-        public UnitofWork(InviduxDBContext dc, UserManager<AppUser> _userManager, RoleManager<IdentityRole> _roleManager, SignInManager<AppUser> _signInManager)
+        public UnitofWork(InviduxDBContext dc, UserManager<AppUser> _userManager, SignInManager<AppUser> _signInManager)
         {
             this.dc = dc;
             this._userManager = _userManager;
-            this._roleManager = _roleManager;
             this._signInManager = _signInManager;
         }
 
         public IRegistrationRepo RegistrationRepo =>
-            new RegistrationRepo(dc, _userManager, _roleManager);
+            new RegistrationRepo(dc, _userManager);
 
         public IUserRepo UserRepo =>
-            new UserRepo(dc, _signInManager);
+            new UserRepo(dc, _userManager, _signInManager);
 
         public async Task<bool> SaveAsync()
         {

@@ -7,6 +7,9 @@ using Invidux_Data.Dtos.Request;
 using Invidux_Data.Dtos.Response;
 using Invidux_Domain.Utilities;
 using Invidux_Core.Helpers;
+using Microsoft.Extensions.Configuration;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace Invidux_Core.Repository.Implementations
 {
@@ -16,17 +19,21 @@ namespace Invidux_Core.Repository.Implementations
 
         private readonly UserManager<AppUser> _userManager;
         //private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IConfiguration? config;
         private readonly SignInManager<AppUser> _signInManager;
+        private readonly IEmailSender? _emailSender;
 
-        public UserRepo(InviduxDBContext dc, SignInManager<AppUser> _signInManager)
+        public UserRepo(InviduxDBContext dc, UserManager<AppUser> _userManager, SignInManager<AppUser> _signInManager)
         {
             this.dc = dc;
+            this._userManager = _userManager;
             this._signInManager = _signInManager;
         }
 
         // To return jwt
         public async Task<LoginResponse> Authenticate(string userName, string password)
         {
+            var jwtHelper = new JWT(config);
             var user = await dc.AppUsers.FirstOrDefaultAsync(x => x.Email == userName || x.UserName == userName);
             if (user == null)
                 return null;
@@ -49,6 +56,9 @@ namespace Invidux_Core.Repository.Implementations
                     };
                     dc.VerificationTokens.Add(token);
                     await dc.SaveChangesAsync();
+                    string subject = "Verify login";
+                    string message = $"<p>Your login confirmation token <span>{token.Otp}</span> expires in 10 minutes.</p>";
+                    await _emailSender.SendEmailAsync(user.Email, subject, message);
                     response.UserId = user.Id;
                     response.Email = user.Email;
                     response.Username = user.UserName;
@@ -62,7 +72,7 @@ namespace Invidux_Core.Repository.Implementations
                 response.Email = user.Email;
                 response.Username = user.UserName;
                 response.Status = user.Status;
-                response.Token = JWT.CreateJWT(user);
+                response.Token = jwtHelper.CreateJWT(user);
 
                 return response;
             }
@@ -83,6 +93,8 @@ namespace Invidux_Core.Repository.Implementations
         {
             // Find the OTP in the database
             var existingToken = await dc.VerificationTokens.SingleOrDefaultAsync(t => t.Otp == otp);
+            var jwtHelper = new JWT(config);
+
 
             if (existingToken != null)
             {
@@ -103,7 +115,7 @@ namespace Invidux_Core.Repository.Implementations
                                 response.Email = user.Email;
                                 response.Username = user.UserName;
                                 response.Status = user.Status;
-                                response.Token = JWT.CreateJWT(user);
+                                response.Token = jwtHelper.CreateJWT(user);
 
                                 // Delete the OTP record from the database
                                 dc.VerificationTokens.Remove(existingToken);
