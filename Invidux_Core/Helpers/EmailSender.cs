@@ -23,7 +23,9 @@ namespace Invidux_Core.Helpers
             var htmlContent = message;
             var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
             var response = await client.SendEmailAsync(msg);
-            Console.WriteLine(response);
+            Console.WriteLine($"Status Code: {response.StatusCode}");
+            Console.WriteLine($"Body: {await response.Body.ReadAsStringAsync()}");
+            Console.WriteLine($"Headers: {response.Headers}");
         }
     }
 }

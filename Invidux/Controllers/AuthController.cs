@@ -86,7 +86,7 @@ namespace Invidux_Api.Controllers
                 var response = new Response<UserRegistrationDto>
                 {
                     Successful = true,
-                    Message = "Registration successful.",
+                    Message = "Please check your mail for verification code.",
                     Data = result         
                 };
 

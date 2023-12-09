@@ -19,15 +19,22 @@ namespace Invidux_Core.Repository.Implementations
 
         private readonly UserManager<AppUser> _userManager;
         //private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly IConfiguration? config;
+        private readonly IConfiguration config;
         private readonly SignInManager<AppUser> _signInManager;
-        private readonly IEmailSender? _emailSender;
+        private readonly IEmailSender _emailSender;
 
-        public UserRepo(InviduxDBContext dc, UserManager<AppUser> _userManager, SignInManager<AppUser> _signInManager)
+        public UserRepo(
+            InviduxDBContext dc, 
+            UserManager<AppUser> _userManager, 
+            SignInManager<AppUser> _signInManager, 
+            IConfiguration config,
+            IEmailSender _emailSender)
         {
             this.dc = dc;
+            this.config = config;
             this._userManager = _userManager;
             this._signInManager = _signInManager;
+            this._emailSender = _emailSender;
         }
 
         // To return jwt

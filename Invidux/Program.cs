@@ -5,6 +5,7 @@ using Invidux_Data.Context;
 using Invidux_Domain.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -16,7 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 var secretKey = builder.Configuration.GetSection("AppSettings:Key").Value;
 var key = new SymmetricSecurityKey(Encoding.UTF8
     .GetBytes(secretKey));
-
+builder.Services.AddTransient<IEmailSender, EmailSender>();
 // Add services to the container.
 builder.Services.AddDbContext<InviduxDBContext>(options =>
                 options.UseSqlServer(

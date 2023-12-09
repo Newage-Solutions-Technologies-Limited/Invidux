@@ -16,11 +16,12 @@ namespace Invidux_Core.Repository.Implementations
     {
         private readonly InviduxDBContext dc;
         private readonly UserManager<AppUser> _userManager;
-        private readonly IEmailSender? _emailSender;
-        public RegistrationRepo(InviduxDBContext dc, UserManager<AppUser> _userManager)
+        private readonly IEmailSender _emailSender;
+        public RegistrationRepo(InviduxDBContext dc, UserManager<AppUser> _userManager, IEmailSender _emailSender)
         {
             this.dc = dc;
             this._userManager = _userManager;
+            this._emailSender = _emailSender;
         }
 
         public async Task<string> UserAlreadyExists(string email)
