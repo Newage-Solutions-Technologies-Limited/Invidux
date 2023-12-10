@@ -9,7 +9,7 @@ using System.Net;
 namespace Invidux_Api.Controllers
 {
 
-    [Route("api/v1/[controller]")]
+    [Route("api/v1/auth")]
     [ApiController]
     public class AuthController : ControllerBase
     {

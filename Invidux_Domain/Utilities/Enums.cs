@@ -17,16 +17,6 @@ namespace Invidux_Domain.Utilities
         Restricted
     }
 
-    public enum Roles
-    {
-        [Description("Admin")]
-        Admin,
-        [Description("User")]
-        User,
-        [Description("Investor")]
-        Investor,
-    }
-
     public enum VerificationType
     {
         [Description("User Registration")]
