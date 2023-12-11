@@ -75,5 +75,23 @@ namespace Invidux_Data.Context
         public DbSet<UserTwoFactorCover> UserTwoFactorCovers { get; set; }
         public DbSet<VerificationToken> VerificationTokens { get; set; }
         public DbSet<Wallet> Wallets { get; set; }
+
+
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            // Capture the changes
+            OnBeforeSaveChanges();
+            var result = await base.SaveChangesAsync(cancellationToken);
+
+            // Log the changes after they are committed to the database
+            return result;
+        }
+
+        private void OnBeforeSaveChanges()
+        {
+            ChangeTracker.DetectChanges();
+
+            var auditEntries = new List<AuditEntry>();
+        }
     }
 }
