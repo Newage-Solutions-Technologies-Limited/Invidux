@@ -21,7 +21,8 @@ builder.Services.AddTransient<IEmailSender, EmailSender>();
 // Add services to the container.
 builder.Services.AddDbContext<InviduxDBContext>(options =>
                 options.UseSqlServer(
-                    builder.Configuration.GetConnectionString("LocalDBIntegrated"),
+                    builder.Configuration.GetConnectionString("LocalDB"),
+                    //builder.Configuration.GetConnectionString("LocalDBIntegrated"),
                     p => p.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)), ServiceLifetime.Scoped);
 builder.Services.AddScoped<IUnitofWork, UnitofWork>();
 

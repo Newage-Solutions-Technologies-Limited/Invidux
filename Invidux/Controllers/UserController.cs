@@ -15,7 +15,7 @@ namespace Invidux_Api.Controllers
         }
     }
 
-    [HttpGet("current-user/{userId}")]
+    /*[HttpGet("current-user/{userId}")]
     public async Task<IActionResult> GetUserById(string id)
     {
         
@@ -37,5 +37,5 @@ namespace Invidux_Api.Controllers
     public async Task<IActionResult> UpdatePersonalInfo()
     {
 
-    }
+    }*/
 }
