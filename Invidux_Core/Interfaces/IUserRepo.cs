@@ -7,5 +7,6 @@ namespace Invidux_Core.Repository.Interfaces
     {
         Task<LoginResponse> Authenticate(string userName, string password);
         Task<LoginResponse> VerifyOtp(int otp);
+        Task<AppUser> GetUserProfile(string userId);
     }
 }

@@ -175,5 +175,23 @@ namespace Invidux_Core.Repository.Implementations
             // Return null if the OTP does not exist
             return null;
         }
+
+        public async Task<AppUser> GetUserProfile(string id)
+        {
+            AppUser user = await _userManager.Users
+                .Include(a => a.NextOfKin)
+                .Include(a => a.Income)
+                .Include(a => a.Address)
+                .Include(a => a.Kyc)
+                .Include(a => a.TwoFactorCovers)
+                .AsSingleQuery()
+                .FirstOrDefaultAsync(a => a.Id == id);
+
+            if (user == null)
+            {
+                return null;
+            }
+            return user;
+        }
     }
 }

@@ -46,7 +46,14 @@ namespace Invidux_Data.Dtos.AutoMapping
             CreateMap<Invidux_Domain.Models.TwoFactorCover, string>() 
                 .ConvertUsing(src => src.Title);
 
+            // User Personal Information Request
+            CreateMap<UserInfo, PersonalInfoDto>();
 
+            // User Next of Kin Request
+            CreateMap<UserNextOfKin, NextOfKinDto>();
+
+            // User KYC Request
+            CreateMap<UserKycInfo, KYCRequest>();
         }
     }
 }

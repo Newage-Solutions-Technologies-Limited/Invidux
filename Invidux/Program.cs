@@ -2,15 +2,14 @@ using Invidux_Core.Helpers;
 using Invidux_Core.Repository.Implementations;
 using Invidux_Core.Repository.Interfaces;
 using Invidux_Data.Context;
+using Invidux_Data.Dtos.AutoMapping;
 using Invidux_Domain.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +23,7 @@ builder.Services.AddDbContext<InviduxDBContext>(options =>
                     builder.Configuration.GetConnectionString("LocalDB"),
                     //builder.Configuration.GetConnectionString("LocalDBIntegrated"),
                     p => p.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)), ServiceLifetime.Scoped);
+builder.Services.AddAutoMapper(typeof(Mapping).Assembly);
 builder.Services.AddScoped<IUnitofWork, UnitofWork>();
 
 builder.Services.AddIdentity<AppUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
