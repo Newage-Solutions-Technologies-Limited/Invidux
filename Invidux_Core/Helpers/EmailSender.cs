@@ -6,16 +6,17 @@ using MimeKit;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Invidux_Domain.Models;
+using Microsoft.Extensions.Options;
 
 namespace Invidux_Core.Helpers
 {
     public class EmailSender: IEmailSender
     {
-        private readonly MailSettings mailSettings;
         //private readonly Sendgrid sendGrid;
-        public EmailSender(MailSettings mailSettings) 
+        private readonly MailSettings mailSettings;
+        public EmailSender(IOptions<MailSettings> _mailSettings)
         {
-            this.mailSettings = mailSettings;
+            mailSettings = _mailSettings.Value;
         }
 
         /*public async Task SendEmailAsync(string email, string subject, string message)
