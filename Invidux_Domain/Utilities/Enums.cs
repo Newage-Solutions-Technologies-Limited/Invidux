@@ -75,4 +75,19 @@ namespace Invidux_Domain.Utilities
         [Description("Outflow")]
         Outflow
     }
+
+    public enum KYCLevel
+    {
+
+    }
+
+    public enum EmploymentStatus
+    {
+
+    }
+
+    public enum MonthlyIncomeRange
+    {
+
+    }
 }
