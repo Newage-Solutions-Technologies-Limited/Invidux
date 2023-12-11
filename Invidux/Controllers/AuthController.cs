@@ -1,22 +1,15 @@
-﻿using Invidux_Core.Repository.Implementations;
-using Invidux_Core.Repository.Interfaces;
+﻿using Invidux_Core.Repository.Interfaces;
 using Invidux_Data.Dtos;
 using Invidux_Data.Dtos.Request;
 using Invidux_Data.Dtos.Response;
 using Invidux_Domain.Utilities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
 using System.Net;
-using System.Security.Claims;
-using System.Text;
 
 namespace Invidux_Api.Controllers
 {
 
-    [Route("api/v1/[controller]")]
+    [Route("api/v1/auth")]
     [ApiController]
     public class AuthController : ControllerBase
     {
@@ -93,7 +86,7 @@ namespace Invidux_Api.Controllers
                 var response = new Response<UserRegistrationDto>
                 {
                     Successful = true,
-                    Message = "Registration successful.",
+                    Message = "Please check your mail for verification code.",
                     Data = result         
                 };
 
@@ -142,6 +135,7 @@ namespace Invidux_Api.Controllers
             {
                 // Handle exceptions and log errors
                 // You can also return an appropriate error response
+                Console.WriteLine("Error", ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
@@ -222,7 +216,59 @@ namespace Invidux_Api.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDTO user)
         {
-            return null;
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(new ModelStateErrorResponseDTO(HttpStatusCode.BadRequest,
+                        ModelState));
+                }
+                var response = new Response<LoginResponse>();
+                var userExists = await uow.UserRepo.Authenticate(user.Username, user.Password);
+                if (userExists == null)
+                {
+                    // Handle the case when registration fails
+                    var errorResponse = new ErrorResponseDTO(
+                        HttpStatusCode.BadRequest,
+                        new List<string> { "User not registered" }
+                    );
+                    return BadRequest(errorResponse);
+                }
+                else
+                {
+                    if (userExists.Status == RegistrationStatus.Restricted)
+                    {
+                        // Handle the case when registration fails
+                        var errorResponse = new ErrorResponseDTO(
+                            HttpStatusCode.BadRequest,
+                            new List<string> { "User has been restricted" }
+                        );
+                        return BadRequest(errorResponse);
+                    }
+
+                    else if (userExists.Status == RegistrationStatus.Pending)
+                    {
+                        return StatusCode(StatusCodes.Status203NonAuthoritative, "Please verify your account.");
+                    }
+                }
+                if (userExists.TwoFactorEnabled == true)
+                {
+                    response.Successful = true;
+                    response.Message = "Please check your mail for verification token";
+                    response.Data = userExists;
+                    return Ok(response);
+                }
+                response.Successful = true;
+                response.Message = "Login Succesfull";
+                response.Data = userExists;
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions and log errors
+                // You can also return an appropriate error response
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [ProducesResponseType(typeof(Response<LoginResponse>), StatusCodes.Status200OK)]
@@ -231,7 +277,47 @@ namespace Invidux_Api.Controllers
         [HttpPost("verify-otp")]
         public async Task<IActionResult> Verify2Step(VerifyOtp otp)
         {
-            return null;
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(new ModelStateErrorResponseDTO(HttpStatusCode.BadRequest,
+                        ModelState));
+                }
+                var result = await uow.UserRepo.VerifyOtp(otp.Otp);
+                if(result == null)
+                {
+                    // Handle the case when registration fails
+                    var errorResponse = new ErrorResponseDTO(
+                        HttpStatusCode.BadRequest,
+                        new List<string> { "Unknown" }
+                    );
+                    return BadRequest(errorResponse);
+                }
+                if (result != null && result.Status == RegistrationStatus.Restricted)
+                {
+                    // Handle the case when registration fails
+                    var errorResponse = new ErrorResponseDTO(
+                        HttpStatusCode.BadRequest,
+                        new List<string> { "User has been restricted" }
+                    );
+                    return BadRequest(errorResponse);
+                }
+                // Registration was successful; you can return a success response or any other data
+                var response = new Response<LoginResponse>
+                {
+                    Successful = true,
+                    Message = "Login successful.",
+                    Data = result,
+                };
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions and log errors
+                // You can also return an appropriate error response
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
     }
 }

@@ -5,6 +5,7 @@ using Invidux_Data.Context;
 using Invidux_Domain.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -17,6 +18,9 @@ var secretKey = builder.Configuration.GetSection("AppSettings:Key").Value;
 var key = new SymmetricSecurityKey(Encoding.UTF8
     .GetBytes(secretKey));
 
+builder.Services.AddTransient<IPasswordValidator<AppUser>, CustomPasswordPolicy>();
+builder.Services.AddTransient<IUserValidator<AppUser>, CustomUsernamePolicy>();
+builder.Services.AddTransient<IEmailSender, EmailSender>();
 // Add services to the container.
 builder.Services.AddDbContext<InviduxDBContext>(options =>
                 options.UseSqlServer(
@@ -24,17 +28,20 @@ builder.Services.AddDbContext<InviduxDBContext>(options =>
                     p => p.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)), ServiceLifetime.Scoped);
 builder.Services.AddScoped<IUnitofWork, UnitofWork>();
 
-builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
-{
-    options.User.RequireUniqueEmail = true;
-    options.Password.RequireDigit = false;
-    options.Password.RequiredLength = 6;
-    options.Password.RequireLowercase = false;
-    options.Password.RequireNonAlphanumeric = false;
-    options.Password.RequireUppercase = false;
-})
+builder.Services.AddIdentity<AppUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
 .AddEntityFrameworkStores<InviduxDBContext>()
 .AddDefaultTokenProviders();
+builder.Services.Configure<IdentityOptions>(options => {
+    options.User.RequireUniqueEmail = true;
+    options.Password.RequiredLength = 8;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireDigit = true;
+});
+
+builder.Services.Configure<Sendgrid>(builder.Configuration.GetSection("Sendgrid"));
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

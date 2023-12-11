@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Invidux_Data.Migrations
 {
     [DbContext(typeof(InviduxDBContext))]
-    [Migration("20231206214150_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20231211101032_UserAddressUpdate")]
+    partial class UserAddressUpdate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,35 @@ namespace Invidux_Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Country", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Iso")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Iso3")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NumericCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Countries");
+                });
 
             modelBuilder.Entity("Invidux_Domain.Models.AuditLog", b =>
                 {
@@ -62,6 +91,175 @@ namespace Invidux_Data.Migrations
                     b.ToTable("AuditLogs");
                 });
 
+            modelBuilder.Entity("Invidux_Domain.Models.BankAccount", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AccountName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AccountNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("AccountType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("BankName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("BankAccounts");
+                });
+
+            modelBuilder.Entity("Invidux_Domain.Models.Transaction", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Amount")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CurrencySymbol")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Flow")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Receiver")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Sender")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("TransactionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("TransactionRef")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Transactions");
+                });
+
+            modelBuilder.Entity("Invidux_Domain.Models.UserAddress", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CountryId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PostalCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("State")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Street")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CountryId");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("UserAddresses");
+                });
+
+            modelBuilder.Entity("Invidux_Domain.Models.UserIncomeInfo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EmploymentStatus")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IncomeRange")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("InvestmentLimit")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("JobSector")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("RemainingAllowance")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("UserIncomeInfos");
+                });
+
             modelBuilder.Entity("Invidux_Domain.Models.UserInfo", b =>
                 {
                     b.Property<int>("Id")
@@ -81,6 +279,12 @@ namespace Invidux_Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Gender")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImagePublicId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
@@ -107,6 +311,92 @@ namespace Invidux_Data.Migrations
                         .IsUnique();
 
                     b.ToTable("UserInformation");
+                });
+
+            modelBuilder.Entity("Invidux_Domain.Models.UserKycInfo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("CanExpire")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ExpiryDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("IdNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IdType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Level")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("Verified")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("UserKycInfos");
+                });
+
+            modelBuilder.Entity("Invidux_Domain.Models.UserNextOfKin", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Relationship")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("UserNextOfKins");
                 });
 
             modelBuilder.Entity("Invidux_Domain.Models.VerificationToken", b =>
@@ -142,6 +432,38 @@ namespace Invidux_Data.Migrations
                     b.ToTable("VerificationTokens");
                 });
 
+            modelBuilder.Entity("Invidux_Domain.Models.Wallet", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("BVN")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DepositStellarId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("WalletPin")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Wallets");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -171,19 +493,25 @@ namespace Invidux_Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "42da19d5-bc6f-40fa-9d14-0a3bdbf04504",
+                            Id = "3a5c4ddb-6607-447c-96e1-59af82638980",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "8166b288-5c2f-4eb7-b5ff-29df08481050",
-                            Name = "User",
-                            NormalizedName = "USER"
+                            Id = "8616a19c-3683-4676-a153-3f9ff964acd6",
+                            Name = "SuperAdmin",
+                            NormalizedName = "SUPERADMIN"
                         },
                         new
                         {
-                            Id = "b3649c0d-d355-405e-8636-914de8dc0936",
+                            Id = "e65ad563-d2b2-4ccd-bd20-17ee0696b3dd",
+                            Name = "Issuer",
+                            NormalizedName = "ISSUER"
+                        },
+                        new
+                        {
+                            Id = "4218d329-357c-4d6f-83c7-e545de3faa9a",
                             Name = "Investor",
                             NormalizedName = "INVESTOR"
                         });
@@ -366,7 +694,7 @@ namespace Invidux_Data.Migrations
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("UserTokens", (string)null);
+                    b.ToTable("AspNetUserTokens", (string)null);
                 });
 
             modelBuilder.Entity("Invidux_Domain.Models.AppUser", b =>
@@ -382,10 +710,54 @@ namespace Invidux_Data.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
+                    b.Property<int>("TwoFactorCover")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasDiscriminator().HasValue("AppUser");
+                });
+
+            modelBuilder.Entity("Invidux_Domain.Models.BankAccount", b =>
+                {
+                    b.HasOne("Invidux_Domain.Models.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Invidux_Domain.Models.UserAddress", b =>
+                {
+                    b.HasOne("Country", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Invidux_Domain.Models.AppUser", "User")
+                        .WithOne("Address")
+                        .HasForeignKey("Invidux_Domain.Models.UserAddress", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Country");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Invidux_Domain.Models.UserIncomeInfo", b =>
+                {
+                    b.HasOne("Invidux_Domain.Models.AppUser", "User")
+                        .WithOne("Income")
+                        .HasForeignKey("Invidux_Domain.Models.UserIncomeInfo", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Invidux_Domain.Models.UserInfo", b =>
@@ -393,6 +765,39 @@ namespace Invidux_Data.Migrations
                     b.HasOne("Invidux_Domain.Models.AppUser", "User")
                         .WithOne("Personal")
                         .HasForeignKey("Invidux_Domain.Models.UserInfo", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Invidux_Domain.Models.UserKycInfo", b =>
+                {
+                    b.HasOne("Invidux_Domain.Models.AppUser", "User")
+                        .WithOne("Kyc")
+                        .HasForeignKey("Invidux_Domain.Models.UserKycInfo", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Invidux_Domain.Models.UserNextOfKin", b =>
+                {
+                    b.HasOne("Invidux_Domain.Models.AppUser", "User")
+                        .WithOne("NextOfKin")
+                        .HasForeignKey("Invidux_Domain.Models.UserNextOfKin", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Invidux_Domain.Models.Wallet", b =>
+                {
+                    b.HasOne("Invidux_Domain.Models.AppUser", "User")
+                        .WithOne("Wallet")
+                        .HasForeignKey("Invidux_Domain.Models.Wallet", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -452,7 +857,17 @@ namespace Invidux_Data.Migrations
 
             modelBuilder.Entity("Invidux_Domain.Models.AppUser", b =>
                 {
+                    b.Navigation("Address");
+
+                    b.Navigation("Income");
+
+                    b.Navigation("Kyc");
+
+                    b.Navigation("NextOfKin");
+
                     b.Navigation("Personal");
+
+                    b.Navigation("Wallet");
                 });
 #pragma warning restore 612, 618
         }

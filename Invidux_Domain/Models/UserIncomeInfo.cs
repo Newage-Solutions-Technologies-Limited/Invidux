@@ -1,9 +1,13 @@
-﻿namespace Invidux_Domain.Models
+﻿using Invidux_Domain.Utilities;
+
+namespace Invidux_Domain.Models
 {
     public class UserIncomeInfo: BaseUser
     {
-        public int MonthlyIncomeRangeID { get; set; }
-        public int EmploymentStatusId { get; set; }
+        public MonthlyIncomeRange IncomeRange { get; set; }
+        public EmploymentStatus EmploymentStatus { get; set; }
         public string? JobSector { get; set; }
+        public decimal? InvestmentLimit { get; set; }
+        public decimal? RemainingAllowance { get; set; }
     }
 }

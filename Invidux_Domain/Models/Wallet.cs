@@ -10,7 +10,7 @@ namespace Invidux_Domain.Models
         public string BVN { get; set; }
         public string DepositStellarId { get; set; }
         public bool Active { get; set; }
-        public ICollection<Token> Tokens { get; set; }
+        public int WalletPin {  get; set; }
 
         [ForeignKey("AppUser")]
         public string UserId { get; set; }

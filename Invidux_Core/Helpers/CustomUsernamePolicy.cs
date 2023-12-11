@@ -1,36 +1,37 @@
-﻿using Invidux_Domain.Models;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
+using Invidux_Domain.Models;
 using System.Text.RegularExpressions;
 
 namespace Invidux_Core.Helpers
 {
-    public class CustomValidator : UserValidator<AppUser>
+    public class CustomUsernamePolicy : UserValidator<AppUser>
     {
         public override async Task<IdentityResult> ValidateAsync(UserManager<AppUser> manager, AppUser user)
         {
-            var errors = new List<IdentityError>();
+            IdentityResult result = await base.ValidateAsync(manager, user);
+            List<IdentityError> errors = result.Succeeded ? new List<IdentityError>() : result.Errors.ToList();
 
-            // Perform your custom validation logic here
-            // For example, you might want to skip validating the username if it's null or empty
+            if (user.UserName == "google")
+            {
+                errors.Add(new IdentityError
+                {
+                    Description = "Google cannot be used as a user name"
+                });
+            }
 
-            if (!string.IsNullOrWhiteSpace(user.UserName) && !IsValidUserName(user.UserName))
+            if (string.IsNullOrWhiteSpace(user.UserName) && !IsValidUserName(user.UserName))
             {
                 errors.Add(new IdentityError
                 {
                     Description = "Username is invalid."
                 });
             }
-
-            // Add any other custom validations here
-
             if (errors.Count > 0)
             {
                 return IdentityResult.Failed(errors.ToArray());
             }
-
             return await base.ValidateAsync(manager, user);
         }
-
         private bool IsValidUserName(string userName)
         {
             // Check if the username is null or empty
@@ -39,12 +40,12 @@ namespace Invidux_Core.Helpers
                 return false;
             }
 
-            // Define a regular expression for allowed username (modify as needed)
-            // For example, this regex allows letters, digits, and underscores
-            var regex = new Regex("^[a-zA-Z0-9_@]+$");
+            // Define a regular expression for allowed username
+            // This regex allows letters, digits, underscores, '@', and '.'
+            var regex = new Regex("^[a-zA-Z0-9_@.]+$");
 
             // Check the length of the username
-            int minLength = 3; // minimum length
+            int minLength = 4; // minimum length
             int maxLength = 15; // maximum length
             if (userName.Length < minLength || userName.Length > maxLength)
             {
@@ -56,5 +57,4 @@ namespace Invidux_Core.Helpers
         }
 
     }
-
 }

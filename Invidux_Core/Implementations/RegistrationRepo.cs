@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using Invidux_Data.Dtos.Response;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace Invidux_Core.Repository.Implementations
 {
@@ -15,12 +16,12 @@ namespace Invidux_Core.Repository.Implementations
     {
         private readonly InviduxDBContext dc;
         private readonly UserManager<AppUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
-        public RegistrationRepo(InviduxDBContext dc, UserManager<AppUser> _userManager, RoleManager<IdentityRole> _roleManager)
+        private readonly IEmailSender _emailSender;
+        public RegistrationRepo(InviduxDBContext dc, UserManager<AppUser> _userManager, IEmailSender _emailSender)
         {
             this.dc = dc;
             this._userManager = _userManager;
-            this._roleManager = _roleManager;
+            this._emailSender = _emailSender;
         }
 
         public async Task<string> UserAlreadyExists(string email)
@@ -54,7 +55,7 @@ namespace Invidux_Core.Repository.Implementations
                 }
                 return null;
             }
-            await _userManager.AddToRoleAsync(newUser, Roles.Investor.ToString());
+            await _userManager.AddToRoleAsync(newUser, Roles.Investor);
 
             var token = new VerificationToken
             {
@@ -67,13 +68,15 @@ namespace Invidux_Core.Repository.Implementations
             };
             dc.VerificationTokens.Add(token);
             await dc.SaveChangesAsync();
-
+            string subject = "Confirm your email";
+            string message = $"<p>Your email confirmation token <span>{token.Otp}</span> expires in 10 minutes.</p>";
+            await _emailSender.SendEmailAsync(newUser.Email, subject, message);
             var response = new UserRegistrationDto
             {
                 Id = newUser.Id,
                 Status = newUser.Status,
                 Email = newUser.Email,
-                Otp = token.Otp,
+                //Otp = token.Otp,
                 RegistrationDate = newUser.RegistrationDate,
                 OtpAllowance = newUser.OtpSentCount,
             };
@@ -108,13 +111,11 @@ namespace Invidux_Core.Repository.Implementations
                             // Delete the OTP record from the database
                             dc.VerificationTokens.Remove(existingToken);
                             await dc.SaveChangesAsync();
+
+                            return user.Status.ToString();
                         }
 
-                        // Delete the OTP record from the database
-                        dc.VerificationTokens.Remove(existingToken);
-                        await dc.SaveChangesAsync();
-
-                        return user.Status.ToString();
+                        return null;
                     }
                     return null;
                 }
@@ -150,7 +151,10 @@ namespace Invidux_Core.Repository.Implementations
                             ExpiresOn = DateTime.UtcNow.AddMinutes(10)
                         };
                         dc.VerificationTokens.Add(token);
-
+                        await dc.SaveChangesAsync();
+                        string subject = "Confirm your email";
+                        string message = $"<p>Your email confirmation token <span>{token.Otp}</span> expires in 10 minutes.</p>";
+                        await _emailSender.SendEmailAsync(email, subject, message);
                         // Update the user's OTP-related properties
                         user.OtpSentCount -= 1; // Subtract otpcount
 
@@ -232,6 +236,12 @@ namespace Invidux_Core.Repository.Implementations
                             LastName = user.LastName,
                             UserId = existingUser.Id
                         };
+                        var userAddress = new UserAddress
+                        {
+                            UserId = existingUser.Id,
+                            CountryId = user.CountryId
+                        };
+                        dc.UserAddresses.Add(userAddress);
                         dc.UserInformation.Add(userInfo);
                         await dc.SaveChangesAsync();
                         return true;
