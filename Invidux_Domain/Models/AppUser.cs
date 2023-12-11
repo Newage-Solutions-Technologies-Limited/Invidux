@@ -7,6 +7,7 @@ namespace Invidux_Domain.Models
     {
         public RegistrationStatus Status { get; set; }
         public int OtpSentCount { get; set; }
+        public TwoFactorType TwoFactorType { get; set; }
         public DateTime RegistrationDate { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
         public UserInfo? Personal { get; set; }
@@ -15,5 +16,6 @@ namespace Invidux_Domain.Models
         public UserNextOfKin? NextOfKin { get; set; }
         public UserAddress? Address { get; set; }
         public Wallet? Wallet { get; set; }
+        public virtual ICollection<UserTwoFactorCover>? TwoFactorCovers { get; set; }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Invidux_Domain.Models;
-using Invidux_Domain.Utilities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -55,10 +54,10 @@ namespace Invidux_Data.Context
 
             });
 
-            builder.Entity<Invidux_Domain.Models.TwoFactorCover>().HasData(
-                new Invidux_Domain.Models.TwoFactorCover {Id = 1, Title = "Login" },
-                new Invidux_Domain.Models.TwoFactorCover { Id = 1, Title = "Transaction" },
-                new Invidux_Domain.Models.TwoFactorCover { Id = 1, Title = "Trading" }
+            builder.Entity<TwoFactorCover>().HasData(
+                new TwoFactorCover {Id = 1, Title = "Login" },
+                new TwoFactorCover { Id = 2, Title = "Transaction" },
+                new TwoFactorCover { Id = 3, Title = "Trading" }
             );
         }
 
@@ -67,12 +66,13 @@ namespace Invidux_Data.Context
         public DbSet<BankAccount> BankAccounts { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<TwoFactorCover> TwoFactorCovers { get; set; }
         public DbSet<UserAddress> UserAddresses { get; set; }
         public DbSet<UserIncomeInfo> UserIncomeInfos { get; set; }
         public DbSet<UserInfo> UserInformation { get; set; }
         public DbSet<UserKycInfo> UserKycInfos { get; set; }
         public DbSet<UserNextOfKin> UserNextOfKins { get; set; }
-        public DbSet<Invidux_Domain.Models.TwoFactorCover> TwoFactorCovers { get; set; }
+        public DbSet<UserTwoFactorCover> UserTwoFactorCovers { get; set; }
         public DbSet<VerificationToken> VerificationTokens { get; set; }
         public DbSet<Wallet> Wallets { get; set; }
     }

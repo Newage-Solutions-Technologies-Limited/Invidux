@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Invidux_Domain.Models
 {
-    public class UserTwoFactorCover
+    public class UserTwoFactorCover: BaseUser
     {
-        [ForeignKey("TwoFactorCover")]
-        public int Id { get; set; }
 
-        [ForeignKey("AppUser")]
-        public string UserId { get; set; }
+        [ForeignKey("TwoFactorCover")]
+        public int TwoFactorCoverId { get; set; }
+        public virtual TwoFactorCover TwoFactorCover { get; set; }
     }
 }

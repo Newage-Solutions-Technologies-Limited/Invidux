@@ -1,5 +1,4 @@
-﻿using Invidux_Domain.Utilities;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Invidux_Domain.Models
 {
@@ -10,6 +9,5 @@ namespace Invidux_Domain.Models
         public string Title { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-        public Utilities.TwoFactorCover CoverType { get; set; }
     }
 }

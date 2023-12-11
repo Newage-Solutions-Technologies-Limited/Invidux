@@ -76,6 +76,11 @@ namespace Invidux_Domain.Utilities
 
     }
 
+    public enum KYCType
+    {
+
+    }
+
     public enum EmploymentStatus
     {
         [Description("Unemployed")]
