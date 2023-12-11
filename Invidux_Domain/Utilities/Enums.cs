@@ -78,7 +78,10 @@ namespace Invidux_Domain.Utilities
 
     public enum EmploymentStatus
     {
-
+        [Description("Unemployed")]
+        Unemployed,
+        [Description("Employed")]
+        Employed,
     }
 
     public enum MonthlyIncomeRange
