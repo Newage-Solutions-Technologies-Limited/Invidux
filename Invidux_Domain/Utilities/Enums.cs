@@ -93,4 +93,12 @@ namespace Invidux_Domain.Utilities
     {
 
     }
+
+    public enum AuditType
+    {
+        None,
+        Create,
+        Update,
+        Delete 
+    }
 }
