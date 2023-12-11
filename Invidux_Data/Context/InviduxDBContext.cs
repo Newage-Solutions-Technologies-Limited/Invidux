@@ -57,7 +57,13 @@ namespace Invidux_Data.Context
 
         public DbSet<AppUser> AppUsers { get; set; }
         public DbSet<AuditLog> AuditLogs { get; set; }
+        public DbSet<Country> Countries { get; set; }
+        public DbSet<UserAddress> UserAddresses { get; set; }
+        public DbSet<UserIncomeInfo> UserIncomeInfos { get; set; }
         public DbSet<UserInfo> UserInformation { get; set; }
+        public DbSet<UserKycInfo> UserKycInfos { get; set; }
+        public DbSet<UserNextOfKin> UserNextOfKins { get; set; }
+
         public DbSet<VerificationToken> VerificationTokens { get; set; }
     }
 }
