@@ -7,7 +7,6 @@ namespace Invidux_Domain.Models
     {
         public RegistrationStatus Status { get; set; }
         public int OtpSentCount { get; set; }
-        public override string UserName { get; set; }
         public TwoFactorCover TwoFactorCover { get; set; }
         public DateTime RegistrationDate { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;

@@ -41,16 +41,39 @@ namespace Invidux_Core.Repository.Implementations
         public async Task<LoginResponse> Authenticate(string userName, string password)
         {
             var jwtHelper = new JWT(config);
-            var user = await dc.AppUsers.FirstOrDefaultAsync(x => x.Email == userName || x.UserName == userName);
+            var user = await dc.AppUsers.FirstOrDefaultAsync(x => x.UserName == userName || x.Email == userName);
             if (user == null)
                 return null;
             var result = await _signInManager.PasswordSignInAsync(userName, password, isPersistent: false, lockoutOnFailure: false);
-            if (!result.Succeeded)
-                return null;
+            Console.WriteLine("User Info\n" + result.ToString());
+            
             var response = new LoginResponse();
-            if(user.Status == RegistrationStatus.Active)
+            if (result.Succeeded)
             {
-                if (user.TwoFactorEnabled)
+                if (user.Status == RegistrationStatus.Active)
+                {
+                    response.UserId = user.Id;
+                    response.Email = user.Email;
+                    response.Username = user.UserName;
+                    response.Status = user.Status;
+                    response.Token = jwtHelper.CreateJWT(user);
+
+                    return response;
+                }
+
+                if (user.Status == RegistrationStatus.Restricted)
+                {
+                    response.UserId = user.Id;
+                    response.Email = user.Email;
+                    response.Username = user.UserName;
+                    response.Status = user.Status;
+                    return response;
+                }
+            }
+            if (result.RequiresTwoFactor)
+            {
+                
+                if (user.Status == RegistrationStatus.Active)
                 {
                     var token = new VerificationToken
                     {
@@ -75,23 +98,16 @@ namespace Invidux_Core.Repository.Implementations
                     return response;
                 }
 
-                response.UserId = user.Id;
-                response.Email = user.Email;
-                response.Username = user.UserName;
-                response.Status = user.Status;
-                response.Token = jwtHelper.CreateJWT(user);
-
-                return response;
+                if (user.Status == RegistrationStatus.Restricted)
+                {
+                    response.UserId = user.Id;
+                    response.Email = user.Email;
+                    response.Username = user.UserName;
+                    response.Status = user.Status;
+                    return response;
+                }
             }
-
-            if (user.Status == RegistrationStatus.Restricted)
-            {
-                response.UserId = user.Id;
-                response.Email = user.Email;
-                response.Username = user.UserName;
-                response.Status = user.Status;
-                return response;
-            }
+            
 
             return null;
         }

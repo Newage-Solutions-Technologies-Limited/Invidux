@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -14,17 +15,13 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var secretKey = builder.Configuration.GetSection("AppSettings:Key").Value;
-var key = new SymmetricSecurityKey(Encoding.UTF8
-    .GetBytes(secretKey));
-
 builder.Services.AddTransient<IPasswordValidator<AppUser>, CustomPasswordPolicy>();
 builder.Services.AddTransient<IUserValidator<AppUser>, CustomUsernamePolicy>();
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 // Add services to the container.
 builder.Services.AddDbContext<InviduxDBContext>(options =>
                 options.UseSqlServer(
-                    builder.Configuration.GetConnectionString("LocalDB"),
+                    builder.Configuration.GetConnectionString("LocalDBIntegrated"),
                     p => p.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)), ServiceLifetime.Scoped);
 builder.Services.AddScoped<IUnitofWork, UnitofWork>();
 
@@ -56,7 +53,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                         ValidateIssuerSigningKey = true,
                         ValidateIssuer = false,
                         ValidateAudience = false,
-                        IssuerSigningKey = key
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+                    };
+                    opt.Events = new JwtBearerEvents
+                    {
+                        OnAuthenticationFailed = context =>
+                        {
+                            // Log or handle authentication failures
+                            return Task.CompletedTask;
+                        }
                     };
                 });
 

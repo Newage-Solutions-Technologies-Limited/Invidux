@@ -219,7 +219,7 @@ namespace Invidux_Core.Repository.Implementations
                     // Update the existing user's profile based on the CompleteRegistration data
 
                     existingUser.UserName = user.Username;
-                    existingUser.PhoneNumber = user.Phone; // If you're using phone number for registration
+                    existingUser.PhoneNumber = user.Phone; 
                     
                     // Update the user's profile using the UserManager
                     var result = await _userManager.UpdateAsync(existingUser);
