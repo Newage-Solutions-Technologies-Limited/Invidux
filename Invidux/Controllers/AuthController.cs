@@ -4,6 +4,7 @@ using Invidux_Data.Dtos.Request;
 using Invidux_Data.Dtos.Response;
 using Invidux_Domain.Utilities;
 using Microsoft.AspNetCore.Mvc;
+using NuGet.Protocol.Plugins;
 using System.Net;
 
 namespace Invidux_Api.Controllers
@@ -261,12 +262,15 @@ namespace Invidux_Api.Controllers
                 response.Successful = true;
                 response.Message = "Login Succesfull";
                 response.Data = userExists;
+                // Set the JWT token in the response header
+                Response.Headers.Add("Authorization", $"Bearer {userExists.Token}");
                 return Ok(response);
             }
             catch (Exception ex)
             {
                 // Handle exceptions and log errors
                 // You can also return an appropriate error response
+                Console.WriteLine(ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
@@ -310,6 +314,8 @@ namespace Invidux_Api.Controllers
                     Message = "Login successful.",
                     Data = result,
                 };
+                // Set the JWT token in the response header
+                Response.Headers.Add("Authorization", $"Bearer {result.Token}");
                 return Ok(response);
             }
             catch (Exception ex)
