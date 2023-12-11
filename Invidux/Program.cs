@@ -37,6 +37,9 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 .AddEntityFrameworkStores<InviduxDBContext>()
 .AddDefaultTokenProviders();
 
+builder.Services.Configure<Sendgrid>(builder.Configuration.GetSection("Sendgrid"));
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
