@@ -76,7 +76,7 @@ namespace Invidux_Core.Repository.Implementations
                 Id = newUser.Id,
                 Status = newUser.Status,
                 Email = newUser.Email,
-                Otp = token.Otp,
+                //Otp = token.Otp,
                 RegistrationDate = newUser.RegistrationDate,
                 OtpAllowance = newUser.OtpSentCount,
             };
@@ -111,13 +111,11 @@ namespace Invidux_Core.Repository.Implementations
                             // Delete the OTP record from the database
                             dc.VerificationTokens.Remove(existingToken);
                             await dc.SaveChangesAsync();
+
+                            return user.Status.ToString();
                         }
 
-                        // Delete the OTP record from the database
-                        dc.VerificationTokens.Remove(existingToken);
-                        await dc.SaveChangesAsync();
-
-                        return user.Status.ToString();
+                        return null;
                     }
                     return null;
                 }

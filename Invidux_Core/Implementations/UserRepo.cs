@@ -71,7 +71,7 @@ namespace Invidux_Core.Repository.Implementations
                     response.Username = user.UserName;
                     response.Status = user.Status;
                     response.TwoFactorEnabled = user.TwoFactorEnabled;
-                    response.Otp = token.Otp;
+                    //response.Otp = token.Otp;
                     return response;
                 }
 

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Invidux_Data.Migrations
 {
     [DbContext(typeof(InviduxDBContext))]
-    [Migration("20231211061000_AppUserUpdate")]
+    [Migration("20231211061909_AppUserUpdate")]
     partial class AppUserUpdate
     {
         /// <inheritdoc />
@@ -495,25 +495,25 @@ namespace Invidux_Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "59b956ec-78d4-4597-8635-5979effe4730",
+                            Id = "b45bc023-3cf8-42ab-90e0-f73f7c16bea5",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "ecba2652-1113-44ab-b1aa-986f615e0f2c",
+                            Id = "72159b39-e9e7-4915-b4e2-9df01e2dd760",
                             Name = "SuperAdmin",
                             NormalizedName = "SUPERADMIN"
                         },
                         new
                         {
-                            Id = "d4435f91-de86-4e2b-9eba-f72c35d8b521",
+                            Id = "1a6384f4-2b01-4477-9113-4ad82d7fe8d9",
                             Name = "Issuer",
                             NormalizedName = "ISSUER"
                         },
                         new
                         {
-                            Id = "8938ebe6-d327-4f83-93e5-e27c1eb5d58e",
+                            Id = "e129cc5f-190e-4631-88a4-944cd5b95fe3",
                             Name = "Investor",
                             NormalizedName = "INVESTOR"
                         });

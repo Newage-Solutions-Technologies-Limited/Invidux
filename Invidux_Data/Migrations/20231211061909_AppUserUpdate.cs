@@ -429,10 +429,10 @@ namespace Invidux_Data.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "59b956ec-78d4-4597-8635-5979effe4730", null, "Admin", "ADMIN" },
-                    { "8938ebe6-d327-4f83-93e5-e27c1eb5d58e", null, "Investor", "INVESTOR" },
-                    { "d4435f91-de86-4e2b-9eba-f72c35d8b521", null, "Issuer", "ISSUER" },
-                    { "ecba2652-1113-44ab-b1aa-986f615e0f2c", null, "SuperAdmin", "SUPERADMIN" }
+                    { "1a6384f4-2b01-4477-9113-4ad82d7fe8d9", null, "Issuer", "ISSUER" },
+                    { "72159b39-e9e7-4915-b4e2-9df01e2dd760", null, "SuperAdmin", "SUPERADMIN" },
+                    { "b45bc023-3cf8-42ab-90e0-f73f7c16bea5", null, "Admin", "ADMIN" },
+                    { "e129cc5f-190e-4631-88a4-944cd5b95fe3", null, "Investor", "INVESTOR" }
                 });
 
             migrationBuilder.CreateIndex(

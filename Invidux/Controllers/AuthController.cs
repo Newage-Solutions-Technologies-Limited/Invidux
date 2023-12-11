@@ -135,6 +135,7 @@ namespace Invidux_Api.Controllers
             {
                 // Handle exceptions and log errors
                 // You can also return an appropriate error response
+                Console.WriteLine("Error", ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }

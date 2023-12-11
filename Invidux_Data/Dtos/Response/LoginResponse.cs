@@ -15,6 +15,6 @@ namespace Invidux_Data.Dtos.Response
         public string Email { get; set; }
         public string? Token { get; set; }
         public bool? TwoFactorEnabled { get; set; }
-        public int? Otp {  get; set; }
+        //public int? Otp {  get; set; }
     }
 }
