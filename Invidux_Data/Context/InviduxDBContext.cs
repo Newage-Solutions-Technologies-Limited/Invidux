@@ -52,7 +52,7 @@ namespace Invidux_Data.Context
             {
                 entity.ToTable("RoleClaims");
 
-            });            
+            });
         }
 
         public DbSet<AppUser> AppUsers { get; set; }

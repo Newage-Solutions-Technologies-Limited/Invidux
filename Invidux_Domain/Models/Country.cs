@@ -1,13 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Invidux_Domain.Models
+public class Country
 {
-    public class Country
-    {
-        [Key]
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Iso { get; set; }
-        public string Iso3 { get; set; }
-    }
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string Iso { get; set; }
+    public string Iso3 { get; set; }
+    public string NumericCode { get; set; }
 }

@@ -19,7 +19,7 @@ namespace Invidux_Core.Helpers
                 });
             }
 
-            if (!string.IsNullOrWhiteSpace(user.UserName) && !IsValidUserName(user.UserName))
+            if (string.IsNullOrWhiteSpace(user.UserName) && !IsValidUserName(user.UserName))
             {
                 errors.Add(new IdentityError
                 {
@@ -40,12 +40,12 @@ namespace Invidux_Core.Helpers
                 return false;
             }
 
-            // Define a regular expression for allowed username (modify as needed)
-            // For example, this regex allows letters, digits, and underscores
+            // Define a regular expression for allowed username
+            // This regex allows letters, digits, underscores, '@', and '.'
             var regex = new Regex("^[a-zA-Z0-9_@.]+$");
 
             // Check the length of the username
-            int minLength = 8; // minimum length
+            int minLength = 4; // minimum length
             int maxLength = 15; // maximum length
             if (userName.Length < minLength || userName.Length > maxLength)
             {
@@ -55,5 +55,6 @@ namespace Invidux_Core.Helpers
             // Check if the username matches the regular expression
             return regex.IsMatch(userName);
         }
+
     }
 }

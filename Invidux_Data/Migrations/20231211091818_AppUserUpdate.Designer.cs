@@ -4,6 +4,7 @@ using Invidux_Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Invidux_Data.Migrations
 {
     [DbContext(typeof(InviduxDBContext))]
-    partial class InviduxDBContextModelSnapshot : ModelSnapshot
+    [Migration("20231211091818_AppUserUpdate")]
+    partial class AppUserUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -182,6 +185,7 @@ namespace Invidux_Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("City")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("CountryId")
@@ -191,12 +195,15 @@ namespace Invidux_Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("PostalCode")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("State")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Street")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -279,9 +286,11 @@ namespace Invidux_Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImagePublicId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageUrl")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
@@ -490,25 +499,25 @@ namespace Invidux_Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "3a5c4ddb-6607-447c-96e1-59af82638980",
+                            Id = "868a8efb-a4f5-4a16-a073-b5d3e423fc0a",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "8616a19c-3683-4676-a153-3f9ff964acd6",
+                            Id = "5cb468cb-8c78-4f8d-92a3-10432b815294",
                             Name = "SuperAdmin",
                             NormalizedName = "SUPERADMIN"
                         },
                         new
                         {
-                            Id = "e65ad563-d2b2-4ccd-bd20-17ee0696b3dd",
+                            Id = "431e7794-27f9-426d-aff7-324917076ff3",
                             Name = "Issuer",
                             NormalizedName = "ISSUER"
                         },
                         new
                         {
-                            Id = "4218d329-357c-4d6f-83c7-e545de3faa9a",
+                            Id = "04f322ad-8758-41bb-8b68-51742b162e26",
                             Name = "Investor",
                             NormalizedName = "INVESTOR"
                         });

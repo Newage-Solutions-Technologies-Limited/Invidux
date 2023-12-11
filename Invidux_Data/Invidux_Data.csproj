@@ -23,4 +23,8 @@
     <ProjectReference Include="..\Invidux_Domain\Invidux_Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="CountySeeding\" />
+  </ItemGroup>
+
 </Project>

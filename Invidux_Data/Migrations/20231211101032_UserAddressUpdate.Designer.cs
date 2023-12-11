@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Invidux_Data.Migrations
 {
     [DbContext(typeof(InviduxDBContext))]
-    [Migration("20231211061909_AppUserUpdate")]
-    partial class AppUserUpdate
+    [Migration("20231211101032_UserAddressUpdate")]
+    partial class UserAddressUpdate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,35 @@ namespace Invidux_Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Country", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Iso")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Iso3")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NumericCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Countries");
+                });
 
             modelBuilder.Entity("Invidux_Domain.Models.AuditLog", b =>
                 {
@@ -102,31 +131,6 @@ namespace Invidux_Data.Migrations
                     b.ToTable("BankAccounts");
                 });
 
-            modelBuilder.Entity("Invidux_Domain.Models.Country", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Iso")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Iso3")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Countries");
-                });
-
             modelBuilder.Entity("Invidux_Domain.Models.Transaction", b =>
                 {
                     b.Property<int>("Id")
@@ -181,7 +185,6 @@ namespace Invidux_Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("City")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("CountryId")
@@ -191,15 +194,12 @@ namespace Invidux_Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("PostalCode")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("State")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Street")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -282,11 +282,9 @@ namespace Invidux_Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImagePublicId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
@@ -495,25 +493,25 @@ namespace Invidux_Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b45bc023-3cf8-42ab-90e0-f73f7c16bea5",
+                            Id = "3a5c4ddb-6607-447c-96e1-59af82638980",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "72159b39-e9e7-4915-b4e2-9df01e2dd760",
+                            Id = "8616a19c-3683-4676-a153-3f9ff964acd6",
                             Name = "SuperAdmin",
                             NormalizedName = "SUPERADMIN"
                         },
                         new
                         {
-                            Id = "1a6384f4-2b01-4477-9113-4ad82d7fe8d9",
+                            Id = "e65ad563-d2b2-4ccd-bd20-17ee0696b3dd",
                             Name = "Issuer",
                             NormalizedName = "ISSUER"
                         },
                         new
                         {
-                            Id = "e129cc5f-190e-4631-88a4-944cd5b95fe3",
+                            Id = "4218d329-357c-4d6f-83c7-e545de3faa9a",
                             Name = "Investor",
                             NormalizedName = "INVESTOR"
                         });
@@ -734,7 +732,7 @@ namespace Invidux_Data.Migrations
 
             modelBuilder.Entity("Invidux_Domain.Models.UserAddress", b =>
                 {
-                    b.HasOne("Invidux_Domain.Models.Country", "Country")
+                    b.HasOne("Country", "Country")
                         .WithMany()
                         .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.Cascade)

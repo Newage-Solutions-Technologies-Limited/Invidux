@@ -18,7 +18,7 @@ var secretKey = builder.Configuration.GetSection("AppSettings:Key").Value;
 var key = new SymmetricSecurityKey(Encoding.UTF8
     .GetBytes(secretKey));
 
-services.AddTransient<IPasswordValidator<AppUser>, CustomPasswordPolicy>();
+builder.Services.AddTransient<IPasswordValidator<AppUser>, CustomPasswordPolicy>();
 builder.Services.AddTransient<IUserValidator<AppUser>, CustomUsernamePolicy>();
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 // Add services to the container.
@@ -33,7 +33,6 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options => options.SignIn.Re
 .AddDefaultTokenProviders();
 builder.Services.Configure<IdentityOptions>(options => {
     options.User.RequireUniqueEmail = true;
-    options.User.AllowedUserNameCharacters = "0123456789abcdefghijklmnopqrstuvwxyz@";
     options.Password.RequiredLength = 8;
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireLowercase = false;

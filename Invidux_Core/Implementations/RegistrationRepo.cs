@@ -55,7 +55,7 @@ namespace Invidux_Core.Repository.Implementations
                 }
                 return null;
             }
-            await _userManager.AddToRoleAsync(newUser, Roles.Investor.ToString());
+            await _userManager.AddToRoleAsync(newUser, Roles.Investor);
 
             var token = new VerificationToken
             {
@@ -236,6 +236,12 @@ namespace Invidux_Core.Repository.Implementations
                             LastName = user.LastName,
                             UserId = existingUser.Id
                         };
+                        var userAddress = new UserAddress
+                        {
+                            UserId = existingUser.Id,
+                            CountryId = user.CountryId
+                        };
+                        dc.UserAddresses.Add(userAddress);
                         dc.UserInformation.Add(userInfo);
                         await dc.SaveChangesAsync();
                         return true;

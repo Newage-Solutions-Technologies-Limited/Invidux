@@ -41,7 +41,8 @@ namespace Invidux_Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Iso = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Iso3 = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Iso3 = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NumericCode = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -429,10 +430,10 @@ namespace Invidux_Data.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "1a6384f4-2b01-4477-9113-4ad82d7fe8d9", null, "Issuer", "ISSUER" },
-                    { "72159b39-e9e7-4915-b4e2-9df01e2dd760", null, "SuperAdmin", "SUPERADMIN" },
-                    { "b45bc023-3cf8-42ab-90e0-f73f7c16bea5", null, "Admin", "ADMIN" },
-                    { "e129cc5f-190e-4631-88a4-944cd5b95fe3", null, "Investor", "INVESTOR" }
+                    { "04f322ad-8758-41bb-8b68-51742b162e26", null, "Investor", "INVESTOR" },
+                    { "431e7794-27f9-426d-aff7-324917076ff3", null, "Issuer", "ISSUER" },
+                    { "5cb468cb-8c78-4f8d-92a3-10432b815294", null, "SuperAdmin", "SUPERADMIN" },
+                    { "868a8efb-a4f5-4a16-a073-b5d3e423fc0a", null, "Admin", "ADMIN" }
                 });
 
             migrationBuilder.CreateIndex(
