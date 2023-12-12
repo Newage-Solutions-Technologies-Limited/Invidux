@@ -1,11 +1,5 @@
 ﻿using Invidux_Domain.Utilities;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Invidux_Data.Dtos.Request
 {
@@ -22,6 +16,8 @@ namespace Invidux_Data.Dtos.Request
         public DateTime? Dob { get; set; } // Date of Birth
         public string? Gender { get; set; }
         public string? MaritalStatus { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     }
 
     public class NextOfKinDto
@@ -31,6 +27,8 @@ namespace Invidux_Data.Dtos.Request
         public string Email { get; set; }
         public string Phone { get; set; }
         public string Relationship { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     }
 
     public class KYCRequest
@@ -44,5 +42,13 @@ namespace Invidux_Data.Dtos.Request
         public bool CanExpire { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+    }
+
+    public class SecurityDto
+    {
+        public string UserId { get; set; }
+        public bool TwofactorEnabled { get; set; }
+        public TwoFactorTypeEnums? TwoFactorType { get; set; }
+        public List<string>? TwofactorCovers { get; set; }
     }
 }

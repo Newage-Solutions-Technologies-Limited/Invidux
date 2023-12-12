@@ -23,6 +23,8 @@ builder.Services.AddDbContext<InviduxDBContext>(options =>
                     builder.Configuration.GetConnectionString("LocalDB"),
                     //builder.Configuration.GetConnectionString("LocalDBIntegrated"),
                     p => p.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)), ServiceLifetime.Scoped);
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<IUserContextService, UserContextService>();
 builder.Services.AddAutoMapper(typeof(Mapping).Assembly);
 builder.Services.AddScoped<IUnitofWork, UnitofWork>();
 

@@ -4,6 +4,7 @@ using Invidux_Domain.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
 
 namespace Invidux_Core.Repository.Implementations
 {
@@ -40,5 +41,21 @@ namespace Invidux_Core.Repository.Implementations
         {
             return await dc.SaveChangesAsync() > 0;
         }
+
+        /// <summary>
+        /// Usage:
+        /// CancellationTokenSource cts = new CancellationTokenSource();
+        ///
+        /// await uow.AuditSaveAsync(cts.Token);
+        ///
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+
+        public async Task<bool> AuditSaveAsync(CancellationToken cancellationToken = default)
+        {
+            return await dc.SaveChangesAsync(cancellationToken) > 0;
+        }
+
     }
 }

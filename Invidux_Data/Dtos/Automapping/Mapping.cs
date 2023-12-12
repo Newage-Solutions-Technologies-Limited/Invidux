@@ -10,6 +10,7 @@ namespace Invidux_Data.Dtos.AutoMapping
     {
         public Mapping() 
         {
+            // ====================================Get Mappings=====================================
             // User to UserProfileDto mapping
             CreateMap<AppUser, UserProfileDto>()
                 .ForMember(dest => dest.Contact, opt => opt.MapFrom(src => src.Personal))
@@ -46,14 +47,17 @@ namespace Invidux_Data.Dtos.AutoMapping
             CreateMap<Invidux_Domain.Models.TwoFactorCover, string>() 
                 .ConvertUsing(src => src.Title);
 
+           
+            //============================Post mappings==================================
+
             // User Personal Information Request
-            CreateMap<UserInfo, PersonalInfoDto>();
+            CreateMap<UserInfo, PersonalInfoDto>().ReverseMap();
 
             // User Next of Kin Request
-            CreateMap<UserNextOfKin, NextOfKinDto>();
+            CreateMap<UserNextOfKin, NextOfKinDto>().ReverseMap();
 
             // User KYC Request
-            CreateMap<UserKycInfo, KYCRequest>();
+            CreateMap<UserKycInfo, KYCRequest>().ReverseMap();
         }
     }
 }

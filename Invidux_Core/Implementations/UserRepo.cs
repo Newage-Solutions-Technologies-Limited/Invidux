@@ -37,6 +37,12 @@ namespace Invidux_Core.Repository.Implementations
             this._emailSender = _emailSender;
         }
 
+        public async Task<bool> UserExists(string userId)
+        {
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            return user == null ? false : true;
+        }
+
         // To return jwt
         public async Task<LoginResponse> Authenticate(string userName, string password)
         {
@@ -192,6 +198,39 @@ namespace Invidux_Core.Repository.Implementations
                 return null;
             }
             return user;
+        }
+
+        public async Task<UserInfo> GetUserInfo(string userId)
+        {
+            var userInfo = await dc.UserInformation.Where(dc => dc.UserId == userId).FirstOrDefaultAsync();
+            return userInfo == null ? null : userInfo;
+        }
+
+        public async Task<UserNextOfKin> GetUserNextOfKin(string userId)
+        {
+            var nextOfKin = await dc.UserNextOfKins.Where(dc => dc.UserId == userId).FirstOrDefaultAsync();
+            return nextOfKin == null ? null : nextOfKin;
+        }
+
+        public async Task<bool> UpdateSecurity(SecurityDto securityDto)
+        {
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == securityDto.UserId);
+            if (user == null) return false;
+            user.TwoFactorEnabled = securityDto.TwofactorEnabled;
+            user.TwoFactorType = (TwoFactorTypeEnums)securityDto.TwoFactorType;
+            foreach(var twofactorCover in securityDto.TwofactorCovers)
+            {
+                var _twoFactor = await dc.TwoFactorCovers.FirstOrDefaultAsync(t => t.Title == twofactorCover);
+                var newCover = new UserTwoFactorCover
+                {
+                    UserId = securityDto.UserId,
+                    TwoFactorCoverId = _twoFactor.Id,
+                };
+                dc.UserTwoFactorCovers.Add(newCover);
+            }
+            await dc.SaveChangesAsync();
+            return true;
+
         }
     }
 }

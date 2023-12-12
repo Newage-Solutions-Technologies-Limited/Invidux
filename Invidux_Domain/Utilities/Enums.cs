@@ -22,7 +22,7 @@ namespace Invidux_Domain.Utilities
         BVN,
     }
 
-    public enum TwoFactorType
+    public enum TwoFactorTypeEnums
     {
         [Description("Email")]
         Email,
@@ -92,13 +92,5 @@ namespace Invidux_Domain.Utilities
     public enum MonthlyIncomeRange
     {
 
-    }
-
-    public enum AuditType
-    {
-        None,
-        Create,
-        Update,
-        Delete 
     }
 }
