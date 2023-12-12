@@ -217,6 +217,12 @@ namespace Invidux_Core.Repository.Implementations
             return nextOfKin == null ? null : nextOfKin;
         }
 
+        /// <summary>
+        /// Currently only creating
+        /// To be updated later
+        /// </summary>
+        /// <param name="securityDto"></param>
+        /// <returns></returns>
         public async Task<bool> UpdateSecurity(SecurityDto securityDto)
         {
             var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == securityDto.UserId);
