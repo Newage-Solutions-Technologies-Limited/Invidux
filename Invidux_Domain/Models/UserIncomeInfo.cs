@@ -7,7 +7,7 @@ namespace Invidux_Domain.Models
         public MonthlyIncomeRange IncomeRange { get; set; }
         public EmploymentStatus EmploymentStatus { get; set; }
         public string? JobSector { get; set; }
-        public decimal? InvestmentLimit { get; set; }
+        public decimal? InvestmentLimitUsed { get; set; }
         public decimal? RemainingAllowance { get; set; }
     }
 }

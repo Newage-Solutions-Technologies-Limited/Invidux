@@ -22,14 +22,14 @@ namespace Invidux_Domain.Utilities
         BVN,
     }
 
-    public enum TwoFactorCover
+    public enum TwoFactorTypeEnums
     {
-        [Description("Login")]
-        Login,
-        [Description("Transactiosn")]
-        Transaction,
-        [Description("Trading")]
-        Trading
+        [Description("Email")]
+        Email,
+        [Description("Phone Number")]
+        PhoneNumber,
+        [Description("Google Auth")]
+        GoogleAuth
     }
 
     public enum BankAccountType
@@ -72,6 +72,11 @@ namespace Invidux_Domain.Utilities
     }
 
     public enum KYCLevel
+    {
+
+    }
+
+    public enum KYCType
     {
 
     }

@@ -13,4 +13,14 @@ namespace Invidux_Domain.Utilities
         [Description("Investor")]
         public const string Investor = "Investor";
     }
+
+    public class TwoFactorCover
+    {
+        [Description("Login")]
+        public static string Login = "Login";
+        [Description("Transactions")]
+        public static string Transaction = "Transaction";
+        [Description("Trading")]
+        public static string Trading = "Trading";
+    }
 }

@@ -2,15 +2,14 @@ using Invidux_Core.Helpers;
 using Invidux_Core.Repository.Implementations;
 using Invidux_Core.Repository.Interfaces;
 using Invidux_Data.Context;
+using Invidux_Data.Dtos.AutoMapping;
 using Invidux_Domain.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,8 +20,12 @@ builder.Services.AddTransient<IEmailSender, EmailSender>();
 // Add services to the container.
 builder.Services.AddDbContext<InviduxDBContext>(options =>
                 options.UseSqlServer(
-                    builder.Configuration.GetConnectionString("LocalDBIntegrated"),
+                    builder.Configuration.GetConnectionString("LocalDB"),
+                    //builder.Configuration.GetConnectionString("LocalDBIntegrated"),
                     p => p.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)), ServiceLifetime.Scoped);
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<IUserContextService, UserContextService>();
+builder.Services.AddAutoMapper(typeof(Mapping).Assembly);
 builder.Services.AddScoped<IUnitofWork, UnitofWork>();
 
 builder.Services.AddIdentity<AppUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)

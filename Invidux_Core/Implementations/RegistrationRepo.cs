@@ -105,6 +105,7 @@ namespace Invidux_Core.Repository.Implementations
                             {
                                 user.EmailConfirmed = true;
                                 user.Status = RegistrationStatus.Active;
+                                user.UpdatedAt = DateTime.UtcNow;
                                 await _userManager.UpdateAsync(user);
                             }
 
@@ -219,7 +220,9 @@ namespace Invidux_Core.Repository.Implementations
                     // Update the existing user's profile based on the CompleteRegistration data
 
                     existingUser.UserName = user.Username;
-                    existingUser.PhoneNumber = user.Phone; 
+                    existingUser.PhoneNumber = user.Phone;
+                    existingUser.TwoFactorType = TwoFactorTypeEnums.Email;
+                    existingUser.UpdatedAt = DateTime.UtcNow;
                     
                     // Update the user's profile using the UserManager
                     var result = await _userManager.UpdateAsync(existingUser);
@@ -234,11 +237,13 @@ namespace Invidux_Core.Repository.Implementations
                             FirstName = user.FirstName,
                             MiddleName = user.MiddleName,
                             LastName = user.LastName,
-                            UserId = existingUser.Id
+                            UserId = existingUser.Id,
+                            CreatedAt = DateTime.UtcNow,
                         };
                         var userAddress = new UserAddress
                         {
                             UserId = existingUser.Id,
+                            CreatedAt = DateTime.UtcNow,
                             CountryId = user.CountryId
                         };
                         dc.UserAddresses.Add(userAddress);

@@ -4,6 +4,7 @@ using Invidux_Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Invidux_Data.Migrations
 {
     [DbContext(typeof(InviduxDBContext))]
-    partial class InviduxDBContextModelSnapshot : ModelSnapshot
+    [Migration("20231211161317_UpdateUserInfo")]
+    partial class UpdateUserInfo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,7 +65,7 @@ namespace Invidux_Data.Migrations
                     b.Property<string>("Action")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("AffectedColumns")
+                    b.Property<string>("AdditionalInformation")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NewValues")
@@ -199,23 +202,23 @@ namespace Invidux_Data.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2023, 12, 12, 14, 37, 37, 657, DateTimeKind.Utc).AddTicks(9301),
+                            CreatedAt = new DateTime(2023, 12, 11, 16, 13, 16, 325, DateTimeKind.Utc).AddTicks(1642),
                             Title = "Login",
-                            UpdatedAt = new DateTime(2023, 12, 12, 14, 37, 37, 657, DateTimeKind.Utc).AddTicks(9304)
+                            UpdatedAt = new DateTime(2023, 12, 11, 16, 13, 16, 325, DateTimeKind.Utc).AddTicks(1645)
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2023, 12, 12, 14, 37, 37, 657, DateTimeKind.Utc).AddTicks(9306),
+                            CreatedAt = new DateTime(2023, 12, 11, 16, 13, 16, 325, DateTimeKind.Utc).AddTicks(1647),
                             Title = "Transaction",
-                            UpdatedAt = new DateTime(2023, 12, 12, 14, 37, 37, 657, DateTimeKind.Utc).AddTicks(9307)
+                            UpdatedAt = new DateTime(2023, 12, 11, 16, 13, 16, 325, DateTimeKind.Utc).AddTicks(1647)
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2023, 12, 12, 14, 37, 37, 657, DateTimeKind.Utc).AddTicks(9308),
+                            CreatedAt = new DateTime(2023, 12, 11, 16, 13, 16, 325, DateTimeKind.Utc).AddTicks(1648),
                             Title = "Trading",
-                            UpdatedAt = new DateTime(2023, 12, 12, 14, 37, 37, 657, DateTimeKind.Utc).AddTicks(9308)
+                            UpdatedAt = new DateTime(2023, 12, 11, 16, 13, 16, 325, DateTimeKind.Utc).AddTicks(1648)
                         });
                 });
 
@@ -562,25 +565,25 @@ namespace Invidux_Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "1276e662-8e7f-4584-afb1-e93057dafcaf",
+                            Id = "c99ffdd2-a422-4d34-aab2-cba5a8176b9d",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "1c2bbddc-0cdf-4d35-ab52-950baaeaefb3",
+                            Id = "717e07dc-bc8f-4504-976d-ab46f6c3c913",
                             Name = "SuperAdmin",
                             NormalizedName = "SUPERADMIN"
                         },
                         new
                         {
-                            Id = "4511d276-c021-4704-96fb-884cf54c1dc8",
+                            Id = "fd750a78-90f3-406e-b0e1-cf4002cbe0d7",
                             Name = "Issuer",
                             NormalizedName = "ISSUER"
                         },
                         new
                         {
-                            Id = "ccb1b40f-837e-4456-a231-279b771433ce",
+                            Id = "0915e8d9-87d4-491c-977d-f949f02a9fd1",
                             Name = "Investor",
                             NormalizedName = "INVESTOR"
                         });
