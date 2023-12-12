@@ -11,6 +11,7 @@ namespace Invidux_Core.Repository.Interfaces
         Task<LoginResponse> VerifyOtp(int otp);
         Task<AppUser> GetUserProfile(string userId);
         Task<UserInfo> GetUserInfo(string userId);
+        void CreateNextOfKin(UserNextOfKin kin);
         Task<UserNextOfKin> GetUserNextOfKin (string userId);
         Task<bool> UpdateSecurity(SecurityDto securityDto);
     }

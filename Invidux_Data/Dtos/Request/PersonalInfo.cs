@@ -16,8 +16,8 @@ namespace Invidux_Data.Dtos.Request
         public DateTime? Dob { get; set; } // Date of Birth
         public string? Gender { get; set; }
         public string? MaritalStatus { get; set; }
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; } 
     }
 
     public class NextOfKinDto
@@ -27,8 +27,8 @@ namespace Invidux_Data.Dtos.Request
         public string Email { get; set; }
         public string Phone { get; set; }
         public string Relationship { get; set; }
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; } 
+        public DateTime UpdatedAt { get; set; } 
     }
 
     public class KYCRequest
@@ -40,8 +40,8 @@ namespace Invidux_Data.Dtos.Request
         public DateTime? ExpiryDate { get; set; } // Nullable if expiry date can be empty
         public bool Verified { get; set; }
         public bool CanExpire { get; set; }
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
 
     public class SecurityDto
@@ -49,6 +49,6 @@ namespace Invidux_Data.Dtos.Request
         public string UserId { get; set; }
         public bool TwofactorEnabled { get; set; }
         public TwoFactorTypeEnums? TwoFactorType { get; set; }
-        public List<string>? TwofactorCovers { get; set; }
+        public List<string>? TwofactorCovers { get; set; } 
     }
 }

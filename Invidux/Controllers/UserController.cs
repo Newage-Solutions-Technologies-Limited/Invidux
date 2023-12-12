@@ -3,6 +3,7 @@ using Invidux_Core.Repository.Interfaces;
 using Invidux_Data.Dtos.Request;
 using Invidux_Data.Dtos.Response;
 using Invidux_Data.Dtos;
+using Invidux_Domain.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -62,7 +63,6 @@ namespace Invidux_Api.Controllers
 
         //[ProducesResponseType(typeof(Response<UserProfileDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponseDTO), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status203NonAuthoritative)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
         [HttpPatch("current-user/personal-info/{userId}")]
         public async Task<IActionResult> UpdatePersonalInfo(PersonalInfoDto user)
@@ -85,7 +85,7 @@ namespace Invidux_Api.Controllers
                     return BadRequest(errorResponse);
                 }
                 dbUserInfo.UpdatedAt = DateTime.UtcNow;
-                mapper.Map(dbUserInfo, user);
+                mapper.Map(user, dbUserInfo);
                 await uow.SaveAsync();
                 return StatusCode(203);
             }
@@ -111,6 +111,7 @@ namespace Invidux_Api.Controllers
                     return BadRequest(new ModelStateErrorResponseDTO(HttpStatusCode.BadRequest,
                         ModelState));
                 }
+               
                 var dbUser = await uow.UserRepo.UserExists(nextOfKin.UserId);
                 if (!dbUser)
                 {
@@ -121,8 +122,12 @@ namespace Invidux_Api.Controllers
                     );
                     return BadRequest(errorResponse);
                 }
-                mapper.Map<NextOfKin>(nextOfKin);
+                var kin = mapper.Map<UserNextOfKin>(nextOfKin);
+                kin.CreatedAt = DateTime.UtcNow;
+                kin.UpdatedAt = DateTime.UtcNow;
+                uow.UserRepo.CreateNextOfKin(kin);
                 await uow.SaveAsync();
+                Console.WriteLine(kin);
                 return StatusCode(201);
             }
             catch (Exception ex)
@@ -134,7 +139,6 @@ namespace Invidux_Api.Controllers
         }
 
         [ProducesResponseType(typeof(ErrorResponseDTO), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status203NonAuthoritative)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
         [HttpPatch("current-user/next-of-kin/{userId}")]
         public async Task<IActionResult> UpdateNextofKin(NextOfKinDto nextOfKin)
@@ -157,7 +161,7 @@ namespace Invidux_Api.Controllers
                     return BadRequest(errorResponse);
                 }
                 dbNextOfKin.UpdatedAt = DateTime.Now;
-                mapper.Map(dbNextOfKin, nextOfKin);
+                mapper.Map(nextOfKin, dbNextOfKin);
                 await uow.SaveAsync();
                 return StatusCode(201);
             }
@@ -169,6 +173,8 @@ namespace Invidux_Api.Controllers
             }
         }
 
+        [ProducesResponseType(typeof(ErrorResponseDTO), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
         [HttpPost("current-user/security/{userId}")]
         public async Task<IActionResult> UpdateSecurityInfo(SecurityDto securityDto)
         {

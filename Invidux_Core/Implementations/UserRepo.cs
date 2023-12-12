@@ -206,6 +206,11 @@ namespace Invidux_Core.Repository.Implementations
             return userInfo == null ? null : userInfo;
         }
 
+        public void CreateNextOfKin(UserNextOfKin kin)
+        {
+            dc.UserNextOfKins.Add(kin);
+        }
+
         public async Task<UserNextOfKin> GetUserNextOfKin(string userId)
         {
             var nextOfKin = await dc.UserNextOfKins.Where(dc => dc.UserId == userId).FirstOrDefaultAsync();
