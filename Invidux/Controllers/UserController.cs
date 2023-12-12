@@ -64,7 +64,7 @@ namespace Invidux_Api.Controllers
         [ProducesResponseType(typeof(ErrorResponseDTO), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status203NonAuthoritative)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
-        [HttpPatch("current-user/{userId}")]
+        [HttpPatch("current-user/personal-info/{userId}")]
         public async Task<IActionResult> UpdatePersonalInfo(PersonalInfoDto user)
         {
             try
@@ -87,12 +87,13 @@ namespace Invidux_Api.Controllers
                 dbUserInfo.UpdatedAt = DateTime.UtcNow;
                 mapper.Map(dbUserInfo, user);
                 await uow.SaveAsync();
-                return StatusCode(200);
+                return StatusCode(203);
             }
             catch (Exception ex)
             {
                 // Handle exceptions and log errors
                 // You can also return an appropriate error response
+                Console.WriteLine(ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
@@ -100,7 +101,7 @@ namespace Invidux_Api.Controllers
         [ProducesResponseType(typeof(ErrorResponseDTO), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status203NonAuthoritative)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
-        [HttpPatch("current-user/next-of-kin/{userId}")]
+        [HttpPost("current-user/next-of-kin/{userId}")]
         public async Task<IActionResult> CreateNextofKin(NextOfKinDto nextOfKin)
         {
             try
@@ -122,7 +123,7 @@ namespace Invidux_Api.Controllers
                 }
                 mapper.Map<NextOfKin>(nextOfKin);
                 await uow.SaveAsync();
-                return StatusCode(200);
+                return StatusCode(201);
             }
             catch (Exception ex)
             {
@@ -158,7 +159,7 @@ namespace Invidux_Api.Controllers
                 dbNextOfKin.UpdatedAt = DateTime.Now;
                 mapper.Map(dbNextOfKin, nextOfKin);
                 await uow.SaveAsync();
-                return StatusCode(200);
+                return StatusCode(201);
             }
             catch (Exception ex)
             {
@@ -168,7 +169,7 @@ namespace Invidux_Api.Controllers
             }
         }
 
-        [HttpPatch("current-user/security/{userId}")]
+        [HttpPost("current-user/security/{userId}")]
         public async Task<IActionResult> UpdateSecurityInfo(SecurityDto securityDto)
         {
             try
@@ -199,7 +200,7 @@ namespace Invidux_Api.Controllers
                     return BadRequest(errorResponse);
                 }
                 await uow.SaveAsync();
-                return StatusCode(200);
+                return StatusCode(201);
             }
             catch (Exception ex)
             {

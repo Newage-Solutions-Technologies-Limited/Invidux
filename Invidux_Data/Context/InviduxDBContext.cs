@@ -102,6 +102,7 @@ namespace Invidux_Data.Context
                 auditEntry.TableName = entry.Entity.GetType().Name;
                 auditEntry.UserId = _userContextService.GetCurrentUserId();
                 auditEntry.Action = entry.State.ToString();
+                auditEntry.RecordId = entry.State == EntityState.Added ? null : entry.Properties.FirstOrDefault(p => p.Metadata.IsPrimaryKey())?.CurrentValue.ToString();
                 auditEntries.Add(auditEntry);
                 foreach (var property in entry.Properties)
                 {

@@ -45,7 +45,7 @@ namespace Invidux_Data.Dtos.Response
     public class Security
     {
         public bool TwoFactorEnabled { get; set; } = false;
-        public TwoFactorType TwoFactorType { get; set; } = TwoFactorType.Email;
+        public TwoFactorTypeEnums TwoFactorType { get; set; } = TwoFactorTypeEnums.Email;
         public List<String>? TwoFactorCovers { get; set; }
     }
 

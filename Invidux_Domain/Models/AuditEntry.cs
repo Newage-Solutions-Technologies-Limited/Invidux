@@ -13,6 +13,7 @@ namespace Invidux_Domain.Models
         public EntityEntry Entry { get; }
         public string UserId { get; set; }
         public string TableName { get; set; }
+        public string RecordId { get; set; }
         public string Action { get; set; }
         public Dictionary<string, object> KeyValues { get; } = new Dictionary<string, object>();
         public Dictionary<string, object> OldValues { get; } = new Dictionary<string, object>();
@@ -25,6 +26,7 @@ namespace Invidux_Domain.Models
             audit.UserId = UserId;
             audit.TableName = TableName;
             audit.Action = Action.ToString();
+            audit.RecordId = RecordId;
             audit.Timestamp = DateTime.UtcNow;
             audit.OldValues = OldValues.Count == 0 ? null : JsonConvert.SerializeObject(OldValues);
             audit.NewValues = NewValues.Count == 0 ? null : JsonConvert.SerializeObject(NewValues);
