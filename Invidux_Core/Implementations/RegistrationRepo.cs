@@ -24,17 +24,23 @@ namespace Invidux_Core.Repository.Implementations
             this._emailSender = _emailSender;
         }
 
+        // Checks if a user with the provided userId exists in the system
         public async Task<string> UserAlreadyExists(string email)
         {
+            // Searches for a user with the given userId in the database
             var userExists = await _userManager.FindByEmailAsync(email);
+
+            // Returns the user status if user exists
             if (userExists != null)
             {
                 return userExists.Status.ToString();
 
             }
+            // Returns null if the user doesn't exist
             return null;
         }
 
+        // This unit of work takes care of user registration
         public async Task<UserRegistrationDto> Register(RegistrationDTO user)
         {
             var newUser = new AppUser
@@ -84,6 +90,7 @@ namespace Invidux_Core.Repository.Implementations
             return response;
         }
 
+        // This unit of work takes care of user email verifation
         public async Task<string> VerifyOtp(int otp)
         {
             // Find the OTP in the database
@@ -95,7 +102,7 @@ namespace Invidux_Core.Repository.Implementations
                 if (existingToken.ExpiresOn >= DateTime.UtcNow)
                 {
 
-                    if(existingToken.Type == VerificationType.UserRegistration)
+                    if (existingToken.Type == VerificationType.UserRegistration)
                     {
                         // Set email verification to true for the user
                         var user = await _userManager.FindByIdAsync(existingToken.UserId);
@@ -128,8 +135,7 @@ namespace Invidux_Core.Repository.Implementations
             return null;
         }
 
-
-
+        // This unit of work takes care of verifation otp request
         public async Task<int> ResendOtp(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
@@ -203,7 +209,7 @@ namespace Invidux_Core.Repository.Implementations
         }
 
 
-
+        // This unit of work takes care of user registration completion
         public async Task<bool> CompleteRegistration(CompleteRegistration user)
         {
             // Find the existing user by their username or other unique identifier
