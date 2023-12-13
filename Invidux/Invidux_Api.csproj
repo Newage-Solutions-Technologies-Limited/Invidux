@@ -28,9 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Uploads\Images\KYC\" />
-    <Folder Include="Uploads\Images\TokenImages\" />
-    <Folder Include="Uploads\Images\UserImages\" />
+    <Folder Include="Uploads\Images\" />
   </ItemGroup>
 
 </Project>

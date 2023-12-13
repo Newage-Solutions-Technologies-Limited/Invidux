@@ -9,6 +9,7 @@ namespace Invidux_Domain.Models
         public string? ListingStatus { get; set; } // e.g., Pre-selling, Selling, Fully Sold, Exited
         public string? TokenCode { get; set; }
         public string? TokenIssuer { get; set; }
+        public string? PropertyClass { get; set; }
         public bool TokenDeployed { get; set; }
         public string Currency {  get; set; }
         public string CurrencySymbol { get; set; }

@@ -9,5 +9,7 @@ namespace Invidux_Core.Services
 
         //will add onre more method for deleting the photo
         Task<DeletionResult> DeletePhotoAsync(string publicId);
+        Task<string[]> UploadPhoto(IFormFile photo);
+        Task<bool> DeletePhoto(string imageName);
     }
 }
