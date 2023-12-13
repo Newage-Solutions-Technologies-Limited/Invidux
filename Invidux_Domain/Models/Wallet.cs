@@ -11,7 +11,6 @@ namespace Invidux_Domain.Models
         public string DepositStellarId { get; set; }
         public bool Active { get; set; }
         public int WalletPin {  get; set; }
-
         [ForeignKey("AppUser")]
         public string UserId { get; set; }
         public virtual AppUser User { get; set; }

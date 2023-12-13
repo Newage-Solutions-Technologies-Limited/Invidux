@@ -1,18 +1,20 @@
-﻿using Invidux_Data.Context;
+﻿using Invidux_Core.Helpers;
 using Invidux_Core.Repository.Interfaces;
-using Invidux_Domain.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+using Invidux_Data.Context;
 using Invidux_Data.Dtos.Request;
 using Invidux_Data.Dtos.Response;
+using Invidux_Domain.Models;
 using Invidux_Domain.Utilities;
-using Invidux_Core.Helpers;
-using Microsoft.Extensions.Configuration;
-using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace Invidux_Core.Repository.Implementations
 {
+    /// <summary>
+    /// This repository takes care of user centric unit of work
+    /// </summary>
     public class UserRepo: IUserRepo
     {
         private readonly InviduxDBContext dc;

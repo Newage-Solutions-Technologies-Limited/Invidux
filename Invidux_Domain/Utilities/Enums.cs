@@ -40,7 +40,7 @@ namespace Invidux_Domain.Utilities
         WithdrawalBankAccount
     }
 
-    public enum TransactionType
+    /*public enum TransactionType
     {
         [Description("Deposit")]
         Deposit,
@@ -50,36 +50,8 @@ namespace Invidux_Domain.Utilities
         Earnings,
         [Description("Transfer")]
         Transfar
-    }
+    }*/
 
-    public enum TransactionStatus
-    {
-        [Description("Pending")]
-        Pending,
-        [Description("Successful")]
-        Successful,
-        [Description("Failed")]
-        Failed
-
-    }
-
-    public enum TransactionFlow
-    {
-        [Description("Inflow")]
-        Inflow,
-        [Description("Outflow")]
-        Outflow
-    }
-
-    public enum KYCLevel
-    {
-
-    }
-
-    public enum KYCType
-    {
-
-    }
 
     public enum EmploymentStatus
     {

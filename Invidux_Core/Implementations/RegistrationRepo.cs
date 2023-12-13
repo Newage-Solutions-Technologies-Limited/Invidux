@@ -12,6 +12,9 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace Invidux_Core.Repository.Implementations
 {
+    /// <summary>
+    /// This repository takes care of registration unit of work
+    /// </summary>
     public class RegistrationRepo: IRegistrationRepo
     {
         private readonly InviduxDBContext dc;
@@ -68,9 +71,7 @@ namespace Invidux_Core.Repository.Implementations
                 UserId = newUser.Id,
                 Email = newUser.Email,
                 Type = VerificationType.UserRegistration,
-                Otp = TokenGenerator.GetUniqueKey(6),
-                CreatedOn = DateTime.UtcNow,
-                ExpiresOn = DateTime.UtcNow.AddMinutes(10)
+                Otp = TokenGenerator.GetUniqueKey(6)
             };
             dc.VerificationTokens.Add(token);
             await dc.SaveChangesAsync();
@@ -153,9 +154,7 @@ namespace Invidux_Core.Repository.Implementations
                             UserId = user.Id,
                             Email = email,
                             Type = VerificationType.UserRegistration,
-                            Otp = TokenGenerator.GetUniqueKey(6),
-                            CreatedOn = DateTime.UtcNow,
-                            ExpiresOn = DateTime.UtcNow.AddMinutes(10)
+                            Otp = TokenGenerator.GetUniqueKey(6)
                         };
                         dc.VerificationTokens.Add(token);
                         await dc.SaveChangesAsync();

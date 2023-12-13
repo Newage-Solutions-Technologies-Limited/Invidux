@@ -2,11 +2,11 @@
 
 namespace Invidux_Domain.Models
 {
-    public class TwoFactorCover
+    public class PaymentMethod
     {
-        [Key]
+        [Key] 
         public int Id { get; set; }
-        public string Title { get; set; }
+        public string Name { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; }
     }

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using Microsoft.AspNetCore.Authorization;
+using Invidux_Core.Services;
 
 namespace Invidux_Api.Controllers
 {
@@ -22,10 +23,13 @@ namespace Invidux_Api.Controllers
         private readonly IUnitofWork uow;
 
         private readonly IMapper mapper;
-        public UserController(IUnitofWork uow, IMapper mapper)
+
+        private readonly IPhotoService photoService;
+        public UserController(IUnitofWork uow, IMapper mapper, IPhotoService photoService)
         {
             this.uow = uow;
             this.mapper = mapper;
+            this.photoService = photoService;
         }
 
         /// <summary>
@@ -310,6 +314,18 @@ namespace Invidux_Api.Controllers
                 // You can also return an appropriate error response
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
+        }
+
+        /// <summary>
+        /// Endpoint that takes care of kyc verification
+        /// </summary>
+        /// <returns></returns>
+        [ProducesResponseType(typeof(ErrorResponseDTO), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
+        [HttpPost("current-user/verify-kyc/{userId}")]
+        public async Task<ActionResult> VerifyKYC(KYCRequest kyc)
+        {
+            return null;
         }
     }
 }

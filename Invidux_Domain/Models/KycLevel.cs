@@ -2,11 +2,11 @@
 
 namespace Invidux_Domain.Models
 {
-    public class TwoFactorCover
+    public class KycLevel
     {
         [Key]
         public int Id { get; set; }
-        public string Title { get; set; }
+        public string Status { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; }
     }

@@ -13,7 +13,7 @@ namespace Invidux_Api.Controllers
     /// Handles authentication related services
     /// </summary>
 
-    [Route("api/v1/auth")]
+    [Route("api/v1")]
     [ApiController]
     public class AuthController : ControllerBase
     {
