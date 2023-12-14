@@ -12,6 +12,9 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace Invidux_Core.Repository.Implementations
 {
+    /// <summary>
+    /// This repository takes care of registration unit of work
+    /// </summary>
     public class RegistrationRepo: IRegistrationRepo
     {
         private readonly InviduxDBContext dc;
@@ -24,24 +27,30 @@ namespace Invidux_Core.Repository.Implementations
             this._emailSender = _emailSender;
         }
 
+        // Checks if a user with the provided userId exists in the system
         public async Task<string> UserAlreadyExists(string email)
         {
+            // Searches for a user with the given userId in the database
             var userExists = await _userManager.FindByEmailAsync(email);
+
+            // Returns the user status if user exists
             if (userExists != null)
             {
-                return userExists.Status.ToString();
+                return userExists.RegistrationStatus;
 
             }
+            // Returns null if the user doesn't exist
             return null;
         }
 
+        // This unit of work takes care of user registration
         public async Task<UserRegistrationDto> Register(RegistrationDTO user)
         {
             var newUser = new AppUser
             {
                 Email = user.Email,
                 UserName = user.Email,
-                Status = RegistrationStatus.Pending,
+                RegistrationStatus = RegStatusStrings.Pending,
                 OtpSentCount = 5,
                 RegistrationDate = DateTime.UtcNow,
             };
@@ -55,16 +64,14 @@ namespace Invidux_Core.Repository.Implementations
                 }
                 return null;
             }
-            await _userManager.AddToRoleAsync(newUser, Roles.Investor);
+            await _userManager.AddToRoleAsync(newUser, RoleStrings.Investor);
 
             var token = new VerificationToken
             {
                 UserId = newUser.Id,
                 Email = newUser.Email,
-                Type = VerificationType.UserRegistration,
-                Otp = TokenGenerator.GetUniqueKey(6),
-                CreatedOn = DateTime.UtcNow,
-                ExpiresOn = DateTime.UtcNow.AddMinutes(10)
+                SecurityType = SecurityTypeStrings.UserRegistration,
+                Otp = TokenGenerator.GetUniqueKey(6)
             };
             dc.VerificationTokens.Add(token);
             await dc.SaveChangesAsync();
@@ -74,7 +81,7 @@ namespace Invidux_Core.Repository.Implementations
             var response = new UserRegistrationDto
             {
                 Id = newUser.Id,
-                Status = newUser.Status,
+                RegistrationStatus = newUser.RegistrationStatus,
                 Email = newUser.Email,
                 //Otp = token.Otp,
                 RegistrationDate = newUser.RegistrationDate,
@@ -84,6 +91,7 @@ namespace Invidux_Core.Repository.Implementations
             return response;
         }
 
+        // This unit of work takes care of user email verifation
         public async Task<string> VerifyOtp(int otp)
         {
             // Find the OTP in the database
@@ -95,16 +103,16 @@ namespace Invidux_Core.Repository.Implementations
                 if (existingToken.ExpiresOn >= DateTime.UtcNow)
                 {
 
-                    if(existingToken.Type == VerificationType.UserRegistration)
+                    if (existingToken.SecurityType == SecurityTypeStrings.UserRegistration)
                     {
                         // Set email verification to true for the user
                         var user = await _userManager.FindByIdAsync(existingToken.UserId);
                         if (user != null)
                         {
-                            if (user.Status == RegistrationStatus.Pending)
+                            if (user.RegistrationStatus == RegStatusStrings.Pending)
                             {
                                 user.EmailConfirmed = true;
-                                user.Status = RegistrationStatus.Active;
+                                user.RegistrationStatus = RegStatusStrings.Active;
                                 user.UpdatedAt = DateTime.UtcNow;
                                 await _userManager.UpdateAsync(user);
                             }
@@ -113,7 +121,7 @@ namespace Invidux_Core.Repository.Implementations
                             dc.VerificationTokens.Remove(existingToken);
                             await dc.SaveChangesAsync();
 
-                            return user.Status.ToString();
+                            return user.RegistrationStatus;
                         }
 
                         return null;
@@ -128,15 +136,14 @@ namespace Invidux_Core.Repository.Implementations
             return null;
         }
 
-
-
+        // This unit of work takes care of verifation otp request
         public async Task<int> ResendOtp(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
 
             if (user != null)
             {
-                if(user.Status == RegistrationStatus.Pending)
+                if(user.RegistrationStatus == RegStatusStrings.Pending)
                 {
                     // Check if the user's otpsentcount is not 0
                     if (user.OtpSentCount != 0)
@@ -146,10 +153,8 @@ namespace Invidux_Core.Repository.Implementations
                         {
                             UserId = user.Id,
                             Email = email,
-                            Type = VerificationType.UserRegistration,
-                            Otp = TokenGenerator.GetUniqueKey(6),
-                            CreatedOn = DateTime.UtcNow,
-                            ExpiresOn = DateTime.UtcNow.AddMinutes(10)
+                            SecurityType = SecurityTypeStrings.UserRegistration,
+                            Otp = TokenGenerator.GetUniqueKey(6)
                         };
                         dc.VerificationTokens.Add(token);
                         await dc.SaveChangesAsync();
@@ -176,7 +181,7 @@ namespace Invidux_Core.Repository.Implementations
                     }
                     else
                     {
-                        user.Status = RegistrationStatus.Restricted;
+                        user.RegistrationStatus = RegStatusStrings.Restricted;
                         var result = await _userManager.UpdateAsync(user);
 
                         if (!result.Succeeded)
@@ -188,7 +193,7 @@ namespace Invidux_Core.Repository.Implementations
                         return -1;
                     }
                 }
-                else if (user.Status == RegistrationStatus.Restricted)
+                else if (user.RegistrationStatus == RegStatusStrings.Restricted)
                 {
                     return -1;
                 }
@@ -203,7 +208,7 @@ namespace Invidux_Core.Repository.Implementations
         }
 
 
-
+        // This unit of work takes care of user registration completion
         public async Task<bool> CompleteRegistration(CompleteRegistration user)
         {
             // Find the existing user by their username or other unique identifier
@@ -221,7 +226,7 @@ namespace Invidux_Core.Repository.Implementations
 
                     existingUser.UserName = user.Username;
                     existingUser.PhoneNumber = user.Phone;
-                    existingUser.TwoFactorType = TwoFactorTypeEnums.Email;
+                    existingUser.TwoFactorType = TwoFactorTypeStrings.Email;
                     existingUser.UpdatedAt = DateTime.UtcNow;
                     
                     // Update the user's profile using the UserManager

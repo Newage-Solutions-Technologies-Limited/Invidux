@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
+using Invidux_Core.Interfaces;
+using Invidux_Core.Implementations;
 
 namespace Invidux_Core.Repository.Implementations
 {
@@ -36,6 +38,9 @@ namespace Invidux_Core.Repository.Implementations
 
         public IUserRepo UserRepo =>
             new UserRepo(dc, _userManager, _signInManager, config, _emailSender);
+
+        public IUtitlityRepo UtitlityRepo =>
+            new UtilityRepo();
 
         public async Task<bool> SaveAsync()
         {

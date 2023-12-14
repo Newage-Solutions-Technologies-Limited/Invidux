@@ -34,8 +34,8 @@ namespace Invidux_Data.Dtos.Response
 
     public class KYC
     {
-        public KYCLevel? Level { get; set; }
-        public KYCType? Type { get; set; }
+        public string Level { get; set; }
+        public string IdType { get; set; }
         public string? IdNumber { get; set; }
         public DateTime? ExpiryDate { get; set; } // Nullable if expiry date can be empty
         public bool Verified { get; set; } = false;
@@ -45,7 +45,7 @@ namespace Invidux_Data.Dtos.Response
     public class Security
     {
         public bool TwoFactorEnabled { get; set; } = false;
-        public TwoFactorTypeEnums TwoFactorType { get; set; } = TwoFactorTypeEnums.Email;
+        public string TwoFactorType { get; set; } = TwoFactorTypeStrings.Email;
         public List<String>? TwoFactorCovers { get; set; }
     }
 

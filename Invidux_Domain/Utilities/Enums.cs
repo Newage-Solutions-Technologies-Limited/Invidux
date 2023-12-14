@@ -12,16 +12,6 @@ namespace Invidux_Domain.Utilities
         Restricted
     }
 
-    public enum VerificationType
-    {
-        [Description("User Registration")]
-        UserRegistration,
-        [Description("Two Factor")]
-        TwoFactorVerification,
-        [Description("BVN")]
-        BVN,
-    }
-
     public enum TwoFactorTypeEnums
     {
         [Description("Email")]
@@ -32,7 +22,7 @@ namespace Invidux_Domain.Utilities
         GoogleAuth
     }
 
-    public enum BankAccountType
+    public enum BankAccountTypeEnums
     {
         [Description("Deposit Virtual Account")]
         DepositVirtualAccount,
@@ -40,7 +30,7 @@ namespace Invidux_Domain.Utilities
         WithdrawalBankAccount
     }
 
-    public enum TransactionType
+    /*public enum TransactionType
     {
         [Description("Deposit")]
         Deposit,
@@ -50,36 +40,8 @@ namespace Invidux_Domain.Utilities
         Earnings,
         [Description("Transfer")]
         Transfar
-    }
+    }*/
 
-    public enum TransactionStatus
-    {
-        [Description("Pending")]
-        Pending,
-        [Description("Successful")]
-        Successful,
-        [Description("Failed")]
-        Failed
-
-    }
-
-    public enum TransactionFlow
-    {
-        [Description("Inflow")]
-        Inflow,
-        [Description("Outflow")]
-        Outflow
-    }
-
-    public enum KYCLevel
-    {
-
-    }
-
-    public enum KYCType
-    {
-
-    }
 
     public enum EmploymentStatus
     {

@@ -5,9 +5,9 @@ namespace Invidux_Domain.Models
 {
     public class AppUser : IdentityUser
     {
-        public RegistrationStatus Status { get; set; }
+        public string RegistrationStatus  { get; set; }
         public int OtpSentCount { get; set; }
-        public TwoFactorTypeEnums TwoFactorType { get; set; }
+        public string TwoFactorType { get; set; }
         public DateTime RegistrationDate { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
         public UserInfo? Personal { get; set; }

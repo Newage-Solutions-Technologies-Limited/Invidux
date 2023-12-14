@@ -7,12 +7,12 @@ namespace Invidux_Domain.Models
     {
         [Key]
         public int Id { get; set; }
-        public string Sender { get; set; }
-        public string Receiver { get; set; }
-        public string TransactionRef { get; set; }
-        public TransactionType Type { get; set; }
-        public TransactionStatus Status { get; set; }
-        public TransactionFlow Flow { get; set; }
+        public string? Sender { get; set; }
+        public string? Receiver { get; set; }
+        public string InternalRef { get; set; }
+        public string ExternalRef { get; set; }
+        public string Type { get; set; }
+        public string Status { get; set; }
         public string Amount { get; set; }
         public string CurrencySymbol { get; set; }
         public DateTime TransactionDate { get; set; } = DateTime.UtcNow;

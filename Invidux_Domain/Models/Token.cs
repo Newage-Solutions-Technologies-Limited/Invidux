@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Invidux_Domain.Models
 {
@@ -12,9 +6,10 @@ namespace Invidux_Domain.Models
     {
         [Key]
         public Guid Id { get; set; }
-        public string? Status { get; set; } // e.g., Pre-selling, Selling, Fully Sold, Exited
+        public string? ListingStatus { get; set; } // e.g., Pre-selling, Selling, Fully Sold, Exited
         public string? TokenCode { get; set; }
         public string? TokenIssuer { get; set; }
+        public string? PropertyClass { get; set; }
         public bool TokenDeployed { get; set; }
         public string Currency {  get; set; }
         public string CurrencySymbol { get; set; }

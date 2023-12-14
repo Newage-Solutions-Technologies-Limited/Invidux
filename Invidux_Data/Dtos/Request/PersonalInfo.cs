@@ -1,4 +1,5 @@
 ﻿using Invidux_Domain.Utilities;
+using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
 namespace Invidux_Data.Dtos.Request
@@ -16,8 +17,6 @@ namespace Invidux_Data.Dtos.Request
         public DateTime? Dob { get; set; } // Date of Birth
         public string? Gender { get; set; }
         public string? MaritalStatus { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; } 
     }
 
     public class NextOfKinDto
@@ -27,28 +26,24 @@ namespace Invidux_Data.Dtos.Request
         public string Email { get; set; }
         public string Phone { get; set; }
         public string Relationship { get; set; }
-        public DateTime CreatedAt { get; set; } 
-        public DateTime UpdatedAt { get; set; } 
     }
 
     public class KYCRequest
     {
         public string UserId { get; set; }
-        public KYCLevel? Level { get; set; }
-        public KYCType? IdType { get; set; }
-        public string? IdNumber { get; set; }
-        public DateTime? ExpiryDate { get; set; } // Nullable if expiry date can be empty
-        public bool Verified { get; set; }
+        public string Level { get; set; }
+        public string IdType { get; set; }
+        public string IdNumber { get; set; }
+        public IFormFile file { get; set; }
+        public DateTime ExpiryDate { get; set; } // Nullable if expiry date can be empty
         public bool CanExpire { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
     }
 
     public class SecurityDto
     {
         public string UserId { get; set; }
         public bool TwofactorEnabled { get; set; }
-        public TwoFactorTypeEnums? TwoFactorType { get; set; }
+        public string TwoFactorType { get; set; }
         public List<string>? TwofactorCovers { get; set; } 
     }
 }

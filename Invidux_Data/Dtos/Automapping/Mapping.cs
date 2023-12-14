@@ -23,11 +23,11 @@ namespace Invidux_Data.Dtos.AutoMapping
                 .ForMember(dest => dest.KYC, opt => opt.MapFrom(src => src.Kyc))
                 .ForMember(dest => dest.Security, opt => opt.MapFrom(src => new Security
                 {
-                    TwoFactorEnabled = src.TwoFactorType != TwoFactorTypeEnums.Email,
+                    TwoFactorEnabled = src.TwoFactorType != TwoFactorTypeStrings.Email,
                     TwoFactorType = src.TwoFactorType,
                     TwoFactorCovers = src.TwoFactorCovers
                         .Where(ufc => ufc.UserId == src.Id) 
-                        .Select(ufc => ufc.TwoFactorCover.Title).ToList()
+                        .Select(ufc => ufc.TwoFactorCover.Type).ToList()
                 }));
 
 
@@ -44,8 +44,27 @@ namespace Invidux_Data.Dtos.AutoMapping
             // UserNextOfKin to NextOfKin mapping
             CreateMap<UserNextOfKin, NextOfKin>();
 
-            CreateMap<Invidux_Domain.Models.TwoFactorCover, string>() 
-                .ConvertUsing(src => src.Title);
+            CreateMap<TwoFactorCover, string>() 
+                .ConvertUsing(src => src.Type);
+
+            /****************************Utility Get Mappings**************************/
+
+            CreateMap<InvestmentType, InvestmentTypeDto>();
+            CreateMap<KycIdCard, KycIdCardDto>();
+            CreateMap<KycLevel,  KycLevelDto>();
+            CreateMap<KycStatus, KycStatusDto>();
+            CreateMap<PaymentMethod, PaymentMethodDto>();
+            CreateMap<PropertyClass, PropertyClassDto>();
+            CreateMap<AppRole, RoleDto>()
+                .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Name));
+            CreateMap<SecurityType, SecurityTypeDto>();
+            CreateMap<SubRole, SubRoleDto>()
+                .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.Name));
+            CreateMap<TokenListingStatus, TokenListingStatusDto>();
+            CreateMap<TokenTransactionType, TokenTransactionTypeDto>();
+            CreateMap<TransactionType, TransactionTypeDto>();
+            CreateMap<TwoFactorCover, TwoFactorCoverDto>();
+            CreateMap<TwoFactorType, TwoFactorTypeDto>();
 
            
             //============================Post mappings==================================

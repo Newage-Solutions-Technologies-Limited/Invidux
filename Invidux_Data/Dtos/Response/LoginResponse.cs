@@ -10,7 +10,7 @@ namespace Invidux_Data.Dtos.Response
     public class LoginResponse
     {
         public string UserId { get; set; }
-        public RegistrationStatus? Status { get; set; }
+        public string RegistrationStatus { get; set; }
         public string Username { get; set; }
         public string Email { get; set; }
         public string? Token { get; set; }
