@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Invidux_Core.Repository.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Invidux_Api.Controllers
@@ -8,9 +9,13 @@ namespace Invidux_Api.Controllers
     [Authorize]
     public class UtilityController : ControllerBase
     {
-        public UtilityController() 
+
+        private readonly IUnitofWork uow;
+        public UtilityController(IUnitofWork uow) 
         {
-            
+            this.uow = uow;
         }
+
+
     }
 }

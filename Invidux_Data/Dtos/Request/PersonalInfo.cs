@@ -31,8 +31,8 @@ namespace Invidux_Data.Dtos.Request
     public class KYCRequest
     {
         public string UserId { get; set; }
-        public KYCLevel Level { get; set; }
-        public KYCType IdType { get; set; }
+        public string Level { get; set; }
+        public string IdType { get; set; }
         public string IdNumber { get; set; }
         public IFormFile file { get; set; }
         public DateTime ExpiryDate { get; set; } // Nullable if expiry date can be empty
@@ -43,7 +43,7 @@ namespace Invidux_Data.Dtos.Request
     {
         public string UserId { get; set; }
         public bool TwofactorEnabled { get; set; }
-        public TwoFactorTypeEnums? TwoFactorType { get; set; }
+        public string TwoFactorType { get; set; }
         public List<string>? TwofactorCovers { get; set; } 
     }
 }

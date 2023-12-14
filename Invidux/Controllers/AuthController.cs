@@ -302,7 +302,7 @@ namespace Invidux_Api.Controllers
                 }
                 else
                 {
-                    if (userExists.Status == RegistrationStatus.Restricted)
+                    if (userExists.RegistrationStatus == RegStatusStrings.Restricted)
                     {
                         // Returning a BadRequest response indicating the user is restricted
                         var errorResponse = new ErrorResponseDTO(
@@ -311,7 +311,7 @@ namespace Invidux_Api.Controllers
                         );
                         return BadRequest(errorResponse);
                     }
-                    else if (userExists.Status == RegistrationStatus.Pending)
+                    else if (userExists.RegistrationStatus == RegStatusStrings.Pending)
                     {
                         // Returning a 203 Non-Authoritative response asking to verify the account
                         return StatusCode(StatusCodes.Status203NonAuthoritative, "Please verify your account.");
@@ -380,7 +380,7 @@ namespace Invidux_Api.Controllers
                     );
                     return BadRequest(errorResponse);
                 }
-                if (result != null && result.Status == RegistrationStatus.Restricted)
+                if (result != null && result.RegistrationStatus == RegStatusStrings.Restricted)
                 {
                     // Handle the case when registration fails
                     var errorResponse = new ErrorResponseDTO(

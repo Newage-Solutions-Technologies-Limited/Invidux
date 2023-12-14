@@ -75,25 +75,25 @@ namespace Invidux_Core.Repository.Implementations
             if (result.Succeeded)
             {
                 // Handles scenarios based on user status
-                if (user.Status == RegistrationStatus.Active)
+                if (user.RegistrationStatus == RegStatusStrings.Active)
                 {
                     // Creates JWT token for the user
                     response.UserId = user.Id;
                     response.Email = user.Email;
                     response.Username = user.UserName;
-                    response.Status = user.Status;
+                    response.RegistrationStatus = user.RegistrationStatus;
                     response.Token = jwtHelper.CreateJWT(user);
 
                     return response;
                 }
 
-                if (user.Status == RegistrationStatus.Restricted)
+                if (user.RegistrationStatus == RegStatusStrings.Restricted)
                 {
                     // Returns response for a restricted user
                     response.UserId = user.Id;
                     response.Email = user.Email;
                     response.Username = user.UserName;
-                    response.Status = user.Status;
+                    response.RegistrationStatus = user.RegistrationStatus;
                     return response;
                 }
             }
@@ -102,7 +102,7 @@ namespace Invidux_Core.Repository.Implementations
             if (result.RequiresTwoFactor)
             {
                 // Handles scenarios based on user status for Two-Factor Authentication
-                if (user.Status == RegistrationStatus.Active)
+                if (user.RegistrationStatus == RegStatusStrings.Active)
                 {
                     // Generates and sends a verification token for Two-Factor Authentication
                     var token = new VerificationToken
@@ -111,7 +111,7 @@ namespace Invidux_Core.Repository.Implementations
                         // Saves the token in the database and sends it via email
                         UserId = user.Id,
                         Email = user.Email,
-                        Type = VerificationType.TwoFactorVerification,
+                        SecurityType = SecurityTypeStrings.TwoFactorVerification,
                         Otp = TokenGenerator.GetUniqueKey(6),
                         CreatedOn = DateTime.UtcNow,
                         ExpiresOn = DateTime.UtcNow.AddMinutes(10)
@@ -129,19 +129,19 @@ namespace Invidux_Core.Repository.Implementations
                     response.UserId = user.Id;
                     response.Email = user.Email;
                     response.Username = user.UserName;
-                    response.Status = user.Status;
+                    response.RegistrationStatus = user.RegistrationStatus;
                     response.TwoFactorEnabled = user.TwoFactorEnabled;
 
                     return response;
                 }
 
-                if (user.Status == RegistrationStatus.Restricted)
+                if (user.RegistrationStatus == RegStatusStrings.Restricted)
                 {
                     // Returns response for a restricted user during Two-Factor Authentication
                     response.UserId = user.Id;
                     response.Email = user.Email;
                     response.Username = user.UserName;
-                    response.Status = user.Status;
+                    response.RegistrationStatus = user.RegistrationStatus;
                     return response;
                 }
             }
@@ -164,7 +164,7 @@ namespace Invidux_Core.Repository.Implementations
                 if (existingToken.ExpiresOn >= DateTime.UtcNow)
                 {
                     // If the token type is for Two-Factor Verification
-                    if (existingToken.Type == VerificationType.TwoFactorVerification)
+                    if (existingToken.SecurityType == SecurityTypeStrings.TwoFactorVerification)
                     {
                         // Retrieve the user associated with the token
                         var user = await _userManager.FindByIdAsync(existingToken.UserId);
@@ -175,13 +175,13 @@ namespace Invidux_Core.Repository.Implementations
                             var response = new LoginResponse();
 
                             // If user status is active, create JWT token for user
-                            if (user.Status == RegistrationStatus.Active)
+                            if (user.RegistrationStatus == RegStatusStrings.Active)
                             {
                                 // Prepare the response with user information and JWT token
                                 response.UserId = user.Id;
                                 response.Email = user.Email;
                                 response.Username = user.UserName;
-                                response.Status = user.Status;
+                                response.RegistrationStatus = user.RegistrationStatus;
                                 response.Token = jwtHelper.CreateJWT(user);
 
                                 // Delete the used OTP record from the database
@@ -190,13 +190,13 @@ namespace Invidux_Core.Repository.Implementations
                                 return response;
                             }
                             // If user status is restricted, return response without JWT token
-                            else if (user.Status == RegistrationStatus.Restricted)
+                            else if (user.RegistrationStatus == RegStatusStrings.Restricted)
                             {
                                 // Prepare the response without a JWT token
                                 response.UserId = user.Id;
                                 response.Email = user.Email;
                                 response.Username = user.UserName;
-                                response.Status = user.Status;
+                                response.RegistrationStatus = user.RegistrationStatus;
 
                                 // Delete the used OTP record from the database
                                 dc.VerificationTokens.Remove(existingToken);
@@ -278,7 +278,7 @@ namespace Invidux_Core.Repository.Implementations
             var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == securityDto.UserId);
             if (user == null) return false;
             user.TwoFactorEnabled = securityDto.TwofactorEnabled;
-            user.TwoFactorType = (TwoFactorTypeEnums)securityDto.TwoFactorType;
+            user.TwoFactorType = securityDto.TwoFactorType;
             foreach(var twofactorCover in securityDto.TwofactorCovers)
             {
                 var _twoFactor = await dc.TwoFactorCovers.FirstOrDefaultAsync(t => t.Title == twofactorCover);

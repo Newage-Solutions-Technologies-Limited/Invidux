@@ -12,16 +12,6 @@ namespace Invidux_Domain.Utilities
         Restricted
     }
 
-    public enum VerificationType
-    {
-        [Description("User Registration")]
-        UserRegistration,
-        [Description("Two Factor")]
-        TwoFactorVerification,
-        [Description("BVN")]
-        BVN,
-    }
-
     public enum TwoFactorTypeEnums
     {
         [Description("Email")]
@@ -32,7 +22,7 @@ namespace Invidux_Domain.Utilities
         GoogleAuth
     }
 
-    public enum BankAccountType
+    public enum BankAccountTypeEnums
     {
         [Description("Deposit Virtual Account")]
         DepositVirtualAccount,

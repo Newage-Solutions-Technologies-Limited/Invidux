@@ -23,7 +23,7 @@ namespace Invidux_Data.Dtos.AutoMapping
                 .ForMember(dest => dest.KYC, opt => opt.MapFrom(src => src.Kyc))
                 .ForMember(dest => dest.Security, opt => opt.MapFrom(src => new Security
                 {
-                    TwoFactorEnabled = src.TwoFactorType != TwoFactorTypeEnums.Email,
+                    TwoFactorEnabled = src.TwoFactorType != TwoFactorTypeStrings.Email,
                     TwoFactorType = src.TwoFactorType,
                     TwoFactorCovers = src.TwoFactorCovers
                         .Where(ufc => ufc.UserId == src.Id) 
