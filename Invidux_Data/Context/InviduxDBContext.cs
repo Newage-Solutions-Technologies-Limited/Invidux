@@ -33,11 +33,11 @@ namespace Invidux_Data.Context
                 entity.ToTable(name: "Roles");
             });
 
-            builder.Entity<IdentityRole>().HasData(
-                new IdentityRole { Id = adminRoleId, Name = RoleStrings.Admin, NormalizedName = RoleStrings.Admin.ToUpper(), ConcurrencyStamp = Guid.NewGuid().ToString() },
-                new IdentityRole { Id = dealerBrokerRoleId, Name = RoleStrings.Dealer_Broker, NormalizedName = RoleStrings.Dealer_Broker.ToUpper(), ConcurrencyStamp = Guid.NewGuid().ToString() },
-                new IdentityRole { Id = investorRoleId, Name = RoleStrings.Investor, NormalizedName = RoleStrings.Investor.ToUpper() , ConcurrencyStamp = Guid.NewGuid().ToString() },
-                new IdentityRole { Id = partnerRoleId, Name = RoleStrings.Partner, NormalizedName = RoleStrings.Partner.ToUpper() , ConcurrencyStamp = Guid.NewGuid().ToString() }
+            builder.Entity<AppRole>().HasData(
+                new AppRole { Id = adminRoleId, Name = RoleStrings.Admin, NormalizedName = RoleStrings.Admin.ToUpper(), ConcurrencyStamp = Guid.NewGuid().ToString() },
+                new AppRole { Id = dealerBrokerRoleId, Name = RoleStrings.Dealer_Broker, NormalizedName = RoleStrings.Dealer_Broker.ToUpper(), ConcurrencyStamp = Guid.NewGuid().ToString() },
+                new AppRole { Id = investorRoleId, Name = RoleStrings.Investor, NormalizedName = RoleStrings.Investor.ToUpper() , ConcurrencyStamp = Guid.NewGuid().ToString() },
+                new AppRole { Id = partnerRoleId, Name = RoleStrings.Partner, NormalizedName = RoleStrings.Partner.ToUpper() , ConcurrencyStamp = Guid.NewGuid().ToString() }
             );
 
             builder.Entity<IdentityUserRole<string>>(entity =>

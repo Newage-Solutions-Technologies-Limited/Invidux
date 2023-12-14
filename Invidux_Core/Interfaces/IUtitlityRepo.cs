@@ -1,4 +1,5 @@
-﻿using Invidux_Domain.Models;
+﻿using Invidux_Data.Dtos.Response;
+using Invidux_Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

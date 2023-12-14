@@ -1,8 +1,10 @@
 ﻿using Invidux_Core.Interfaces;
 using Invidux_Data.Context;
+using Invidux_Data.Dtos.Response;
 using Invidux_Domain.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using SendGrid.Helpers.Mail;
 
 namespace Invidux_Core.Implementations
 {
@@ -30,19 +32,19 @@ namespace Invidux_Core.Implementations
 
         public async Task<IEnumerable<SubRole>> GetRoleSubRolesAsync(string id)
         {
-            var subRoles = await dc.SubRoles.Where(x => x.RoleId == id).ToListAsync();
+            var subRoles = await dc.SubRoles.Include(sr => sr.Role).Where(x => x.RoleId == id).ToListAsync();
             return subRoles == null ? null : subRoles;
         }
 
         public async Task<IEnumerable<SubRole>> GetSubRolesAsync()
         {
-            var subRoles = await dc.SubRoles.ToListAsync();
+            var subRoles = await dc.SubRoles.Include(sr => sr.Role).ToListAsync();
             return subRoles == null ? null : subRoles;
         }
 
         public async Task<SubRole> GetSubRoleAsync(string id)
         {
-            var subRole = await dc.SubRoles.FirstOrDefaultAsync(x => x.Id == id);
+            var subRole = await dc.SubRoles.Include(sr => sr.Role).FirstOrDefaultAsync(x => x.Id == id);
             return subRole == null ? null : subRole;
         }
 
