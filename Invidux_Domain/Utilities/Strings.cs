@@ -29,6 +29,7 @@ namespace Invidux_Domain.Utilities
         public const string SuperAdmin = "Super Admin";
         public const string CustomerSupport = "Customer Support";
         public const string Broker = "Broker";
+        public const string Dealer = "Dealer";
         public const string Custodian = "Custodian";
         public const string Accrediated = "Accrediated";
         public const string Institutional = "Institutional";

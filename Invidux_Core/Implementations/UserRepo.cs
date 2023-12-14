@@ -281,7 +281,7 @@ namespace Invidux_Core.Repository.Implementations
             user.TwoFactorType = securityDto.TwoFactorType;
             foreach(var twofactorCover in securityDto.TwofactorCovers)
             {
-                var _twoFactor = await dc.TwoFactorCovers.FirstOrDefaultAsync(t => t.Title == twofactorCover);
+                var _twoFactor = await dc.TwoFactorCovers.FirstOrDefaultAsync(t => t.Type == twofactorCover);
                 var newCover = new UserTwoFactorCover
                 {
                     UserId = securityDto.UserId,

@@ -1,4 +1,5 @@
 ﻿using Invidux_Domain.Models;
+using Invidux_Domain.Utilities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +17,11 @@ namespace Invidux_Data.Context
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            var adminRoleId = Guid.NewGuid().ToString();
+            var dealerBrokerRoleId = Guid.NewGuid().ToString();
+            var investorRoleId = Guid.NewGuid().ToString();
+            var partnerRoleId = Guid.NewGuid().ToString();
+
             base.OnModelCreating(builder);
             builder.Entity<IdentityUser>(entity =>
             {
@@ -28,12 +34,11 @@ namespace Invidux_Data.Context
             });
 
             builder.Entity<IdentityRole>().HasData(
-                new IdentityRole { Name = "Admin", NormalizedName = "ADMIN" },
-                new IdentityRole { Name = "Dealer/Broker", NormalizedName = "DEALER/BROKER" },
-                new IdentityRole { Name = "Investor", NormalizedName = "INVESTOR" },
-                new IdentityRole { Name = "Partner", NormalizedName = "Partner" }
+                new IdentityRole { Id = adminRoleId, Name = RoleStrings.Admin, NormalizedName = RoleStrings.Admin.ToUpper(), ConcurrencyStamp = Guid.NewGuid().ToString() },
+                new IdentityRole { Id = dealerBrokerRoleId, Name = RoleStrings.Dealer_Broker, NormalizedName = RoleStrings.Dealer_Broker.ToUpper(), ConcurrencyStamp = Guid.NewGuid().ToString() },
+                new IdentityRole { Id = investorRoleId, Name = RoleStrings.Investor, NormalizedName = RoleStrings.Investor.ToUpper() , ConcurrencyStamp = Guid.NewGuid().ToString() },
+                new IdentityRole { Id = partnerRoleId, Name = RoleStrings.Partner, NormalizedName = RoleStrings.Partner.ToUpper() , ConcurrencyStamp = Guid.NewGuid().ToString() }
             );
-
 
             builder.Entity<IdentityUserRole<string>>(entity =>
             {
@@ -92,11 +97,11 @@ namespace Invidux_Data.Context
 
             builder.Entity<PropertyClass>().HasData(
                 new PropertyClass { Id = 1, Class = "Pre-purchased", CreatedAt = DateTime.UtcNow },
-                new PropertyClass { Id = 1, Class = "Wait-listed", CreatedAt = DateTime.UtcNow },
-                new PropertyClass { Id = 1, Class = "Off-plan", CreatedAt = DateTime.UtcNow },
-                new PropertyClass { Id = 1, Class = "Rented", CreatedAt = DateTime.UtcNow },
-                new PropertyClass { Id = 1, Class = "Mortgage-Like", CreatedAt = DateTime.UtcNow },
-                new PropertyClass { Id = 1, Class = "Under Management", CreatedAt = DateTime.UtcNow }
+                new PropertyClass { Id = 2, Class = "Wait-listed", CreatedAt = DateTime.UtcNow },
+                new PropertyClass { Id = 3, Class = "Off-plan", CreatedAt = DateTime.UtcNow },
+                new PropertyClass { Id = 4, Class = "Rented", CreatedAt = DateTime.UtcNow },
+                new PropertyClass { Id = 5, Class = "Mortgage-Like", CreatedAt = DateTime.UtcNow },
+                new PropertyClass { Id = 6, Class = "Under Management", CreatedAt = DateTime.UtcNow }
             );
 
             builder.Entity<SecurityType>().HasData(
@@ -104,6 +109,18 @@ namespace Invidux_Data.Context
                 new SecurityType { Id = 2, Type = "Two Factor Activation" , CreatedAt = DateTime.UtcNow },
                 new SecurityType { Id = 3, Type = "Two Factor Verification" , CreatedAt = DateTime.UtcNow },
                 new SecurityType { Id = 4, Type = "BVN Verification" , CreatedAt = DateTime.UtcNow }
+            );
+
+            builder.Entity<SubRole>().HasData(
+                new SubRole { Id = Guid.NewGuid().ToString(), Name = SubRolesStrings.SuperAdmin, RoleId = adminRoleId, CreatedAt = DateTime.UtcNow },
+                new SubRole { Id = Guid.NewGuid().ToString(), Name = SubRolesStrings.CustomerSupport, RoleId = adminRoleId, CreatedAt = DateTime.UtcNow },
+                new SubRole { Id = Guid.NewGuid().ToString(), Name = SubRolesStrings.Broker, RoleId = dealerBrokerRoleId, CreatedAt = DateTime.UtcNow },
+                new SubRole { Id = Guid.NewGuid().ToString(), Name = SubRolesStrings.Dealer, RoleId = dealerBrokerRoleId, CreatedAt = DateTime.UtcNow },
+                new SubRole { Id = Guid.NewGuid().ToString(), Name = SubRolesStrings.Accrediated, RoleId = investorRoleId, CreatedAt = DateTime.UtcNow },
+                new SubRole { Id = Guid.NewGuid().ToString(), Name = SubRolesStrings.Institutional, RoleId = investorRoleId, CreatedAt = DateTime.UtcNow },
+                new SubRole { Id = Guid.NewGuid().ToString(), Name = SubRolesStrings.Retail, RoleId = investorRoleId, CreatedAt = DateTime.UtcNow },
+                new SubRole { Id = Guid.NewGuid().ToString(), Name = SubRolesStrings.Custodian, RoleId = partnerRoleId, CreatedAt = DateTime.UtcNow },
+                new SubRole { Id = Guid.NewGuid().ToString(), Name = SubRolesStrings.PropertyManager, RoleId = partnerRoleId, CreatedAt = DateTime.UtcNow }
             );
 
             builder.Entity<TokenListingStatus>().HasData(
@@ -132,18 +149,19 @@ namespace Invidux_Data.Context
                 new TransactionType { Id = 7, Type = "Payment", CreatedAt = DateTime.UtcNow }
             );
 
-            builder.Entity<TwoFactorType>().HasData(
-                new TwoFactorType { Id = 1, Type = "Email", CreatedAt = DateTime.UtcNow },
-                new TwoFactorType { Id = 2, Type = "Google Auth", CreatedAt = DateTime.UtcNow }
+            builder.Entity<TwoFactorCover>().HasData(
+                new TwoFactorCover { Id = 1, Type = TwoFactorCoverStrings.Login, CreatedAt = DateTime.UtcNow },
+                new TwoFactorCover { Id = 2, Type = TwoFactorCoverStrings.Transaction, CreatedAt = DateTime.UtcNow },
+                new TwoFactorCover { Id = 3, Type = TwoFactorCoverStrings.Trading, CreatedAt = DateTime.UtcNow }
             );
 
-            builder.Entity<TwoFactorCover>().HasData(
-                new TwoFactorCover {Id = 1, Title = "Login", CreatedAt = DateTime.UtcNow },
-                new TwoFactorCover { Id = 2, Title = "Transaction", CreatedAt = DateTime.UtcNow },
-                new TwoFactorCover { Id = 3, Title = "Trading", CreatedAt = DateTime.UtcNow }
+            builder.Entity<TwoFactorType>().HasData(
+                new TwoFactorType { Id = 1, Type = TwoFactorTypeStrings.Email, CreatedAt = DateTime.UtcNow },
+                new TwoFactorType { Id = 2, Type = TwoFactorTypeStrings.GoogleAuth, CreatedAt = DateTime.UtcNow }
             );
         }
 
+        public DbSet<AppRole> AppRoles { get; set; }
         public DbSet<AppUser> AppUsers { get; set; }
         public DbSet<AuditLog> AuditLogs { get; set; }
         public DbSet<BankAccount> BankAccounts { get; set; }
