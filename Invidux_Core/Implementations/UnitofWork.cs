@@ -13,7 +13,7 @@ namespace Invidux_Core.Repository.Implementations
     public class UnitofWork: IUnitofWork
     {
         private readonly InviduxDBContext dc;
-
+        private readonly RoleManager<AppRole> _roleManager;
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly IEmailSender _emailSender;
@@ -21,12 +21,14 @@ namespace Invidux_Core.Repository.Implementations
 
         public UnitofWork(
             InviduxDBContext dc, 
+            RoleManager<AppRole> _roleManager,
             UserManager<AppUser> _userManager, 
             SignInManager<AppUser> _signInManager,
             IEmailSender _emailSender,
             IConfiguration config)
         {
             this.dc = dc;
+            this._roleManager = _roleManager;
             this._userManager = _userManager;
             this._signInManager = _signInManager;
             this._emailSender = _emailSender;
@@ -40,7 +42,7 @@ namespace Invidux_Core.Repository.Implementations
             new UserRepo(dc, _userManager, _signInManager, config, _emailSender);
 
         public IUtitlityRepo UtitlityRepo =>
-            new UtilityRepo();
+            new UtilityRepo(dc, _roleManager);
 
         public async Task<bool> SaveAsync()
         {

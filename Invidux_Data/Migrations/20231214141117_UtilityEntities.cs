@@ -369,10 +369,10 @@ namespace Invidux_Data.Migrations
                 columns: new[] { "Id", "CreatedAt", "Expires", "Name", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(7661), true, "Driver License", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 2, new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(7664), true, "International Passport", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 3, new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(7666), false, "NIN", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 4, new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(7668), false, "Voter's Card", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { 1, new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(5498), true, "Driver License", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(5500), true, "International Passport", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 3, new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(5502), false, "NIN", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 4, new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(5504), false, "Voter's Card", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(
@@ -380,11 +380,11 @@ namespace Invidux_Data.Migrations
                 columns: new[] { "Id", "CreatedAt", "Type", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(7568), "Long Co-own", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 2, new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(7575), "Medium Co-own", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 3, new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(7577), "Debt", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 4, new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(7581), "Co-build", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 5, new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(7583), "Rental", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { 1, new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(5434), "Long Co-own", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(5439), "Medium Co-own", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 3, new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(5440), "Debt", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 4, new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(5442), "Co-build", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 5, new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(5443), "Rental", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(
@@ -392,9 +392,9 @@ namespace Invidux_Data.Migrations
                 columns: new[] { "Id", "CreatedAt", "Status", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(7718), "Level1", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 2, new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(7721), "Level2", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 3, new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(7726), "Level3", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { 1, new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(5557), "Level1", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(5559), "Level2", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 3, new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(5561), "Level3", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(
@@ -402,9 +402,9 @@ namespace Invidux_Data.Migrations
                 columns: new[] { "Id", "CreatedAt", "Status", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(7772), "Pending", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 2, new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(7776), "Verified", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 3, new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(7778), "Restricted", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { 1, new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(5598), "Pending", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(5600), "Verified", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 3, new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(5602), "Restricted", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(
@@ -412,10 +412,10 @@ namespace Invidux_Data.Migrations
                 columns: new[] { "Id", "CreatedAt", "Name", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(7841), "Wallet", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 2, new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(7843), "Card", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 3, new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(7844), "Bank Transfer", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 4, new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(7846), "KongaPay", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { 1, new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(5650), "Wallet", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(5652), "Card", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 3, new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(5653), "Bank Transfer", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 4, new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(5655), "KongaPay", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(
@@ -423,12 +423,12 @@ namespace Invidux_Data.Migrations
                 columns: new[] { "Id", "Class", "CreatedAt", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, "Pre-purchased", new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(7943), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 2, "Wait-listed", new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(7946), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 3, "Off-plan", new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(7948), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 4, "Rented", new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(7949), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 5, "Mortgage-Like", new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(7951), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 6, "Under Management", new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(7953), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { 1, "Pre-purchased", new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(5696), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, "Wait-listed", new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(5698), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 3, "Off-plan", new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(5700), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 4, "Rented", new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(5702), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 5, "Mortgage-Like", new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(5703), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 6, "Under Management", new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(5705), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(
@@ -436,10 +436,10 @@ namespace Invidux_Data.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Discriminator", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "19473d89-c5ad-4c22-a199-d52a237ae6c2", "f8249e03-8815-4c7b-a80a-4e2ca00118ae", "IdentityRole", "Admin", "ADMIN" },
-                    { "58d7427f-b62f-4198-8031-cb7ca9ebef52", "8c3b16e6-0a1e-4b13-8f3c-45fd9512c449", "IdentityRole", "Dealer/Broker", "DEALER/BROKER" },
-                    { "a703401b-6f4d-4200-8ada-79039d00816e", "6a6abf79-824d-4f9b-9e5a-41d18dc01666", "IdentityRole", "Investor", "INVESTOR" },
-                    { "aad92f6a-fe61-466c-bfed-a693491914dc", "1b443371-438b-40f2-b98b-2203f2208417", "IdentityRole", "Partner", "PARTNER" }
+                    { "6c6cc33c-cf35-47d6-8a13-79c1b73868bf", "5c3c731a-e982-45a9-9b41-24a785654f8d", "AppRole", "Investor", "INVESTOR" },
+                    { "6e654576-9cf8-4e97-b9a4-afe5fbea1c12", "187cf8d5-e51e-4e41-9a65-a97a2d4fb3e7", "AppRole", "Partner", "PARTNER" },
+                    { "b477340c-df8b-424c-9510-30077070cba8", "5439b558-5a94-4cbd-9f30-2d9d5d026b87", "AppRole", "Dealer/Broker", "DEALER/BROKER" },
+                    { "fab52b5a-00b4-4490-be30-a08e52ff891c", "76285944-5d58-458b-90be-b0fad51d3420", "AppRole", "Admin", "ADMIN" }
                 });
 
             migrationBuilder.InsertData(
@@ -447,10 +447,10 @@ namespace Invidux_Data.Migrations
                 columns: new[] { "Id", "CreatedAt", "Type", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(8003), "User Registration", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 2, new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(8005), "Two Factor Activation", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 3, new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(8007), "Two Factor Verification", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 4, new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(8009), "BVN Verification", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { 1, new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(5751), "User Registration", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(5753), "Two Factor Activation", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 3, new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(5755), "Two Factor Verification", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 4, new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(5757), "BVN Verification", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(
@@ -458,11 +458,11 @@ namespace Invidux_Data.Migrations
                 columns: new[] { "Id", "CreatedAt", "Status", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(8174), "Pre-Selling", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 2, new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(8175), "Selling", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 3, new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(8177), "Fully Sold", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 4, new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(8178), "Trading", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 5, new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(8180), "Exited", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { 1, new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(5953), "Pre-Selling", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(5955), "Selling", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 3, new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(5957), "Fully Sold", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 4, new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(5959), "Trading", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 5, new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(5960), "Exited", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(
@@ -470,11 +470,11 @@ namespace Invidux_Data.Migrations
                 columns: new[] { "Id", "CreatedAt", "TransactionType", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(8229), "Buy", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 2, new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(8231), "Sell", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 3, new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(8233), "Transfer-in", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 4, new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(8234), "Transfer-out", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 5, new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(8235), "Exited", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { 1, new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(6005), "Buy", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(6008), "Sell", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 3, new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(6010), "Transfer-in", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 4, new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(6011), "Transfer-out", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 5, new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(6013), "Exited", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(
@@ -482,13 +482,13 @@ namespace Invidux_Data.Migrations
                 columns: new[] { "Id", "CreatedAt", "Type", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(8285), "Deposit", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 2, new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(8287), "Withdrawal", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 3, new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(8289), "Token Earnings", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 4, new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(8291), "Referal Earnings", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 5, new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(8292), "Tranfer-in", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 6, new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(8294), "Transfer-out", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 7, new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(8295), "Payment", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { 1, new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(6055), "Deposit", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(6057), "Withdrawal", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 3, new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(6059), "Token Earnings", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 4, new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(6061), "Referal Earnings", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 5, new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(6062), "Tranfer-in", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 6, new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(6064), "Transfer-out", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 7, new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(6066), "Payment", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.UpdateData(
@@ -496,29 +496,29 @@ namespace Invidux_Data.Migrations
                 keyColumn: "Id",
                 keyValue: 1,
                 columns: new[] { "CreatedAt", "UpdatedAt" },
-                values: new object[] { new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(8353), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) });
+                values: new object[] { new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(6116), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) });
 
             migrationBuilder.UpdateData(
                 table: "TwoFactorCovers",
                 keyColumn: "Id",
                 keyValue: 2,
                 columns: new[] { "CreatedAt", "UpdatedAt" },
-                values: new object[] { new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(8355), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) });
+                values: new object[] { new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(6118), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) });
 
             migrationBuilder.UpdateData(
                 table: "TwoFactorCovers",
                 keyColumn: "Id",
                 keyValue: 3,
                 columns: new[] { "CreatedAt", "UpdatedAt" },
-                values: new object[] { new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(8356), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) });
+                values: new object[] { new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(6120), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) });
 
             migrationBuilder.InsertData(
                 table: "TwoFactorTypes",
                 columns: new[] { "Id", "CreatedAt", "Type", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(8399), "Email", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 2, new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(8401), "Google Auth", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { 1, new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(6191), "Email", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(6194), "Google Auth", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(
@@ -526,15 +526,15 @@ namespace Invidux_Data.Migrations
                 columns: new[] { "Id", "CreatedAt", "Name", "RoleId", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { "0114770a-ca8d-4235-963f-55c756e8f4ea", new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(8108), "Retail", "a703401b-6f4d-4200-8ada-79039d00816e", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { "3e4ad38e-7d46-42f2-98fd-45e5191081cf", new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(8092), "Accrediated", "a703401b-6f4d-4200-8ada-79039d00816e", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { "45fd0bcc-6649-4c4b-9c72-20b84e2204e7", new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(8112), "Custodian", "aad92f6a-fe61-466c-bfed-a693491914dc", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { "4e3c0e3b-ae44-4084-9c20-4be6df4d8bb2", new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(8087), "Dealer", "58d7427f-b62f-4198-8031-cb7ca9ebef52", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { "68575913-5e79-4025-bb57-f57b5f4f346a", new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(8096), "Institutional", "a703401b-6f4d-4200-8ada-79039d00816e", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { "6eedb0ee-e7f8-49fe-a4d0-9aa442a36d1a", new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(8073), "Super Admin", "19473d89-c5ad-4c22-a199-d52a237ae6c2", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { "7f70be47-96aa-4576-a3ec-9b31569dfd1b", new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(8079), "Customer Support", "19473d89-c5ad-4c22-a199-d52a237ae6c2", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { "9e3b04ac-6270-4af3-a547-5dbaf11393ba", new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(8116), "Property Manager", "aad92f6a-fe61-466c-bfed-a693491914dc", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { "b364a3ee-3526-4eb6-a747-e11e8766f65f", new DateTime(2023, 12, 14, 10, 8, 20, 400, DateTimeKind.Utc).AddTicks(8083), "Broker", "58d7427f-b62f-4198-8031-cb7ca9ebef52", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { "0a75fb50-2e06-4921-aa0c-c786484e98c9", new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(5843), "Retail", "6c6cc33c-cf35-47d6-8a13-79c1b73868bf", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { "24bd24c9-58e8-4507-b690-44e9480dae14", new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(5831), "Dealer", "b477340c-df8b-424c-9510-30077070cba8", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { "47bafc49-3995-4043-b408-12a7e56cc6b3", new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(5839), "Institutional", "6c6cc33c-cf35-47d6-8a13-79c1b73868bf", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { "6864191c-b5ac-42ea-9bfa-56c559c09637", new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(5835), "Accrediated", "6c6cc33c-cf35-47d6-8a13-79c1b73868bf", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { "69c2f3bf-450d-4c06-bdf1-b5dc84f08f35", new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(5895), "Custodian", "6e654576-9cf8-4e97-b9a4-afe5fbea1c12", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { "7dae3069-da46-45ba-8ef5-0b7e37e45859", new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(5807), "Super Admin", "fab52b5a-00b4-4490-be30-a08e52ff891c", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { "8e39a4ae-f929-45b3-8036-ab4eb14ff8c1", new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(5816), "Customer Support", "fab52b5a-00b4-4490-be30-a08e52ff891c", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { "a4a3de8e-2048-48d5-a0e3-575d2450b1fb", new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(5827), "Broker", "b477340c-df8b-424c-9510-30077070cba8", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { "c6eeaeac-1dc9-47ba-af8c-d0cf5de9c328", new DateTime(2023, 12, 14, 14, 11, 15, 596, DateTimeKind.Utc).AddTicks(5900), "Property Manager", "6e654576-9cf8-4e97-b9a4-afe5fbea1c12", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.CreateIndex(
@@ -593,22 +593,22 @@ namespace Invidux_Data.Migrations
             migrationBuilder.DeleteData(
                 table: "Roles",
                 keyColumn: "Id",
-                keyValue: "19473d89-c5ad-4c22-a199-d52a237ae6c2");
+                keyValue: "6c6cc33c-cf35-47d6-8a13-79c1b73868bf");
 
             migrationBuilder.DeleteData(
                 table: "Roles",
                 keyColumn: "Id",
-                keyValue: "58d7427f-b62f-4198-8031-cb7ca9ebef52");
+                keyValue: "6e654576-9cf8-4e97-b9a4-afe5fbea1c12");
 
             migrationBuilder.DeleteData(
                 table: "Roles",
                 keyColumn: "Id",
-                keyValue: "a703401b-6f4d-4200-8ada-79039d00816e");
+                keyValue: "b477340c-df8b-424c-9510-30077070cba8");
 
             migrationBuilder.DeleteData(
                 table: "Roles",
                 keyColumn: "Id",
-                keyValue: "aad92f6a-fe61-466c-bfed-a693491914dc");
+                keyValue: "fab52b5a-00b4-4490-be30-a08e52ff891c");
 
             migrationBuilder.DropColumn(
                 name: "SecurityType",

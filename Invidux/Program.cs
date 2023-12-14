@@ -29,7 +29,7 @@ builder.Services.AddScoped<IUserContextService, UserContextService>();
 builder.Services.AddAutoMapper(typeof(Mapping).Assembly);
 builder.Services.AddScoped<IUnitofWork, UnitofWork>();
 
-builder.Services.AddIdentity<AppUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddIdentity<AppUser, AppRole>(options => options.SignIn.RequireConfirmedAccount = true)
 .AddEntityFrameworkStores<InviduxDBContext>()
 .AddDefaultTokenProviders();
 builder.Services.Configure<IdentityOptions>(options => {
