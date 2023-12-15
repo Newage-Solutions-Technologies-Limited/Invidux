@@ -152,7 +152,7 @@ namespace Invidux_Core.Repository.Implementations
 
 
         // Verifies the provided OTP (One-Time Password)
-        public async Task<LoginResponse> VerifyOtp(int otp)
+        public async Task<LoginResponse> VerifyOtp(int otp, string email)
         {
             // Find the OTP in the database
             var existingToken = await dc.VerificationTokens.SingleOrDefaultAsync(t => t.Otp == otp);
@@ -160,59 +160,63 @@ namespace Invidux_Core.Repository.Implementations
 
             if (existingToken != null)
             {
-                // Check if the token has not expired
-                if (existingToken.ExpiresOn >= DateTime.UtcNow)
+               if(existingToken.Email == email)
                 {
-                    // If the token type is for Two-Factor Verification
-                    if (existingToken.SecurityType == SecurityTypeStrings.TwoFactorVerification)
+                    // Check if the token has not expired
+                    if (existingToken.ExpiresOn >= DateTime.UtcNow)
                     {
-                        // Retrieve the user associated with the token
-                        var user = await _userManager.FindByIdAsync(existingToken.UserId);
-
-                        // If the user is found
-                        if (user != null)
+                        // If the token type is for Two-Factor Verification
+                        if (existingToken.SecurityType == SecurityTypeStrings.TwoFactorVerification)
                         {
-                            var response = new LoginResponse();
+                            // Retrieve the user associated with the token
+                            var user = await _userManager.FindByIdAsync(existingToken.UserId);
 
-                            // If user status is active, create JWT token for user
-                            if (user.RegistrationStatus == RegStatusStrings.Active)
+                            // If the user is found
+                            if (user != null)
                             {
-                                // Prepare the response with user information and JWT token
-                                response.UserId = user.Id;
-                                response.Email = user.Email;
-                                response.Username = user.UserName;
-                                response.RegistrationStatus = user.RegistrationStatus;
-                                response.Token = jwtHelper.CreateJWT(user);
+                                var response = new LoginResponse();
 
-                                // Delete the used OTP record from the database
-                                dc.VerificationTokens.Remove(existingToken);
-                                await dc.SaveChangesAsync();
-                                return response;
-                            }
-                            // If user status is restricted, return response without JWT token
-                            else if (user.RegistrationStatus == RegStatusStrings.Restricted)
-                            {
-                                // Prepare the response without a JWT token
-                                response.UserId = user.Id;
-                                response.Email = user.Email;
-                                response.Username = user.UserName;
-                                response.RegistrationStatus = user.RegistrationStatus;
+                                // If user status is active, create JWT token for user
+                                if (user.RegistrationStatus == RegStatusStrings.Active)
+                                {
+                                    // Prepare the response with user information and JWT token
+                                    response.UserId = user.Id;
+                                    response.Email = user.Email;
+                                    response.Username = user.UserName;
+                                    response.RegistrationStatus = user.RegistrationStatus;
+                                    response.Token = jwtHelper.CreateJWT(user);
 
-                                // Delete the used OTP record from the database
-                                dc.VerificationTokens.Remove(existingToken);
-                                await dc.SaveChangesAsync();
-                                return response;
+                                    // Delete the used OTP record from the database
+                                    dc.VerificationTokens.Remove(existingToken);
+                                    await dc.SaveChangesAsync();
+                                    return response;
+                                }
+                                // If user status is restricted, return response without JWT token
+                                else if (user.RegistrationStatus == RegStatusStrings.Restricted)
+                                {
+                                    // Prepare the response without a JWT token
+                                    response.UserId = user.Id;
+                                    response.Email = user.Email;
+                                    response.Username = user.UserName;
+                                    response.RegistrationStatus = user.RegistrationStatus;
+
+                                    // Delete the used OTP record from the database
+                                    dc.VerificationTokens.Remove(existingToken);
+                                    await dc.SaveChangesAsync();
+                                    return response;
+                                }
                             }
+                            // If user not found, delete the OTP record from the database
+                            dc.VerificationTokens.Remove(existingToken);
+                            await dc.SaveChangesAsync();
+
+                            return null;
                         }
-                        // If user not found, delete the OTP record from the database
-                        dc.VerificationTokens.Remove(existingToken);
-                        await dc.SaveChangesAsync();
-
-                        return null;
+                        return null; // Return null for non-Two-Factor Verification tokens
                     }
-                    return null; // Return null for non-Two-Factor Verification tokens
+                    return null; // Return null if the OTP has expired
                 }
-                return null; // Return null if the OTP has expired
+               throw new Exception("Invalid account");
             }
 
             return null; // Return null if the OTP does not exist in the database

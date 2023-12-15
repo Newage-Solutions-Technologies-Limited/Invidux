@@ -81,10 +81,11 @@ namespace Invidux_Core.Repository.Implementations
             var response = new UserRegistrationDto
             {
                 Id = newUser.Id,
-                RegistrationStatus = newUser.RegistrationStatus,
+                Status = newUser.RegistrationStatus,
                 Email = newUser.Email,
+                Role = RoleStrings.Investor,
                 //Otp = token.Otp,
-                RegistrationDate = newUser.RegistrationDate,
+                CreatedAt = newUser.RegistrationDate,
                 OtpAllowance = newUser.OtpSentCount,
             };
 
@@ -92,46 +93,49 @@ namespace Invidux_Core.Repository.Implementations
         }
 
         // This unit of work takes care of user email verifation
-        public async Task<string> VerifyOtp(int otp)
+        public async Task<string> VerifyOtp(int otp, string email)
         {
             // Find the OTP in the database
             var existingToken = await dc.VerificationTokens.SingleOrDefaultAsync(t => t.Otp == otp);
 
             if (existingToken != null)
             {
-                // Check if the token has not expired
-                if (existingToken.ExpiresOn >= DateTime.UtcNow)
+               if (existingToken.Email == email)
                 {
-
-                    if (existingToken.SecurityType == SecurityTypeStrings.UserRegistration)
+                    // Check if the token has not expired
+                    if (existingToken.ExpiresOn >= DateTime.UtcNow)
                     {
-                        // Set email verification to true for the user
-                        var user = await _userManager.FindByIdAsync(existingToken.UserId);
-                        if (user != null)
+
+                        if (existingToken.SecurityType == SecurityTypeStrings.UserRegistration)
                         {
-                            if (user.RegistrationStatus == RegStatusStrings.Pending)
+                            // Set email verification to true for the user
+                            var user = await _userManager.FindByIdAsync(existingToken.UserId);
+                            if (user != null)
                             {
-                                user.EmailConfirmed = true;
-                                user.RegistrationStatus = RegStatusStrings.Active;
-                                user.UpdatedAt = DateTime.UtcNow;
-                                await _userManager.UpdateAsync(user);
+                                if (user.RegistrationStatus == RegStatusStrings.Pending)
+                                {
+                                    user.EmailConfirmed = true;
+                                    user.RegistrationStatus = RegStatusStrings.Active;
+                                    user.UpdatedAt = DateTime.UtcNow;
+                                    await _userManager.UpdateAsync(user);
+                                }
+
+                                // Delete the OTP record from the database
+                                dc.VerificationTokens.Remove(existingToken);
+                                await dc.SaveChangesAsync();
+
+                                return user.RegistrationStatus;
                             }
 
-                            // Delete the OTP record from the database
-                            dc.VerificationTokens.Remove(existingToken);
-                            await dc.SaveChangesAsync();
-
-                            return user.RegistrationStatus;
+                            return null;
                         }
-
                         return null;
                     }
+                    // Return null if the OTP has expired
                     return null;
-                }
-                // Return null if the OTP has expired
-                return null;
+               }
+               throw new Exception("Invalid account");
             }
-
             // Return null if the OTP does not exist
             return null;
         }
@@ -230,9 +234,7 @@ namespace Invidux_Core.Repository.Implementations
                     existingUser.UpdatedAt = DateTime.UtcNow;
                     
                     // Update the user's profile using the UserManager
-                    var result = await _userManager.UpdateAsync(existingUser);
-
-                    
+                    var result = await _userManager.UpdateAsync(existingUser);                    
 
                     if (result.Succeeded)
                     {
@@ -251,6 +253,14 @@ namespace Invidux_Core.Repository.Implementations
                             CreatedAt = DateTime.UtcNow,
                             CountryId = user.CountryId
                         };
+
+                        var subRole = await dc.SubRoles.FirstAsync(sr => sr.Name == SubRolesStrings.Retail);
+                        var userSubRole = new UserSubRole
+                        {
+                            UserId = existingUser.Id,
+                            SubRoleId = subRole.Id,
+                        };
+                        dc.UserSubRoles.Add(userSubRole);
                         dc.UserAddresses.Add(userAddress);
                         dc.UserInformation.Add(userInfo);
                         await dc.SaveChangesAsync();

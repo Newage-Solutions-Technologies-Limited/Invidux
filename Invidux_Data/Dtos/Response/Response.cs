@@ -4,6 +4,7 @@
     {
         public bool Successful { get; set; }
         public string Message { get; set; }
+        public string? Source { get; set; }
         public T? Data { get; set; }
     }
 
@@ -11,6 +12,7 @@
     {
         public bool Successful { get; set; }
         public string Message { get; set; }
+        public string? Source { get; set; }
         public IEnumerable<T?> Data { get; set; }
     }
 

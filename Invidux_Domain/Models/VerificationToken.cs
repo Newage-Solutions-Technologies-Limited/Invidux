@@ -13,6 +13,6 @@ namespace Invidux_Domain.Models
         public string SecurityType { get; set; }
         public int Otp { get; set; }
         public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
-        public DateTime ExpiresOn { get; set; } = DateTime.UtcNow.AddMinutes(10);
+        public DateTime ExpiresOn { get; set; } = DateTime.UtcNow.AddMinutes(60);
     }
 }
