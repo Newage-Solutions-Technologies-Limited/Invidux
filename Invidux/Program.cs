@@ -69,6 +69,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     };
                 });
 
+// Remove server name from response header
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.AddServerHeader = false;
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -10,6 +10,8 @@ namespace Invidux_Data.Dtos.Request
 
         [Required]
         public bool AgreeToTerm { get; set; }
+
+        public string? Source { get; set; }
     }
 
 }
