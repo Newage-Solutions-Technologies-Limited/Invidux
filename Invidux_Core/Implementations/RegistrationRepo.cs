@@ -50,7 +50,7 @@ namespace Invidux_Core.Repository.Implementations
             {
                 Email = user.Email,
                 UserName = user.Email,
-                RegistrationStatus = RegStatusStrings.Pending,
+                RegistrationStatus = StatusStrings.Pending,
                 OtpSentCount = 5,
                 RegistrationDate = DateTime.UtcNow,
             };
@@ -112,10 +112,11 @@ namespace Invidux_Core.Repository.Implementations
                             var user = await _userManager.FindByIdAsync(existingToken.UserId);
                             if (user != null)
                             {
-                                if (user.RegistrationStatus == RegStatusStrings.Pending)
+                                if (user.RegistrationStatus == StatusStrings.Pending)
                                 {
                                     user.EmailConfirmed = true;
-                                    user.RegistrationStatus = RegStatusStrings.Active;
+                                    user.RegistrationStatus = StatusStrings.Verified;
+                                    user.OtpSentCount = 5;
                                     user.UpdatedAt = DateTime.UtcNow;
                                     await _userManager.UpdateAsync(user);
                                 }
@@ -131,6 +132,8 @@ namespace Invidux_Core.Repository.Implementations
                         }
                         return null;
                     }
+                    dc.VerificationTokens.Remove(existingToken);
+                    await dc.SaveChangesAsync();
                     // Return null if the OTP has expired
                     return null;
                }
@@ -147,7 +150,7 @@ namespace Invidux_Core.Repository.Implementations
 
             if (user != null)
             {
-                if(user.RegistrationStatus == RegStatusStrings.Pending)
+                if(user.RegistrationStatus == StatusStrings.Pending)
                 {
                     // Check if the user's otpsentcount is not 0
                     if (user.OtpSentCount != 0)
@@ -185,7 +188,7 @@ namespace Invidux_Core.Repository.Implementations
                     }
                     else
                     {
-                        user.RegistrationStatus = RegStatusStrings.Restricted;
+                        user.RegistrationStatus = StatusStrings.Restricted;
                         var result = await _userManager.UpdateAsync(user);
 
                         if (!result.Succeeded)
@@ -197,7 +200,7 @@ namespace Invidux_Core.Repository.Implementations
                         return -1;
                     }
                 }
-                else if (user.RegistrationStatus == RegStatusStrings.Restricted)
+                else if (user.RegistrationStatus == StatusStrings.Restricted)
                 {
                     return -1;
                 }
@@ -213,7 +216,7 @@ namespace Invidux_Core.Repository.Implementations
 
 
         // This unit of work takes care of user registration completion
-        public async Task<bool> CompleteRegistration(CompleteRegistration user)
+        public async Task<bool> CompleteRegistration(CompleteRegistration user, string[] uploadedFile)
         {
             // Find the existing user by their username or other unique identifier
             var existingUser = await _userManager.FindByEmailAsync(user.Email);
@@ -230,7 +233,7 @@ namespace Invidux_Core.Repository.Implementations
 
                     existingUser.UserName = user.Username;
                     existingUser.PhoneNumber = user.Phone;
-                    existingUser.TwoFactorType = TwoFactorTypeStrings.Email;
+                    existingUser.OtpSentCount = 5;
                     existingUser.UpdatedAt = DateTime.UtcNow;
                     
                     // Update the user's profile using the UserManager
@@ -245,6 +248,8 @@ namespace Invidux_Core.Repository.Implementations
                             MiddleName = user.MiddleName,
                             LastName = user.LastName,
                             UserId = existingUser.Id,
+                            ImageName = uploadedFile?[0] ?? "",
+                            ImageUrl = uploadedFile?[1] ?? "",
                             CreatedAt = DateTime.UtcNow,
                         };
                         var userAddress = new UserAddress
@@ -260,6 +265,14 @@ namespace Invidux_Core.Repository.Implementations
                             UserId = existingUser.Id,
                             SubRoleId = subRole.Id,
                         };
+                        var kycInfo = new UserKycInfo
+                        {
+                            UserId = existingUser.Id,
+                            Level = KycLevelStrings.Level1,
+                            Status = KycStatusStrings.Pending,
+                            CreatedAt = DateTime.UtcNow
+                        };
+                        dc.UserKycInfos.Add(kycInfo);
                         dc.UserSubRoles.Add(userSubRole);
                         dc.UserAddresses.Add(userAddress);
                         dc.UserInformation.Add(userInfo);

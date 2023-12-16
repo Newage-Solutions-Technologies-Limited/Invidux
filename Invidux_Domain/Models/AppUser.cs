@@ -10,12 +10,12 @@ namespace Invidux_Domain.Models
         public string TwoFactorType { get; set; }
         public DateTime RegistrationDate { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-        public UserInfo? Personal { get; set; }
-        public UserIncomeInfo? Income { get; set; }
-        public UserKycInfo? Kyc { get; set; }
-        public UserNextOfKin? NextOfKin { get; set; }
-        public UserAddress? Address { get; set; }
-        public Wallet? Wallet { get; set; }
+        public virtual UserInfo? Personal { get; set; }
+        public virtual UserIncomeInfo? Income { get; set; }
+        public virtual UserKycInfo? Kyc { get; set; }
+        public virtual UserNextOfKin? NextOfKin { get; set; }
+        public virtual UserAddress? Address { get; set; }
+        public virtual Wallet? Wallet { get; set; }
         public virtual ICollection<UserTwoFactorCover>? TwoFactorCovers { get; set; }
     }
 }

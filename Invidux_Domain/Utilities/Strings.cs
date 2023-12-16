@@ -2,10 +2,24 @@
 
 namespace Invidux_Domain.Utilities
 {
-    public class RegStatusStrings
+    public class KycLevelStrings
+    {
+        public const string Level1 = "Level1";
+        public const string Level2 = "Level2";
+        public const string Level3 = "Level2";
+    }
+
+    public class KycStatusStrings
     {
         public const string Pending = "Pending";
-        public const string Active = "Active";
+        public const string Verified = "Verified";
+        public const string Restricted = "Restricted";
+    }
+
+    public class StatusStrings
+    {
+        public const string Pending = "Pending";
+        public const string Verified = "Verified";
         public const string Restricted = "Restricted";
     }
     public class RoleStrings

@@ -1,9 +1,11 @@
 ﻿using Invidux_Core.Repository.Interfaces;
+using Invidux_Core.Services;
 using Invidux_Data.Dtos;
 using Invidux_Data.Dtos.Request;
 using Invidux_Data.Dtos.Response;
 using Invidux_Domain.Utilities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing.Constraints;
 using System.Net;
 
 namespace Invidux_Api.Controllers
@@ -18,9 +20,11 @@ namespace Invidux_Api.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IUnitofWork uow;
-        public AuthController(IUnitofWork uow)
+        private readonly IPhotoService photoService;
+        public AuthController(IUnitofWork uow, IPhotoService photoService)
         {
             this.uow = uow;
+            this.photoService = photoService;
         }
 
         /// <summary>
@@ -138,7 +142,7 @@ namespace Invidux_Api.Controllers
                 }
 
                 // Verifying the OTP (One-Time Password) using UnitOfWork
-                var result = await uow.RegistrationRepo.VerifyOtp(otp.Otp);
+                var result = await uow.RegistrationRepo.VerifyOtp(otp.Otp, otp.Email);
 
                 if (result != null && result == RegistrationStatus.Restricted.ToString())
                 {
@@ -216,12 +220,13 @@ namespace Invidux_Api.Controllers
         /// Endpoint to complete user registration after verifying email
         /// </summary>
         /// <param name="user"></param>
+        /// <param name="photoFile"></param>
         /// <returns></returns>
         [ProducesResponseType(typeof(Response<UserRegistrationDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponseDTO), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
         [HttpPost("complete-registration")]
-        public async Task<IActionResult> CompleteRegistration(CompleteRegistration user)
+        public async Task<IActionResult> CompleteRegistration(CompleteRegistration user, IFormFile? photoFile)
         {
             try
             {
@@ -233,8 +238,12 @@ namespace Invidux_Api.Controllers
                         ModelState));
                 }
 
+                // Upload photo to Uploads directory
+                var uploadedFile = await photoService.UploadPhoto(photoFile);
+                
+
                 // Completing user registration using the provided details
-                var result = await uow.RegistrationRepo.CompleteRegistration(user);
+                var result = await uow.RegistrationRepo.CompleteRegistration(user, uploadedFile);
 
                 if (!result)
                 {
@@ -302,7 +311,7 @@ namespace Invidux_Api.Controllers
                 }
                 else
                 {
-                    if (userExists.RegistrationStatus == RegStatusStrings.Restricted)
+                    if (userExists.RegistrationStatus == StatusStrings.Restricted)
                     {
                         // Returning a BadRequest response indicating the user is restricted
                         var errorResponse = new ErrorResponseDTO(
@@ -311,7 +320,7 @@ namespace Invidux_Api.Controllers
                         );
                         return BadRequest(errorResponse);
                     }
-                    else if (userExists.RegistrationStatus == RegStatusStrings.Pending)
+                    else if (userExists.RegistrationStatus == StatusStrings.Pending)
                     {
                         // Returning a 203 Non-Authoritative response asking to verify the account
                         return StatusCode(StatusCodes.Status203NonAuthoritative, "Please verify your account.");
@@ -369,7 +378,7 @@ namespace Invidux_Api.Controllers
                 }
 
                 // Verifying the OTP (Two-step verification) using the provided OTP
-                var result = await uow.UserRepo.VerifyOtp(otp.Otp);
+                var result = await uow.UserRepo.VerifyOtp(otp.Otp, otp.Email);
 
                 if (result == null)
                 {
@@ -380,7 +389,7 @@ namespace Invidux_Api.Controllers
                     );
                     return BadRequest(errorResponse);
                 }
-                if (result != null && result.RegistrationStatus == RegStatusStrings.Restricted)
+                if (result != null && result.RegistrationStatus == StatusStrings.Restricted)
                 {
                     // Handle the case when registration fails
                     var errorResponse = new ErrorResponseDTO(

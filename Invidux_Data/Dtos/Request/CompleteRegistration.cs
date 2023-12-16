@@ -33,6 +33,10 @@ namespace Invidux_Data.Dtos.Request
         [Required]
         public int CountryId { get; set; }
 
+        public string? ImageName { get; set; }
+
+        public string? ImageUrl { get; set; }
+
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }

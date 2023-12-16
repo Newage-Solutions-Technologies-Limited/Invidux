@@ -77,15 +77,15 @@ namespace Invidux_Data.Context
             );
 
             builder.Entity<KycLevel>().HasData(
-                new KycLevel { Id = 1, Status = "Level1", CreatedAt = DateTime.UtcNow },
-                new KycLevel { Id = 2, Status = "Level2", CreatedAt = DateTime.UtcNow },
-                new KycLevel { Id = 3, Status = "Level3", CreatedAt = DateTime.UtcNow }
+                new KycLevel { Id = 1, Status = KycLevelStrings.Level1, CreatedAt = DateTime.UtcNow },
+                new KycLevel { Id = 2, Status = KycLevelStrings.Level2, CreatedAt = DateTime.UtcNow },
+                new KycLevel { Id = 3, Status = KycLevelStrings.Level3, CreatedAt = DateTime.UtcNow }
             );
 
             builder.Entity<KycStatus>().HasData(
-                new KycStatus { Id = 1, Status = "Pending" , CreatedAt = DateTime.UtcNow },
-                new KycStatus { Id = 2, Status = "Verified" , CreatedAt = DateTime.UtcNow },
-                new KycStatus { Id = 3, Status = "Restricted" , CreatedAt = DateTime.UtcNow }
+                new KycStatus { Id = 1, Status = KycStatusStrings.Pending , CreatedAt = DateTime.UtcNow },
+                new KycStatus { Id = 2, Status = KycStatusStrings.Verified , CreatedAt = DateTime.UtcNow },
+                new KycStatus { Id = 3, Status = KycStatusStrings.Restricted , CreatedAt = DateTime.UtcNow }
             );
 
             builder.Entity<PaymentMethod>().HasData(
