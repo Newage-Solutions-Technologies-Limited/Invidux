@@ -216,7 +216,7 @@ namespace Invidux_Core.Repository.Implementations
 
 
         // This unit of work takes care of user registration completion
-        public async Task<bool> CompleteRegistration(CompleteRegistration user, string[] uploadedFile)
+        public async Task<bool> CompleteRegistration(CompleteRegistration user)
         {
             // Find the existing user by their username or other unique identifier
             var existingUser = await _userManager.FindByEmailAsync(user.Email);
@@ -248,8 +248,8 @@ namespace Invidux_Core.Repository.Implementations
                             MiddleName = user.MiddleName,
                             LastName = user.LastName,
                             UserId = existingUser.Id,
-                            ImageName = uploadedFile?[0] ?? "",
-                            ImageUrl = uploadedFile?[1] ?? "",
+                            // Assuming uploadedFile is an array or a list
+                            //ImageName = uploadedFile?[0] ?? "",
                             CreatedAt = DateTime.UtcNow,
                         };
                         var userAddress = new UserAddress
@@ -272,6 +272,15 @@ namespace Invidux_Core.Repository.Implementations
                             Status = KycStatusStrings.Pending,
                             CreatedAt = DateTime.UtcNow
                         };
+                        var wallet = new Wallet
+                        {
+                            Id = Guid.NewGuid().ToString(),
+                            Active = false,
+                            PinSet = false,
+                            WalletPin = 1234,
+                            UserId = existingUser.Id
+                        };
+                        dc.Wallets.Add(wallet);
                         dc.UserKycInfos.Add(kycInfo);
                         dc.UserSubRoles.Add(userSubRole);
                         dc.UserAddresses.Add(userAddress);

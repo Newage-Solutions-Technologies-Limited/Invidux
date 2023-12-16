@@ -27,6 +27,7 @@ namespace Invidux_Domain.Utilities
         public const string Admin = "Admin";
         public const string Dealer_Broker = "Dealer/Broker";
         public const string Investor = "Investor";
+        public const string TokenIssuer = "Token Issuer";
         public const string Partner = "Partner";
     }
 
@@ -48,6 +49,7 @@ namespace Invidux_Domain.Utilities
         public const string Accrediated = "Accrediated";
         public const string Institutional = "Institutional";
         public const string Retail = "Retail";
+        public const string TokenIssuer = "Token Issuer";
         public const string PropertyManager = "Property Manager";
     }
 

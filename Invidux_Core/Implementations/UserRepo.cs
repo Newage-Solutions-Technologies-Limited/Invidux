@@ -75,7 +75,7 @@ namespace Invidux_Core.Repository.Implementations
             if (result.Succeeded)
             {
                 // Handles scenarios based on user status
-                if (user.RegistrationStatus == RegStatusStrings.Active)
+                if (user.RegistrationStatus == StatusStrings.Verified)
                 {
                     // Creates JWT token for the user
                     response.UserId = user.Id;
@@ -87,7 +87,7 @@ namespace Invidux_Core.Repository.Implementations
                     return response;
                 }
 
-                if (user.RegistrationStatus == RegStatusStrings.Restricted)
+                if (user.RegistrationStatus == StatusStrings.Restricted)
                 {
                     // Returns response for a restricted user
                     response.UserId = user.Id;
@@ -102,7 +102,7 @@ namespace Invidux_Core.Repository.Implementations
             if (result.RequiresTwoFactor)
             {
                 // Handles scenarios based on user status for Two-Factor Authentication
-                if (user.RegistrationStatus == RegStatusStrings.Active)
+                if (user.RegistrationStatus == StatusStrings.Verified)
                 {
                     // Generates and sends a verification token for Two-Factor Authentication
                     var token = new VerificationToken
@@ -135,7 +135,7 @@ namespace Invidux_Core.Repository.Implementations
                     return response;
                 }
 
-                if (user.RegistrationStatus == RegStatusStrings.Restricted)
+                if (user.RegistrationStatus == StatusStrings.Restricted)
                 {
                     // Returns response for a restricted user during Two-Factor Authentication
                     response.UserId = user.Id;
@@ -177,7 +177,7 @@ namespace Invidux_Core.Repository.Implementations
                                 var response = new LoginResponse();
 
                                 // If user status is active, create JWT token for user
-                                if (user.RegistrationStatus == RegStatusStrings.Active)
+                                if (user.RegistrationStatus == StatusStrings.Verified)
                                 {
                                     // Prepare the response with user information and JWT token
                                     response.UserId = user.Id;
@@ -192,7 +192,7 @@ namespace Invidux_Core.Repository.Implementations
                                     return response;
                                 }
                                 // If user status is restricted, return response without JWT token
-                                else if (user.RegistrationStatus == RegStatusStrings.Restricted)
+                                else if (user.RegistrationStatus == StatusStrings.Restricted)
                                 {
                                     // Prepare the response without a JWT token
                                     response.UserId = user.Id;

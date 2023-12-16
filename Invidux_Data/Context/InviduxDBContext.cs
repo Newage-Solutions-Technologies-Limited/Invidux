@@ -20,6 +20,7 @@ namespace Invidux_Data.Context
             var adminRoleId = Guid.NewGuid().ToString();
             var dealerBrokerRoleId = Guid.NewGuid().ToString();
             var investorRoleId = Guid.NewGuid().ToString();
+            var issuerRoleId = Guid.NewGuid().ToString();
             var partnerRoleId = Guid.NewGuid().ToString();
 
             base.OnModelCreating(builder);
@@ -37,6 +38,7 @@ namespace Invidux_Data.Context
                 new AppRole { Id = adminRoleId, Name = RoleStrings.Admin, NormalizedName = RoleStrings.Admin.ToUpper(), ConcurrencyStamp = Guid.NewGuid().ToString() },
                 new AppRole { Id = dealerBrokerRoleId, Name = RoleStrings.Dealer_Broker, NormalizedName = RoleStrings.Dealer_Broker.ToUpper(), ConcurrencyStamp = Guid.NewGuid().ToString() },
                 new AppRole { Id = investorRoleId, Name = RoleStrings.Investor, NormalizedName = RoleStrings.Investor.ToUpper() , ConcurrencyStamp = Guid.NewGuid().ToString() },
+                new AppRole { Id = issuerRoleId, Name = RoleStrings.TokenIssuer, NormalizedName = RoleStrings.TokenIssuer.ToUpper(), ConcurrencyStamp = Guid.NewGuid().ToString() },
                 new AppRole { Id = partnerRoleId, Name = RoleStrings.Partner, NormalizedName = RoleStrings.Partner.ToUpper() , ConcurrencyStamp = Guid.NewGuid().ToString() }
             );
 
@@ -96,9 +98,9 @@ namespace Invidux_Data.Context
             );
 
             builder.Entity<PropertyClass>().HasData(
-                new PropertyClass { Id = 1, Class = "Pre-purchased", CreatedAt = DateTime.UtcNow },
-                new PropertyClass { Id = 2, Class = "Wait-listed", CreatedAt = DateTime.UtcNow },
-                new PropertyClass { Id = 3, Class = "Off-plan", CreatedAt = DateTime.UtcNow },
+                new PropertyClass { Id = 1, Class = "Off-plan", CreatedAt = DateTime.UtcNow },
+                new PropertyClass { Id = 2, Class = "Pre-purchased", CreatedAt = DateTime.UtcNow },
+                new PropertyClass { Id = 3, Class = "Wait-listed", CreatedAt = DateTime.UtcNow },
                 new PropertyClass { Id = 4, Class = "Rented", CreatedAt = DateTime.UtcNow },
                 new PropertyClass { Id = 5, Class = "Mortgage-Like", CreatedAt = DateTime.UtcNow },
                 new PropertyClass { Id = 6, Class = "Under Management", CreatedAt = DateTime.UtcNow }
@@ -119,16 +121,18 @@ namespace Invidux_Data.Context
                 new SubRole { Id = Guid.NewGuid().ToString(), Name = SubRolesStrings.Accrediated, RoleId = investorRoleId, CreatedAt = DateTime.UtcNow },
                 new SubRole { Id = Guid.NewGuid().ToString(), Name = SubRolesStrings.Institutional, RoleId = investorRoleId, CreatedAt = DateTime.UtcNow },
                 new SubRole { Id = Guid.NewGuid().ToString(), Name = SubRolesStrings.Retail, RoleId = investorRoleId, CreatedAt = DateTime.UtcNow },
+                new SubRole { Id = Guid.NewGuid().ToString(), Name = SubRolesStrings.TokenIssuer, RoleId = issuerRoleId, CreatedAt = DateTime.UtcNow },
                 new SubRole { Id = Guid.NewGuid().ToString(), Name = SubRolesStrings.Custodian, RoleId = partnerRoleId, CreatedAt = DateTime.UtcNow },
                 new SubRole { Id = Guid.NewGuid().ToString(), Name = SubRolesStrings.PropertyManager, RoleId = partnerRoleId, CreatedAt = DateTime.UtcNow }
             );
 
             builder.Entity<TokenListingStatus>().HasData(
-                new TokenListingStatus { Id = 1, Status ="Pre-Selling", CreatedAt = DateTime.UtcNow }, 
-                new TokenListingStatus { Id = 2, Status = "Selling" , CreatedAt = DateTime.UtcNow },
-                new TokenListingStatus { Id = 3, Status = "Fully Sold" , CreatedAt = DateTime.UtcNow },
-                new TokenListingStatus { Id = 4, Status = "Trading", CreatedAt = DateTime.UtcNow },
-                new TokenListingStatus { Id = 5, Status = "Exited", CreatedAt = DateTime.UtcNow }
+                new TokenListingStatus { Id = 1, Status = "Off-Plan", CreatedAt = DateTime.UtcNow},
+                new TokenListingStatus { Id = 2, Status ="Wait-listed", CreatedAt = DateTime.UtcNow }, 
+                new TokenListingStatus { Id = 3, Status = "Selling" , CreatedAt = DateTime.UtcNow },
+                new TokenListingStatus { Id = 4, Status = "Fully Sold" , CreatedAt = DateTime.UtcNow },
+                new TokenListingStatus { Id = 5, Status = "Trading", CreatedAt = DateTime.UtcNow },
+                new TokenListingStatus { Id = 6, Status = "Exited", CreatedAt = DateTime.UtcNow }
             );
 
             builder.Entity<TokenTransactionType>().HasData(

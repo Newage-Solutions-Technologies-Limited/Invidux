@@ -6,10 +6,11 @@ namespace Invidux_Domain.Models
     public class Wallet
     {
         [Key]
-        public Guid Id { get; set; }
+        public string Id { get; set; }
         public string BVN { get; set; }
         public string DepositStellarId { get; set; }
         public bool Active { get; set; }
+        public bool PinSet {  get; set; }
         public int WalletPin {  get; set; }
         [ForeignKey("AppUser")]
         public string UserId { get; set; }

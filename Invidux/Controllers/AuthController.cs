@@ -20,11 +20,9 @@ namespace Invidux_Api.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IUnitofWork uow;
-        private readonly IPhotoService photoService;
-        public AuthController(IUnitofWork uow, IPhotoService photoService)
+        public AuthController(IUnitofWork uow)
         {
             this.uow = uow;
-            this.photoService = photoService;
         }
 
         /// <summary>
@@ -226,7 +224,7 @@ namespace Invidux_Api.Controllers
         [ProducesResponseType(typeof(ErrorResponseDTO), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
         [HttpPost("complete-registration")]
-        public async Task<IActionResult> CompleteRegistration(CompleteRegistration user, IFormFile? photoFile)
+        public async Task<IActionResult> CompleteRegistration(CompleteRegistration user)
         {
             try
             {
@@ -236,14 +234,10 @@ namespace Invidux_Api.Controllers
                     // Returning a BadRequest response with details of invalid ModelState
                     return BadRequest(new ModelStateErrorResponseDTO(HttpStatusCode.BadRequest,
                         ModelState));
-                }
-
-                // Upload photo to Uploads directory
-                var uploadedFile = await photoService.UploadPhoto(photoFile);
-                
+                }                
 
                 // Completing user registration using the provided details
-                var result = await uow.RegistrationRepo.CompleteRegistration(user, uploadedFile);
+                var result = await uow.RegistrationRepo.CompleteRegistration(user);
 
                 if (!result)
                 {
