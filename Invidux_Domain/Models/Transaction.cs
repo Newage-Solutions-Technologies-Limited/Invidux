@@ -14,6 +14,7 @@ namespace Invidux_Domain.Models
         public string Type { get; set; }
         public string Status { get; set; }
         public string Amount { get; set; }
+        public bool Inflow { get; set; }
         public string CurrencySymbol { get; set; }
         public DateTime TransactionDate { get; set; } = DateTime.UtcNow;
     }
