@@ -6,7 +6,7 @@ namespace Invidux_Domain.Models
     public class Wallet
     {
         [Key]
-        public string Id { get; set; }
+        public Guid Id { get; set; }
         public string BVN { get; set; }
         public string DepositStellarId { get; set; }
         public bool Active { get; set; }

@@ -274,7 +274,7 @@ namespace Invidux_Core.Repository.Implementations
                         };
                         var wallet = new Wallet
                         {
-                            Id = Guid.NewGuid().ToString(),
+                            Id = Guid.NewGuid(),
                             Active = false,
                             PinSet = false,
                             WalletPin = 1234,
