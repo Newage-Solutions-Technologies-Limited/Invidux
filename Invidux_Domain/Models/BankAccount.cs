@@ -9,9 +9,9 @@ namespace Invidux_Domain.Models
         [Key]
         public int Id { get; set; }
         public BankAccountTypeEnums AccountType { get; set; }
-        public string AccountNumber { get; set; }
-        public string AccountName { get; set; }
-        public string BankName {  get; set; }
+        public string? AccountNumber { get; set; }
+        public string? AccountName { get; set; }
+        public string? BankName {  get; set; }
         [ForeignKey("UserToken")]
         public int TokenId { get; set; }
         public UserToken UserToken { get; set; }

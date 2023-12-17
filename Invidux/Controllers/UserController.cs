@@ -123,7 +123,7 @@ namespace Invidux_Api.Controllers
                     return BadRequest(errorResponse);
                 }
 
-                var file = await photoService.UploadPhoto(user.file);
+                var file = await photoService.UploadPhoto(user.ProfileImage);
 
                 dbUserInfo.ImageName = file?[0] ?? "";
                 dbUserInfo.ImageUrl = file?[1] ?? "";
@@ -353,7 +353,7 @@ namespace Invidux_Api.Controllers
 
                 var idType = await uow.UserRepo.GetIdType(kyc.IdTypeId);
 
-                var file = await photoService.UploadPhoto(kyc.file);
+                var file = await photoService.UploadPhoto(kyc.IdImage);
 
                 kycInfo.IdType = idType.Name;
                 kycInfo.CanExpire = idType.Expires;

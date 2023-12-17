@@ -273,7 +273,7 @@ namespace Invidux_Core.Repository.Implementations
                             Id = Guid.NewGuid().ToString(),
                             Active = false,
                             PinSet = false,
-                            WalletPin = 1234,
+                            WalletPin = 0,
                             UserId = existingUser.Id
                         };
                         dc.Wallets.Add(wallet);

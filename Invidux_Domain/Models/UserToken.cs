@@ -7,7 +7,7 @@ namespace Invidux_Domain.Models
     {
         [Key]
         public int Id { get; set; }
-        public string Currency { get; set; }
+        public string? Currency { get; set; }
         public decimal Available { get; set; }
         public decimal Earnings { get; set; }
         [ForeignKey("Wallet")]

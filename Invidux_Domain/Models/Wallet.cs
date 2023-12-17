@@ -11,8 +11,8 @@ namespace Invidux_Domain.Models
 
         [Key]
         public string Id { get; set; }
-        public string BVN { get; set; }
-        public string DepositStellarId { get; set; }
+        public string? BVN { get; set; }
+        public string? DepositStellarId { get; set; }
         public bool Active { get; set; }
         public bool PinSet {  get; set; }
         public int WalletPin {  get; set; }
