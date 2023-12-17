@@ -1,7 +1,13 @@
-﻿using Invidux_Data.Dtos.Request;
+﻿using AutoMapper;
+using Invidux_Core.Repository.Interfaces;
+using Invidux_Data.Context;
+using Invidux_Data.Dtos;
+using Invidux_Data.Dtos.Request;
+using Invidux_Data.Dtos.Response;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace Invidux_Api.Controllers
 {
@@ -13,18 +19,73 @@ namespace Invidux_Api.Controllers
     [Authorize]
     public class WalletController : ControllerBase
     {
-        public WalletController() { }
+        private readonly InviduxDBContext dc;
+        private readonly IUnitofWork uow;
+        private readonly IMapper mapper;
+        public WalletController(InviduxDBContext dc, IUnitofWork uow, IMapper mapper) 
+        { 
+            this.dc = dc;
+            this.uow = uow;
+            this.mapper = mapper;
+        }
 
         /// <summary>
         /// Endpoint to fetch user wallet by user Id
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
+        [ProducesResponseType(typeof(Response<WalletResponseDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponseDTO), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status203NonAuthoritative)]
+        [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status206PartialContent)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
         [HttpGet("current-user/{userId}")]
         public async Task<IActionResult> GetUserWallet(string userId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var wallet = await uow.WalletRepo.GetWalletAsync(userId);
+                if (wallet == null)
+                {
+                    // Returning a BadRequest response indicating the user is not found
+                    var errorResponse = new ErrorResponseDTO(
+                        HttpStatusCode.BadRequest,
+                        new List<string> { "Wallet not found" }
+                    );
+                    return BadRequest(errorResponse);
+                }
+                if (!wallet.Active) 
+                {
+                    var response203 = new MessageResponse
+                    {
+                        Successful = true,
+                        Message = "You need to activate your Wallet"
+                    };
+                    return StatusCode(StatusCodes.Status203NonAuthoritative, response203);
+                }
+                if(!wallet.PinSet) 
+                {
+                    var response206 = new MessageResponse
+                    {
+                        Successful = true,
+                        Message = "You need to set your wallet pin"
+                    };
+                    return StatusCode(StatusCodes.Status206PartialContent, response206);
+                }
+                var walletDto = mapper.Map<WalletResponseDto>(wallet);
+                var response = new Response<WalletResponseDto>
+                {
+                    Successful = true,
+                    Message = "success",
+                    Data = walletDto
+                };
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions and log errors
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         /// <summary>
@@ -32,11 +93,18 @@ namespace Invidux_Api.Controllers
         /// </summary>
         /// <param name="walletDto"></param>
         /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        [HttpPost("current-user/activate")]
-        public async Task<IActionResult> ActivateWallet(ActivateWalletDto walletDto)
+        [HttpPatch("current-user/activate/{userId}")]
+        public async Task<IActionResult> ActivateWallet(ActivateWalletDto walletDto, string userId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                throw new NotImplementedException();
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions and log errors
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         /// <summary>
@@ -44,10 +112,36 @@ namespace Invidux_Api.Controllers
         /// </summary>
         /// <param name="setWalletPin"></param>
         /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public async Task<IActionResult> SetWalletPin(SetWalletPinDto setWalletPin)
+        [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponseDTO), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
+        [HttpPatch("current-user/set-wallet-pin/{userId}")]
+        public async Task<IActionResult> SetWalletPin(SetWalletPinDto setWalletPin, string userId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var setPin = await uow.WalletRepo.SetWalletPin(setWalletPin, userId);
+                if (!setPin)
+                {
+                    // Returning a BadRequest response indicating the user is not found
+                    var errorResponse = new ErrorResponseDTO(
+                        HttpStatusCode.BadRequest,
+                        new List<string> { "Invalid old pin" }
+                    );
+                    return BadRequest(errorResponse);
+                }
+                var response = new MessageResponse
+                {
+                    Successful = true,
+                    Message = "success",
+                };
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions and log errors
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
     }
 }

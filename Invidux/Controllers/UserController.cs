@@ -97,8 +97,8 @@ namespace Invidux_Api.Controllers
         //[ProducesResponseType(typeof(Response<UserProfileDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponseDTO), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
-        [HttpPatch("current-user")]
-        public async Task<IActionResult> UpdatePersonalInfo(PersonalInfoDto user)
+        [HttpPatch("current-user/{userId}")]
+        public async Task<IActionResult> UpdatePersonalInfo(PersonalInfoDto user, string userId)
         {
             try
             {
@@ -111,7 +111,7 @@ namespace Invidux_Api.Controllers
                 }
 
                 // Retrieving the user's information from the database using the provided userId
-                var dbUserInfo = await uow.UserRepo.GetUserInfo(user.UserId);
+                var dbUserInfo = await uow.UserRepo.GetUserInfo(userId);
 
                 if (dbUserInfo == null)
                 {
@@ -123,6 +123,11 @@ namespace Invidux_Api.Controllers
                     return BadRequest(errorResponse);
                 }
 
+                var file = await photoService.UploadPhoto(user.file);
+
+                dbUserInfo.ImageName = file?[0] ?? "";
+                dbUserInfo.ImageUrl = file?[1] ?? "";
+
                 // Updating the 'UpdatedAt' field to the current time
                 dbUserInfo.UpdatedAt = DateTime.UtcNow;
 
@@ -132,8 +137,8 @@ namespace Invidux_Api.Controllers
                 // Saving changes asynchronously
                 await uow.SaveAsync();
 
-                // Returning a 203 Non-Authoritative response after successful update
-                return StatusCode(203);
+                // Returning a 201 response after successful update
+                return StatusCode(201);
             }
             catch (Exception ex)
             {
@@ -154,7 +159,7 @@ namespace Invidux_Api.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status203NonAuthoritative)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
         [HttpPost("current-user/next-of-kin/{userId}")]
-        public async Task<IActionResult> CreateNextofKin(NextOfKinDto nextOfKin)
+        public async Task<IActionResult> CreateNextofKin(NextOfKinDto nextOfKin, string userId)
         {
             try
             {
@@ -167,7 +172,7 @@ namespace Invidux_Api.Controllers
                 }
 
                 // Checking if the user exists based on the provided UserId
-                var dbUser = await uow.UserRepo.UserExists(nextOfKin.UserId);
+                var dbUser = await uow.UserRepo.UserExists(userId);
 
                 if (!dbUser)
                 {
@@ -212,7 +217,7 @@ namespace Invidux_Api.Controllers
         [ProducesResponseType(typeof(ErrorResponseDTO), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
         [HttpPatch("current-user/next-of-kin/{userId}")]
-        public async Task<IActionResult> UpdateNextofKin(NextOfKinDto nextOfKin)
+        public async Task<IActionResult> UpdateNextofKin(NextOfKinDto nextOfKin, string userId)
         {
             try
             {
@@ -225,7 +230,7 @@ namespace Invidux_Api.Controllers
                 }
 
                 // Retrieving the next-of-kin information based on the provided UserId
-                var dbNextOfKin = await uow.UserRepo.GetUserNextOfKin(nextOfKin.UserId);
+                var dbNextOfKin = await uow.UserRepo.GetUserNextOfKin(userId);
 
                 if (dbNextOfKin == null)
                 {
@@ -264,7 +269,7 @@ namespace Invidux_Api.Controllers
         [ProducesResponseType(typeof(ErrorResponseDTO), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
         [HttpPost("current-user/security/{userId}")]
-        public async Task<IActionResult> UpdateSecurityInfo(SecurityDto securityDto)
+        public async Task<IActionResult> UpdateSecurityInfo(SecurityDto securityDto, string userId)
         {
             try
             {
@@ -277,7 +282,7 @@ namespace Invidux_Api.Controllers
                 }
 
                 // Checking if the user exists based on the provided UserId
-                var dbUser = await uow.UserRepo.UserExists(securityDto.UserId);
+                var dbUser = await uow.UserRepo.UserExists(userId);
 
                 // If the user does not exist, return a BadRequest response for an unknown error
                 if (!dbUser)
@@ -320,12 +325,57 @@ namespace Invidux_Api.Controllers
         /// Endpoint that takes care of kyc verification
         /// </summary>
         /// <returns></returns>
+        [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponseDTO), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
-        [HttpPost("current-user/verify-kyc/{userId}")]
-        public async Task<ActionResult> VerifyKYC(KYCRequest kyc)
+        [HttpPost("current-user/set-kyc/{userId}")]
+        public async Task<ActionResult> SetKYC(KYCRequest kyc, string userId)
         {
-            return null;
+            try
+            {
+                // Checking if the incoming model is valid
+                if (!ModelState.IsValid)
+                {
+                    // Returning a BadRequest response with details of invalid ModelState
+                    return BadRequest(new ModelStateErrorResponseDTO(HttpStatusCode.BadRequest,
+                        ModelState));
+                }
+
+                var kycInfo = await uow.UserRepo.GetKycInfo(userId);
+                if (kycInfo == null)
+                {
+                    var errorResponse = new ErrorResponseDTO(
+                       HttpStatusCode.BadRequest,
+                       new List<string> { "Unknown error occurred" }
+                   );
+                    return BadRequest(errorResponse);
+                }
+
+                var idType = await uow.UserRepo.GetIdType(kyc.IdTypeId);
+
+                var file = await photoService.UploadPhoto(kyc.file);
+
+                kycInfo.IdType = idType.Name;
+                kycInfo.CanExpire = idType.Expires;
+                kycInfo.ImageName = file?[0] ?? "";
+                kycInfo.ImageUrl = file?[1] ?? "";
+                kycInfo.UpdatedAt = DateTime.UtcNow;
+                mapper.Map(kyc, kycInfo);
+                await uow.SaveAsync();
+                var response = new MessageResponse
+                {
+                    Successful = true,
+                    Message = "Kyc Verification is in progress"
+                };
+                return Ok(response);
+
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions and log errors
+                // You can also return an appropriate error response
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
     }
 }

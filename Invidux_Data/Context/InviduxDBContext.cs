@@ -178,6 +178,14 @@ namespace Invidux_Data.Context
                 entity.Property(e => e.RemainingAllowance)
                       .HasPrecision(18, 2); // Set precision and scale                
             });
+
+            builder.Entity<UserToken>(entity =>
+            {
+                entity.Property(e => e.Available)
+                      .HasPrecision(18, 2); // Set precision and scale    
+                entity.Property(e => e.Earnings)
+                      .HasPrecision(18, 2); // Set precision and scale                
+            });
         }
 
         public DbSet<AppRole> AppRoles { get; set; }
@@ -206,6 +214,7 @@ namespace Invidux_Data.Context
         public DbSet<UserKycInfo> UserKycInfos { get; set; }
         public DbSet<UserNextOfKin> UserNextOfKins { get; set; }
         public DbSet<UserTwoFactorCover> UserTwoFactorCovers { get; set; }
+        public DbSet<UserToken> UserTokens {  get; set; }
         public DbSet<Wallet> Wallets { get; set; }
 
 

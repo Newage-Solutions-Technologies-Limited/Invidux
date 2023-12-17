@@ -19,5 +19,6 @@ namespace Invidux_Domain.Models
         [ForeignKey("AppUser")]
         public string UserId { get; set; }
         public virtual AppUser User { get; set; }
+        public virtual ICollection<UserToken> UserTokens { get; set; }
     }
 }

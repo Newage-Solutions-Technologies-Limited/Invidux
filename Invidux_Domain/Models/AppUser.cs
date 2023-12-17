@@ -10,8 +10,8 @@ namespace Invidux_Domain.Models
         public int OtpSentCount { get; set; }
         public string TwoFactorType { get; set; }
         [ForeignKey("SubRole")]
-        public string? SubRoleId { get; set; }
-        public virtual SubRole SubRole { get; set; }
+        public string? SubRoleId { get; set; } // Cascade delete removed
+        public virtual SubRole SubRole { get; set; } // Cascade delete removed
         public DateTime RegistrationDate { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
         public virtual UserInfo? Personal { get; set; }

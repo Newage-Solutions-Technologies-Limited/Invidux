@@ -44,6 +44,9 @@ namespace Invidux_Core.Repository.Implementations
         public IUtitlityRepo UtitlityRepo =>
             new UtilityRepo(dc, _roleManager);
 
+        public IWalletRepo WalletRepo =>
+            new WalletRepo(dc);
+
         public async Task<bool> SaveAsync()
         {
             return await dc.SaveChangesAsync() > 0;

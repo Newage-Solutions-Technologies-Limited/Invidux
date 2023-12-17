@@ -254,6 +254,22 @@ namespace Invidux_Core.Repository.Implementations
             return userInfo == null ? null : userInfo;
         }
 
+        // Retrieves specific user kyc information based on the provided userId
+        public async Task<UserKycInfo> GetKycInfo(string userId)
+        {
+            // Queries the database to retrieve user-specific kyc information
+            var kycInfo = await dc.UserKycInfos.Where(dc => dc.UserId == userId).FirstOrDefaultAsync();
+
+            // Returns user kyc information or null if not found
+            return kycInfo == null ? null : kycInfo;
+        }
+
+        public async Task<KycIdCard> GetIdType(int id)
+        {
+            var idType = await dc.IdCards.FirstOrDefaultAsync(i => i.Id == id);
+            return idType == null ? null : idType;
+        }
+
         // Adds a new next-of-kin record to the database
         public void CreateNextOfKin(UserNextOfKin kin)
         {
