@@ -97,7 +97,7 @@ namespace Invidux_Api.Controllers
         //[ProducesResponseType(typeof(Response<UserProfileDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponseDTO), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
-        [HttpPatch("current-user/personal-info/{userId}")]
+        [HttpPatch("current-user")]
         public async Task<IActionResult> UpdatePersonalInfo(PersonalInfoDto user)
         {
             try

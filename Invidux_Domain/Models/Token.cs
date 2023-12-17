@@ -2,10 +2,13 @@
 
 namespace Invidux_Domain.Models
 {
+    /// <summary>
+    /// On creation, Id = Guid.NewGuid().ToString()
+    /// </summary>
     public class Token
     {
         [Key]
-        public Guid Id { get; set; }
+        public string Id { get; set; } 
         public string? ListingStatus { get; set; } // e.g., Pre-selling, Selling, Fully Sold, Exited
         public string? TokenCode { get; set; }
         public string? TokenIssuer { get; set; }

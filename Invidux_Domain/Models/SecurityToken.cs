@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Invidux_Domain.Models
 {
-    public class VerificationToken
+    public class SecurityToken
     {
         [Key]
         public int Id { get; set; }

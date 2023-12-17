@@ -3,10 +3,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Invidux_Domain.Models
 {
+    /// <summary>
+    /// On creation, Id = Guid.NewGuid().ToString()
+    /// </summary>
     public class Wallet
     {
+
         [Key]
-        public Guid Id { get; set; }
+        public string Id { get; set; }
         public string BVN { get; set; }
         public string DepositStellarId { get; set; }
         public bool Active { get; set; }

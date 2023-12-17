@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Invidux_Domain.Models
 {
+    /// <summary>
+    /// To be removed
+    /// </summary>
     public class UserSubRole
     {
         [Key]

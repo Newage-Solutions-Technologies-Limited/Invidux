@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Invidux_Data.Migrations
 {
     [DbContext(typeof(InviduxDBContext))]
-    [Migration("20231216125225_WalletEntities")]
-    partial class WalletEntities
+    [Migration("20231217085804_NewMigration")]
+    partial class NewMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -157,35 +157,35 @@ namespace Invidux_Data.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3396),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(3844),
                             Type = "Long Co-own",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3399),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(3847),
                             Type = "Medium Co-own",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3400),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(3848),
                             Type = "Debt",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3401),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(3849),
                             Type = "Co-build",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3402),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(3850),
                             Type = "Rental",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
@@ -220,7 +220,7 @@ namespace Invidux_Data.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3433),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(3878),
                             Expires = true,
                             Name = "Driver License",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -228,7 +228,7 @@ namespace Invidux_Data.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3434),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(3880),
                             Expires = true,
                             Name = "International Passport",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -236,7 +236,7 @@ namespace Invidux_Data.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3435),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(3881),
                             Expires = false,
                             Name = "NIN",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -244,7 +244,7 @@ namespace Invidux_Data.Migrations
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3436),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(3882),
                             Expires = false,
                             Name = "Voter's Card",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -277,21 +277,21 @@ namespace Invidux_Data.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3461),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(3909),
                             Status = "Level1",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3463),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(3910),
                             Status = "Level2",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3464),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(3911),
                             Status = "Level2",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
@@ -323,21 +323,21 @@ namespace Invidux_Data.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3482),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(3932),
                             Status = "Pending",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3484),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(3934),
                             Status = "Verified",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3484),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(3935),
                             Status = "Restricted",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
@@ -369,28 +369,28 @@ namespace Invidux_Data.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3511),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(3961),
                             Name = "Wallet",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3512),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(3962),
                             Name = "Card",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3513),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(3963),
                             Name = "Bank Transfer",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3513),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(3964),
                             Name = "KongaPay",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
@@ -423,44 +423,78 @@ namespace Invidux_Data.Migrations
                         {
                             Id = 1,
                             Class = "Off-plan",
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3534),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(3985),
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 2,
                             Class = "Pre-purchased",
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3535),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(3986),
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 3,
                             Class = "Wait-listed",
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3536),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(3987),
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 4,
                             Class = "Rented",
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3537),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(3988),
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 5,
                             Class = "Mortgage-Like",
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3538),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(3989),
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 6,
                             Class = "Under Management",
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3538),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(3990),
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
+                });
+
+            modelBuilder.Entity("Invidux_Domain.Models.SecurityToken", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ExpiresOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Otp")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SecurityType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SecurityTokens");
                 });
 
             modelBuilder.Entity("Invidux_Domain.Models.SecurityType", b =>
@@ -489,28 +523,28 @@ namespace Invidux_Data.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3561),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(4014),
                             Type = "User Registration",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3562),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(4016),
                             Type = "Two Factor Activation",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3563),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(4037),
                             Type = "Two Factor Verification",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3563),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(4038),
                             Type = "BVN Verification",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
@@ -544,82 +578,82 @@ namespace Invidux_Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "31ebcba2-648a-4359-bede-2c3d2baf9937",
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3589),
+                            Id = "abec80bb-552c-44c6-bf33-23c3e013f288",
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(4066),
                             Name = "Super Admin",
-                            RoleId = "68c1e442-983a-498c-b2f2-5fd57fa96863",
+                            RoleId = "6a0d58f7-1b24-4bdc-8d27-bd0e6b2b2265",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = "efb5cf03-acfc-4fa1-8c07-a6564b7317d8",
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3593),
+                            Id = "77986fa2-36aa-4950-b0e0-f945dbd1097b",
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(4070),
                             Name = "Customer Support",
-                            RoleId = "68c1e442-983a-498c-b2f2-5fd57fa96863",
+                            RoleId = "6a0d58f7-1b24-4bdc-8d27-bd0e6b2b2265",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = "2584c729-2e74-4993-a0a1-8931e0a6b0c7",
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3598),
+                            Id = "90868d99-411e-4293-872a-09e3b655e04e",
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(4072),
                             Name = "Broker",
-                            RoleId = "2f67d11c-d2a8-43bf-bb7c-4344aa5e57de",
+                            RoleId = "0f4fc1da-b171-48d0-b7fe-b647c68752b7",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = "d36907df-db04-4970-aa8a-0d7c0ae60592",
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3600),
+                            Id = "9aede186-5c16-4dc8-95c6-3c5bac1522ee",
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(4074),
                             Name = "Dealer",
-                            RoleId = "2f67d11c-d2a8-43bf-bb7c-4344aa5e57de",
+                            RoleId = "0f4fc1da-b171-48d0-b7fe-b647c68752b7",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = "9743a9c5-1c1b-4232-986a-b80b62614d93",
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3602),
+                            Id = "0c6279ef-e595-49c6-8ff3-9f6a393f432a",
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(4076),
                             Name = "Accrediated",
-                            RoleId = "376f3aa5-8b63-43c3-b86c-77487735a323",
+                            RoleId = "c3bee9c7-75b0-455f-8f3c-27d44e45134a",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = "1c17b74d-54a7-4b1b-8c65-9a2d8699a59a",
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3604),
+                            Id = "4664d9ba-9a62-4a00-8a5b-5a32c0ae34fe",
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(4081),
                             Name = "Institutional",
-                            RoleId = "376f3aa5-8b63-43c3-b86c-77487735a323",
+                            RoleId = "c3bee9c7-75b0-455f-8f3c-27d44e45134a",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = "b2d65d56-b116-417f-ac75-79e878eeab5e",
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3606),
+                            Id = "6d7da5b0-bf89-4791-a331-1b91d235852c",
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(4083),
                             Name = "Retail",
-                            RoleId = "376f3aa5-8b63-43c3-b86c-77487735a323",
+                            RoleId = "c3bee9c7-75b0-455f-8f3c-27d44e45134a",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = "b01dc913-4621-4068-9cab-b10fd51cf8b5",
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3608),
+                            Id = "ac151d0b-8a7c-48fa-8174-4aeb8e0738e9",
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(4085),
                             Name = "Token Issuer",
-                            RoleId = "484a69e9-99c2-41c0-9e02-3705da64dc5c",
+                            RoleId = "b0237720-d9ff-4277-90f0-04fb7c36ba8d",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = "f6900617-edcd-4002-8634-1cd6dc625fe8",
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3610),
+                            Id = "25a7bf04-4cf8-4914-808c-698dee2ccd7a",
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(4088),
                             Name = "Custodian",
-                            RoleId = "82a44040-28a1-4adc-a581-535f63aeab60",
+                            RoleId = "dfdc6669-a8c1-48b3-a87c-da15ad25da9f",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = "54a73c69-073e-4dca-a11a-f56317d9655b",
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3612),
+                            Id = "9c0574fd-75bb-4a13-bacd-85f5b01c6670",
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(4090),
                             Name = "Property Manager",
-                            RoleId = "82a44040-28a1-4adc-a581-535f63aeab60",
+                            RoleId = "dfdc6669-a8c1-48b3-a87c-da15ad25da9f",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
@@ -650,42 +684,42 @@ namespace Invidux_Data.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3637),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(4116),
                             Status = "Off-Plan",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3638),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(4117),
                             Status = "Wait-listed",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3639),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(4118),
                             Status = "Selling",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3639),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(4119),
                             Status = "Fully Sold",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3640),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(4120),
                             Status = "Trading",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 6,
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3642),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(4121),
                             Status = "Exited",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
@@ -717,35 +751,35 @@ namespace Invidux_Data.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3662),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(4142),
                             TransactionType = "Buy",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3663),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(4144),
                             TransactionType = "Sell",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3664),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(4145),
                             TransactionType = "Transfer-in",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3665),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(4146),
                             TransactionType = "Transfer-out",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3666),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(4146),
                             TransactionType = "Exited",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
@@ -830,49 +864,49 @@ namespace Invidux_Data.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3704),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(4171),
                             Type = "Deposit",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3705),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(4172),
                             Type = "Withdrawal",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3705),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(4173),
                             Type = "Token Earnings",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3706),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(4174),
                             Type = "Referal Earnings",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3707),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(4175),
                             Type = "Tranfer-in",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 6,
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3708),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(4176),
                             Type = "Transfer-out",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 7,
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3709),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(4177),
                             Type = "Payment",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
@@ -904,21 +938,21 @@ namespace Invidux_Data.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3739),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(4199),
                             Type = "Login",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3740),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(4202),
                             Type = "Transaction",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3741),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(4203),
                             Type = "Trading",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
@@ -950,14 +984,14 @@ namespace Invidux_Data.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3758),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(4225),
                             Type = "Email",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2023, 12, 16, 12, 52, 25, 55, DateTimeKind.Utc).AddTicks(3759),
+                            CreatedAt = new DateTime(2023, 12, 17, 8, 58, 4, 101, DateTimeKind.Utc).AddTicks(4226),
                             Type = "Google Auth",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
@@ -1024,12 +1058,14 @@ namespace Invidux_Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal?>("InvestmentLimitUsed")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("JobSector")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal?>("RemainingAllowance")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -1188,29 +1224,6 @@ namespace Invidux_Data.Migrations
                     b.ToTable("UserNextOfKins");
                 });
 
-            modelBuilder.Entity("Invidux_Domain.Models.UserSubRole", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("SubRoleId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SubRoleId");
-
-                    b.ToTable("UserSubRoles");
-                });
-
             modelBuilder.Entity("Invidux_Domain.Models.UserTwoFactorCover", b =>
                 {
                     b.Property<int>("Id")
@@ -1241,45 +1254,10 @@ namespace Invidux_Data.Migrations
                     b.ToTable("UserTwoFactorCovers");
                 });
 
-            modelBuilder.Entity("Invidux_Domain.Models.VerificationToken", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ExpiresOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Otp")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SecurityType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("VerificationTokens");
-                });
-
             modelBuilder.Entity("Invidux_Domain.Models.Wallet", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
@@ -1535,36 +1513,36 @@ namespace Invidux_Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "68c1e442-983a-498c-b2f2-5fd57fa96863",
-                            ConcurrencyStamp = "152ec2bb-de96-49cc-ab90-b63fb50d8adc",
+                            Id = "6a0d58f7-1b24-4bdc-8d27-bd0e6b2b2265",
+                            ConcurrencyStamp = "09b909e4-60f1-49c2-a1ce-c4c2841226c1",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "2f67d11c-d2a8-43bf-bb7c-4344aa5e57de",
-                            ConcurrencyStamp = "b4e00c67-fd98-4e41-9bf5-8ca903db2656",
+                            Id = "0f4fc1da-b171-48d0-b7fe-b647c68752b7",
+                            ConcurrencyStamp = "966c2909-6c91-4476-bac4-229b227a2e1b",
                             Name = "Dealer/Broker",
                             NormalizedName = "DEALER/BROKER"
                         },
                         new
                         {
-                            Id = "376f3aa5-8b63-43c3-b86c-77487735a323",
-                            ConcurrencyStamp = "9ae6e2b9-a2e5-4974-9660-085d4190e275",
+                            Id = "c3bee9c7-75b0-455f-8f3c-27d44e45134a",
+                            ConcurrencyStamp = "e59f37f4-3f7b-457b-856c-4c79abf610b4",
                             Name = "Investor",
                             NormalizedName = "INVESTOR"
                         },
                         new
                         {
-                            Id = "484a69e9-99c2-41c0-9e02-3705da64dc5c",
-                            ConcurrencyStamp = "a0c00598-8e08-4cc7-85c6-a04be019434a",
+                            Id = "b0237720-d9ff-4277-90f0-04fb7c36ba8d",
+                            ConcurrencyStamp = "4e67b396-696e-49d6-bb56-15c9fef0d452",
                             Name = "Token Issuer",
                             NormalizedName = "TOKEN ISSUER"
                         },
                         new
                         {
-                            Id = "82a44040-28a1-4adc-a581-535f63aeab60",
-                            ConcurrencyStamp = "fd08adea-647e-4762-81ed-b1c98bd15d7f",
+                            Id = "dfdc6669-a8c1-48b3-a87c-da15ad25da9f",
+                            ConcurrencyStamp = "b696664d-003d-41a6-a0d4-d2873b901e05",
                             Name = "Partner",
                             NormalizedName = "PARTNER"
                         });
@@ -1584,12 +1562,17 @@ namespace Invidux_Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("SubRoleId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("TwoFactorType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
+
+                    b.HasIndex("SubRoleId");
 
                     b.HasDiscriminator().HasValue("AppUser");
                 });
@@ -1679,17 +1662,6 @@ namespace Invidux_Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Invidux_Domain.Models.UserSubRole", b =>
-                {
-                    b.HasOne("Invidux_Domain.Models.SubRole", "SubRole")
-                        .WithMany()
-                        .HasForeignKey("SubRoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("SubRole");
-                });
-
             modelBuilder.Entity("Invidux_Domain.Models.UserTwoFactorCover", b =>
                 {
                     b.HasOne("Invidux_Domain.Models.TwoFactorCover", "TwoFactorCover")
@@ -1769,6 +1741,21 @@ namespace Invidux_Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Invidux_Domain.Models.AppUser", b =>
+                {
+                    b.HasOne("Invidux_Domain.Models.SubRole", "SubRole")
+                        .WithMany("Users")
+                        .HasForeignKey("SubRoleId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("SubRole");
+                });
+
+            modelBuilder.Entity("Invidux_Domain.Models.SubRole", b =>
+                {
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("Invidux_Domain.Models.AppRole", b =>

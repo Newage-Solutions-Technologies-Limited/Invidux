@@ -22,8 +22,8 @@ builder.Services.AddDbContext<InviduxDBContext>(options =>
                 options.UseSqlServer(
                     builder.Configuration.GetConnectionString("LocalDB"),
                     p => p.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery))
-                .EnableSensitiveDataLogging()
-                , ServiceLifetime.Scoped);
+                    .EnableSensitiveDataLogging()
+                    , ServiceLifetime.Scoped);
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IUserContextService, UserContextService>();
 builder.Services.AddAutoMapper(typeof(Mapping).Assembly);

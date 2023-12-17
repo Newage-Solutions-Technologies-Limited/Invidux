@@ -3,6 +3,7 @@ using Invidux_Domain.Utilities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace Invidux_Data.Context
 {
@@ -33,6 +34,12 @@ namespace Invidux_Data.Context
             {
                 entity.ToTable(name: "Roles");
             });
+
+            builder.Entity<AppUser>()
+               .HasOne(au => au.SubRole) // AppUser has one SubRole
+               .WithMany(sr => sr.Users) // SubRole can be associated with many AppUsers
+               .HasForeignKey(au => au.SubRoleId) // Foreign key in AppUser
+               .OnDelete(DeleteBehavior.NoAction); // Prevent cascade delete
 
             builder.Entity<AppRole>().HasData(
                 new AppRole { Id = adminRoleId, Name = RoleStrings.Admin, NormalizedName = RoleStrings.Admin.ToUpper(), ConcurrencyStamp = Guid.NewGuid().ToString() },
@@ -163,6 +170,14 @@ namespace Invidux_Data.Context
                 new TwoFactorType { Id = 1, Type = TwoFactorTypeStrings.Email, CreatedAt = DateTime.UtcNow },
                 new TwoFactorType { Id = 2, Type = TwoFactorTypeStrings.GoogleAuth, CreatedAt = DateTime.UtcNow }
             );
+
+            builder.Entity<UserIncomeInfo>(entity =>
+            {
+                entity.Property(e => e.InvestmentLimitUsed)
+                      .HasPrecision(18, 2); // Set precision and scale    
+                entity.Property(e => e.RemainingAllowance)
+                      .HasPrecision(18, 2); // Set precision and scale                
+            });
         }
 
         public DbSet<AppRole> AppRoles { get; set; }
@@ -176,6 +191,7 @@ namespace Invidux_Data.Context
         public DbSet<KycStatus> KycStatuses { get; set; }
         public DbSet<PaymentMethod> PaymentMethods { get; set; }
         public DbSet<PropertyClass> PropertyClasses { get; set; }
+        public DbSet<SecurityToken> SecurityTokens { get; set; }
         public DbSet<SecurityType> SecurityTypes { get; set; }
         public DbSet<SubRole> SubRoles { get; set; }
         public DbSet<TokenListingStatus> TokenListingStatuses { get; set; }
@@ -189,9 +205,7 @@ namespace Invidux_Data.Context
         public DbSet<UserInfo> UserInformation { get; set; }
         public DbSet<UserKycInfo> UserKycInfos { get; set; }
         public DbSet<UserNextOfKin> UserNextOfKins { get; set; }
-        public DbSet<UserSubRole> UserSubRoles { get; set; }
         public DbSet<UserTwoFactorCover> UserTwoFactorCovers { get; set; }
-        public DbSet<VerificationToken> VerificationTokens { get; set; }
         public DbSet<Wallet> Wallets { get; set; }
 
 

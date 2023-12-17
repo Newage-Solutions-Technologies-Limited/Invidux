@@ -66,14 +66,14 @@ namespace Invidux_Core.Repository.Implementations
             }
             await _userManager.AddToRoleAsync(newUser, RoleStrings.Investor);
 
-            var token = new VerificationToken
+            var token = new SecurityToken
             {
                 UserId = newUser.Id,
                 Email = newUser.Email,
                 SecurityType = SecurityTypeStrings.UserRegistration,
                 Otp = TokenGenerator.GetUniqueKey(6)
             };
-            dc.VerificationTokens.Add(token);
+            dc.SecurityTokens.Add(token);
             await dc.SaveChangesAsync();
             string subject = "Confirm your email";
             string message = $"<p>Your email confirmation token <span>{token.Otp}</span> expires in 10 minutes.</p>";
@@ -96,7 +96,7 @@ namespace Invidux_Core.Repository.Implementations
         public async Task<string> VerifyOtp(int otp, string email)
         {
             // Find the OTP in the database
-            var existingToken = await dc.VerificationTokens.SingleOrDefaultAsync(t => t.Otp == otp);
+            var existingToken = await dc.SecurityTokens.SingleOrDefaultAsync(t => t.Otp == otp);
 
             if (existingToken != null)
             {
@@ -122,7 +122,7 @@ namespace Invidux_Core.Repository.Implementations
                                 }
 
                                 // Delete the OTP record from the database
-                                dc.VerificationTokens.Remove(existingToken);
+                                dc.SecurityTokens.Remove(existingToken);
                                 await dc.SaveChangesAsync();
 
                                 return user.RegistrationStatus;
@@ -132,7 +132,7 @@ namespace Invidux_Core.Repository.Implementations
                         }
                         return null;
                     }
-                    dc.VerificationTokens.Remove(existingToken);
+                    dc.SecurityTokens.Remove(existingToken);
                     await dc.SaveChangesAsync();
                     // Return null if the OTP has expired
                     return null;
@@ -156,14 +156,14 @@ namespace Invidux_Core.Repository.Implementations
                     if (user.OtpSentCount != 0)
                     {
                         // Generate a new OTP
-                        var token = new VerificationToken
+                        var token = new SecurityToken
                         {
                             UserId = user.Id,
                             Email = email,
                             SecurityType = SecurityTypeStrings.UserRegistration,
                             Otp = TokenGenerator.GetUniqueKey(6)
                         };
-                        dc.VerificationTokens.Add(token);
+                        dc.SecurityTokens.Add(token);
                         await dc.SaveChangesAsync();
                         string subject = "Confirm your email";
                         string message = $"<p>Your email confirmation token <span>{token.Otp}</span> expires in 10 minutes.</p>";
@@ -231,10 +231,12 @@ namespace Invidux_Core.Repository.Implementations
                 {
                     // Update the existing user's profile based on the CompleteRegistration data
 
+                    var subRole = await dc.SubRoles.FirstAsync(sr => sr.Name == SubRolesStrings.Retail);
                     existingUser.UserName = user.Username;
                     existingUser.PhoneNumber = user.Phone;
                     existingUser.OtpSentCount = 5;
                     existingUser.UpdatedAt = DateTime.UtcNow;
+                    existingUser.SubRoleId =  subRole.Id;
                     
                     // Update the user's profile using the UserManager
                     var result = await _userManager.UpdateAsync(existingUser);                    
@@ -259,12 +261,6 @@ namespace Invidux_Core.Repository.Implementations
                             CountryId = user.CountryId
                         };
 
-                        var subRole = await dc.SubRoles.FirstAsync(sr => sr.Name == SubRolesStrings.Retail);
-                        var userSubRole = new UserSubRole
-                        {
-                            UserId = existingUser.Id,
-                            SubRoleId = subRole.Id,
-                        };
                         var kycInfo = new UserKycInfo
                         {
                             UserId = existingUser.Id,
@@ -274,7 +270,7 @@ namespace Invidux_Core.Repository.Implementations
                         };
                         var wallet = new Wallet
                         {
-                            Id = Guid.NewGuid(),
+                            Id = Guid.NewGuid().ToString(),
                             Active = false,
                             PinSet = false,
                             WalletPin = 1234,
@@ -282,7 +278,6 @@ namespace Invidux_Core.Repository.Implementations
                         };
                         dc.Wallets.Add(wallet);
                         dc.UserKycInfos.Add(kycInfo);
-                        dc.UserSubRoles.Add(userSubRole);
                         dc.UserAddresses.Add(userAddress);
                         dc.UserInformation.Add(userInfo);
                         await dc.SaveChangesAsync();

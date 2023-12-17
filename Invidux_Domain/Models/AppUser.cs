@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Invidux_Domain.Utilities;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Invidux_Domain.Models
 {
@@ -8,6 +9,9 @@ namespace Invidux_Domain.Models
         public string RegistrationStatus  { get; set; }
         public int OtpSentCount { get; set; }
         public string TwoFactorType { get; set; }
+        [ForeignKey("SubRole")]
+        public string? SubRoleId { get; set; }
+        public virtual SubRole SubRole { get; set; }
         public DateTime RegistrationDate { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
         public virtual UserInfo? Personal { get; set; }

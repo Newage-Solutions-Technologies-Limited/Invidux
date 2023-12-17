@@ -105,7 +105,7 @@ namespace Invidux_Core.Repository.Implementations
                 if (user.RegistrationStatus == StatusStrings.Verified)
                 {
                     // Generates and sends a verification token for Two-Factor Authentication
-                    var token = new VerificationToken
+                    var token = new SecurityToken
                     {
                         // Creates a verification token with expiration
                         // Saves the token in the database and sends it via email
@@ -118,7 +118,7 @@ namespace Invidux_Core.Repository.Implementations
                     };
 
                     // Adds the token to the database
-                    dc.VerificationTokens.Add(token);
+                    dc.SecurityTokens.Add(token);
                     await dc.SaveChangesAsync();
                     string subject = "Verify login";
                     string message = $"<p>Your login confirmation token <span>{token.Otp}</span> expires in 10 minutes.</p>";
@@ -155,7 +155,7 @@ namespace Invidux_Core.Repository.Implementations
         public async Task<LoginResponse> VerifyOtp(int otp, string email)
         {
             // Find the OTP in the database
-            var existingToken = await dc.VerificationTokens.SingleOrDefaultAsync(t => t.Otp == otp);
+            var existingToken = await dc.SecurityTokens.SingleOrDefaultAsync(t => t.Otp == otp);
             var jwtHelper = new JWT(config);
 
             if (existingToken != null)
@@ -187,7 +187,7 @@ namespace Invidux_Core.Repository.Implementations
                                     response.Token = jwtHelper.CreateJWT(user);
 
                                     // Delete the used OTP record from the database
-                                    dc.VerificationTokens.Remove(existingToken);
+                                    dc.SecurityTokens.Remove(existingToken);
                                     await dc.SaveChangesAsync();
                                     return response;
                                 }
@@ -201,13 +201,13 @@ namespace Invidux_Core.Repository.Implementations
                                     response.RegistrationStatus = user.RegistrationStatus;
 
                                     // Delete the used OTP record from the database
-                                    dc.VerificationTokens.Remove(existingToken);
+                                    dc.SecurityTokens.Remove(existingToken);
                                     await dc.SaveChangesAsync();
                                     return response;
                                 }
                             }
                             // If user not found, delete the OTP record from the database
-                            dc.VerificationTokens.Remove(existingToken);
+                            dc.SecurityTokens.Remove(existingToken);
                             await dc.SaveChangesAsync();
 
                             return null;
