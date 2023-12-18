@@ -239,7 +239,7 @@ namespace Invidux_Api.Controllers
                 // Completing user registration using the provided details
                 var result = await uow.RegistrationRepo.CompleteRegistration(user);
 
-                if (!result)
+                if (result == null)
                 {
                     // Returning a BadRequest response indicating registration failure
                     var errorResponse = new ErrorResponseDTO(
@@ -253,7 +253,8 @@ namespace Invidux_Api.Controllers
                 var response = new Response<UserRegistrationDto>
                 {
                     Successful = true,
-                    Message = "Registration successful."
+                    Message = "Registration successful.",
+                    Data = result
                 };
                 return Ok(response);
 

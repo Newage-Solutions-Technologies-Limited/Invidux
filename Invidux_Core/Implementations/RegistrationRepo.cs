@@ -216,7 +216,7 @@ namespace Invidux_Core.Repository.Implementations
 
 
         // This unit of work takes care of user registration completion
-        public async Task<bool> CompleteRegistration(CompleteRegistration user)
+        public async Task<UserRegistrationDto> CompleteRegistration(CompleteRegistration user)
         {
             // Find the existing user by their username or other unique identifier
             var existingUser = await _userManager.FindByEmailAsync(user.Email);
@@ -281,7 +281,23 @@ namespace Invidux_Core.Repository.Implementations
                         dc.UserAddresses.Add(userAddress);
                         dc.UserInformation.Add(userInfo);
                         await dc.SaveChangesAsync();
-                        return true;
+                        var response = new UserRegistrationDto
+                        {
+                            Id = existingUser.Id,
+                            Role = RoleStrings.Investor,
+                            SubRole = existingUser.SubRole.Name,
+                            Username = existingUser.UserName,
+                            Status = existingUser.RegistrationStatus,
+                            Email = existingUser.Email,
+                            FirstName = userInfo.FirstName,
+                            LastName = userInfo.LastName,
+                            CreatedAt = existingUser.RegistrationDate,
+                            OtpAllowance = existingUser.OtpSentCount,
+                            WalletActivated = wallet.Active,
+                            HasTokenHistory = false,
+                            HoldingToken = false
+                        };
+                        return response;
                     }
                     else
                     {
@@ -299,7 +315,7 @@ namespace Invidux_Core.Repository.Implementations
             else
             {
                 
-                return false;
+                return null;
             }
         }
 
