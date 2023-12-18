@@ -75,7 +75,7 @@ namespace Invidux_Core.Repository.Implementations
             if (result.Succeeded)
             {
                 // Handles scenarios based on user status
-                if (user.RegistrationStatus == RegStatusStrings.Active)
+                if (user.RegistrationStatus == StatusStrings.Verified)
                 {
                     // Creates JWT token for the user
                     response.UserId = user.Id;
@@ -87,7 +87,7 @@ namespace Invidux_Core.Repository.Implementations
                     return response;
                 }
 
-                if (user.RegistrationStatus == RegStatusStrings.Restricted)
+                if (user.RegistrationStatus == StatusStrings.Restricted)
                 {
                     // Returns response for a restricted user
                     response.UserId = user.Id;
@@ -102,10 +102,10 @@ namespace Invidux_Core.Repository.Implementations
             if (result.RequiresTwoFactor)
             {
                 // Handles scenarios based on user status for Two-Factor Authentication
-                if (user.RegistrationStatus == RegStatusStrings.Active)
+                if (user.RegistrationStatus == StatusStrings.Verified)
                 {
                     // Generates and sends a verification token for Two-Factor Authentication
-                    var token = new VerificationToken
+                    var token = new SecurityToken
                     {
                         // Creates a verification token with expiration
                         // Saves the token in the database and sends it via email
@@ -118,7 +118,7 @@ namespace Invidux_Core.Repository.Implementations
                     };
 
                     // Adds the token to the database
-                    dc.VerificationTokens.Add(token);
+                    dc.SecurityTokens.Add(token);
                     await dc.SaveChangesAsync();
                     string subject = "Verify login";
                     string message = $"<p>Your login confirmation token <span>{token.Otp}</span> expires in 10 minutes.</p>";
@@ -135,7 +135,7 @@ namespace Invidux_Core.Repository.Implementations
                     return response;
                 }
 
-                if (user.RegistrationStatus == RegStatusStrings.Restricted)
+                if (user.RegistrationStatus == StatusStrings.Restricted)
                 {
                     // Returns response for a restricted user during Two-Factor Authentication
                     response.UserId = user.Id;
@@ -152,67 +152,71 @@ namespace Invidux_Core.Repository.Implementations
 
 
         // Verifies the provided OTP (One-Time Password)
-        public async Task<LoginResponse> VerifyOtp(int otp)
+        public async Task<LoginResponse> VerifyOtp(int otp, string email)
         {
             // Find the OTP in the database
-            var existingToken = await dc.VerificationTokens.SingleOrDefaultAsync(t => t.Otp == otp);
+            var existingToken = await dc.SecurityTokens.SingleOrDefaultAsync(t => t.Otp == otp);
             var jwtHelper = new JWT(config);
 
             if (existingToken != null)
             {
-                // Check if the token has not expired
-                if (existingToken.ExpiresOn >= DateTime.UtcNow)
+               if(existingToken.Email == email)
                 {
-                    // If the token type is for Two-Factor Verification
-                    if (existingToken.SecurityType == SecurityTypeStrings.TwoFactorVerification)
+                    // Check if the token has not expired
+                    if (existingToken.ExpiresOn >= DateTime.UtcNow)
                     {
-                        // Retrieve the user associated with the token
-                        var user = await _userManager.FindByIdAsync(existingToken.UserId);
-
-                        // If the user is found
-                        if (user != null)
+                        // If the token type is for Two-Factor Verification
+                        if (existingToken.SecurityType == SecurityTypeStrings.TwoFactorVerification)
                         {
-                            var response = new LoginResponse();
+                            // Retrieve the user associated with the token
+                            var user = await _userManager.FindByIdAsync(existingToken.UserId);
 
-                            // If user status is active, create JWT token for user
-                            if (user.RegistrationStatus == RegStatusStrings.Active)
+                            // If the user is found
+                            if (user != null)
                             {
-                                // Prepare the response with user information and JWT token
-                                response.UserId = user.Id;
-                                response.Email = user.Email;
-                                response.Username = user.UserName;
-                                response.RegistrationStatus = user.RegistrationStatus;
-                                response.Token = jwtHelper.CreateJWT(user);
+                                var response = new LoginResponse();
 
-                                // Delete the used OTP record from the database
-                                dc.VerificationTokens.Remove(existingToken);
-                                await dc.SaveChangesAsync();
-                                return response;
-                            }
-                            // If user status is restricted, return response without JWT token
-                            else if (user.RegistrationStatus == RegStatusStrings.Restricted)
-                            {
-                                // Prepare the response without a JWT token
-                                response.UserId = user.Id;
-                                response.Email = user.Email;
-                                response.Username = user.UserName;
-                                response.RegistrationStatus = user.RegistrationStatus;
+                                // If user status is active, create JWT token for user
+                                if (user.RegistrationStatus == StatusStrings.Verified)
+                                {
+                                    // Prepare the response with user information and JWT token
+                                    response.UserId = user.Id;
+                                    response.Email = user.Email;
+                                    response.Username = user.UserName;
+                                    response.RegistrationStatus = user.RegistrationStatus;
+                                    response.Token = jwtHelper.CreateJWT(user);
 
-                                // Delete the used OTP record from the database
-                                dc.VerificationTokens.Remove(existingToken);
-                                await dc.SaveChangesAsync();
-                                return response;
+                                    // Delete the used OTP record from the database
+                                    dc.SecurityTokens.Remove(existingToken);
+                                    await dc.SaveChangesAsync();
+                                    return response;
+                                }
+                                // If user status is restricted, return response without JWT token
+                                else if (user.RegistrationStatus == StatusStrings.Restricted)
+                                {
+                                    // Prepare the response without a JWT token
+                                    response.UserId = user.Id;
+                                    response.Email = user.Email;
+                                    response.Username = user.UserName;
+                                    response.RegistrationStatus = user.RegistrationStatus;
+
+                                    // Delete the used OTP record from the database
+                                    dc.SecurityTokens.Remove(existingToken);
+                                    await dc.SaveChangesAsync();
+                                    return response;
+                                }
                             }
+                            // If user not found, delete the OTP record from the database
+                            dc.SecurityTokens.Remove(existingToken);
+                            await dc.SaveChangesAsync();
+
+                            return null;
                         }
-                        // If user not found, delete the OTP record from the database
-                        dc.VerificationTokens.Remove(existingToken);
-                        await dc.SaveChangesAsync();
-
-                        return null;
+                        return null; // Return null for non-Two-Factor Verification tokens
                     }
-                    return null; // Return null for non-Two-Factor Verification tokens
+                    return null; // Return null if the OTP has expired
                 }
-                return null; // Return null if the OTP has expired
+               throw new Exception("Invalid account");
             }
 
             return null; // Return null if the OTP does not exist in the database
@@ -248,6 +252,22 @@ namespace Invidux_Core.Repository.Implementations
 
             // Returns user information or null if not found
             return userInfo == null ? null : userInfo;
+        }
+
+        // Retrieves specific user kyc information based on the provided userId
+        public async Task<UserKycInfo> GetKycInfo(string userId)
+        {
+            // Queries the database to retrieve user-specific kyc information
+            var kycInfo = await dc.UserKycInfos.Where(dc => dc.UserId == userId).FirstOrDefaultAsync();
+
+            // Returns user kyc information or null if not found
+            return kycInfo == null ? null : kycInfo;
+        }
+
+        public async Task<KycIdCard> GetIdType(int id)
+        {
+            var idType = await dc.IdCards.FirstOrDefaultAsync(i => i.Id == id);
+            return idType == null ? null : idType;
         }
 
         // Adds a new next-of-kin record to the database

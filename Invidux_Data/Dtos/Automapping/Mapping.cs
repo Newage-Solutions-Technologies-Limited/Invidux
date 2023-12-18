@@ -67,7 +67,7 @@ namespace Invidux_Data.Dtos.AutoMapping
             CreateMap<TwoFactorType, TwoFactorTypeDto>();
 
            
-            //============================Post mappings==================================
+            //============================User Post mappings==================================
 
             // User Personal Information Request
             CreateMap<UserInfo, PersonalInfoDto>().ReverseMap();
@@ -77,6 +77,32 @@ namespace Invidux_Data.Dtos.AutoMapping
 
             // User KYC Request
             CreateMap<UserKycInfo, KYCRequest>().ReverseMap();
+
+            //============================Wallet mappings==================================
+
+            // Mapping from Wallet (domain model) to WalletResponseDto (DTO)
+            CreateMap<Wallet, WalletResponseDto>()
+                .ForMember(dest => dest.Wallet, opt => opt.MapFrom(src => src));
+
+            // Mapping from Wallet (domain model) to UserWalletDto (DTO)
+            CreateMap<Wallet, UserWalletDto>()
+                .ForMember(dest => dest.WalletId, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Tokens, opt => opt.MapFrom(src => src.UserTokens));
+
+            // Mapping from UserToken (domain model) to WalletTokenDto (DTO)
+            CreateMap<UserToken, WalletTokenDto>()
+                .ForMember(dest => dest.Balances, opt => opt.MapFrom(src => src))
+                .ForMember(dest => dest.DepositVirtualAccount, opt => opt.MapFrom(src =>
+                    src.BankAccounts.FirstOrDefault(ba => ba.AccountType == BankAccountTypeEnums.DepositVirtualAccount)))
+                .ForMember(dest => dest.WithdrawalBankAccount, opt => opt.MapFrom(src =>
+                    src.BankAccounts.FirstOrDefault(ba => ba.AccountType == BankAccountTypeEnums.WithdrawalBankAccount)));
+
+            // Mapping from UserToken (domain model) to BalancesDto (DTO)
+            CreateMap<UserToken, BalancesDto>();
+
+            // Mapping for BankAccount to DepositAccountDto and WithdrawalAccountDto
+            CreateMap<BankAccount, DepositAccountDto>();
+            CreateMap<BankAccount, WithdrawalAccountDto>();
         }
     }
 }

@@ -7,6 +7,7 @@ namespace Invidux_Core.Repository.Interfaces
         IRegistrationRepo RegistrationRepo { get; }
         IUserRepo UserRepo { get; }
         IUtitlityRepo UtitlityRepo { get; }
+        IWalletRepo WalletRepo { get; }
         Task<bool> SaveAsync();
         Task<bool> AuditSaveAsync(CancellationToken cancellationToken = default);
     }

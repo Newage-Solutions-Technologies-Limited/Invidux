@@ -3,6 +3,7 @@ using Invidux_Domain.Utilities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace Invidux_Data.Context
 {
@@ -20,6 +21,7 @@ namespace Invidux_Data.Context
             var adminRoleId = Guid.NewGuid().ToString();
             var dealerBrokerRoleId = Guid.NewGuid().ToString();
             var investorRoleId = Guid.NewGuid().ToString();
+            var issuerRoleId = Guid.NewGuid().ToString();
             var partnerRoleId = Guid.NewGuid().ToString();
 
             base.OnModelCreating(builder);
@@ -33,10 +35,17 @@ namespace Invidux_Data.Context
                 entity.ToTable(name: "Roles");
             });
 
+            builder.Entity<AppUser>()
+               .HasOne(au => au.SubRole) // AppUser has one SubRole
+               .WithMany(sr => sr.Users) // SubRole can be associated with many AppUsers
+               .HasForeignKey(au => au.SubRoleId) // Foreign key in AppUser
+               .OnDelete(DeleteBehavior.NoAction); // Prevent cascade delete
+
             builder.Entity<AppRole>().HasData(
                 new AppRole { Id = adminRoleId, Name = RoleStrings.Admin, NormalizedName = RoleStrings.Admin.ToUpper(), ConcurrencyStamp = Guid.NewGuid().ToString() },
                 new AppRole { Id = dealerBrokerRoleId, Name = RoleStrings.Dealer_Broker, NormalizedName = RoleStrings.Dealer_Broker.ToUpper(), ConcurrencyStamp = Guid.NewGuid().ToString() },
                 new AppRole { Id = investorRoleId, Name = RoleStrings.Investor, NormalizedName = RoleStrings.Investor.ToUpper() , ConcurrencyStamp = Guid.NewGuid().ToString() },
+                new AppRole { Id = issuerRoleId, Name = RoleStrings.TokenIssuer, NormalizedName = RoleStrings.TokenIssuer.ToUpper(), ConcurrencyStamp = Guid.NewGuid().ToString() },
                 new AppRole { Id = partnerRoleId, Name = RoleStrings.Partner, NormalizedName = RoleStrings.Partner.ToUpper() , ConcurrencyStamp = Guid.NewGuid().ToString() }
             );
 
@@ -77,15 +86,15 @@ namespace Invidux_Data.Context
             );
 
             builder.Entity<KycLevel>().HasData(
-                new KycLevel { Id = 1, Status = "Level1", CreatedAt = DateTime.UtcNow },
-                new KycLevel { Id = 2, Status = "Level2", CreatedAt = DateTime.UtcNow },
-                new KycLevel { Id = 3, Status = "Level3", CreatedAt = DateTime.UtcNow }
+                new KycLevel { Id = 1, Status = KycLevelStrings.Level1, CreatedAt = DateTime.UtcNow },
+                new KycLevel { Id = 2, Status = KycLevelStrings.Level2, CreatedAt = DateTime.UtcNow },
+                new KycLevel { Id = 3, Status = KycLevelStrings.Level3, CreatedAt = DateTime.UtcNow }
             );
 
             builder.Entity<KycStatus>().HasData(
-                new KycStatus { Id = 1, Status = "Pending" , CreatedAt = DateTime.UtcNow },
-                new KycStatus { Id = 2, Status = "Verified" , CreatedAt = DateTime.UtcNow },
-                new KycStatus { Id = 3, Status = "Restricted" , CreatedAt = DateTime.UtcNow }
+                new KycStatus { Id = 1, Status = KycStatusStrings.Pending , CreatedAt = DateTime.UtcNow },
+                new KycStatus { Id = 2, Status = KycStatusStrings.Verified , CreatedAt = DateTime.UtcNow },
+                new KycStatus { Id = 3, Status = KycStatusStrings.Restricted , CreatedAt = DateTime.UtcNow }
             );
 
             builder.Entity<PaymentMethod>().HasData(
@@ -96,9 +105,9 @@ namespace Invidux_Data.Context
             );
 
             builder.Entity<PropertyClass>().HasData(
-                new PropertyClass { Id = 1, Class = "Pre-purchased", CreatedAt = DateTime.UtcNow },
-                new PropertyClass { Id = 2, Class = "Wait-listed", CreatedAt = DateTime.UtcNow },
-                new PropertyClass { Id = 3, Class = "Off-plan", CreatedAt = DateTime.UtcNow },
+                new PropertyClass { Id = 1, Class = "Off-plan", CreatedAt = DateTime.UtcNow },
+                new PropertyClass { Id = 2, Class = "Pre-purchased", CreatedAt = DateTime.UtcNow },
+                new PropertyClass { Id = 3, Class = "Wait-listed", CreatedAt = DateTime.UtcNow },
                 new PropertyClass { Id = 4, Class = "Rented", CreatedAt = DateTime.UtcNow },
                 new PropertyClass { Id = 5, Class = "Mortgage-Like", CreatedAt = DateTime.UtcNow },
                 new PropertyClass { Id = 6, Class = "Under Management", CreatedAt = DateTime.UtcNow }
@@ -119,16 +128,18 @@ namespace Invidux_Data.Context
                 new SubRole { Id = Guid.NewGuid().ToString(), Name = SubRolesStrings.Accrediated, RoleId = investorRoleId, CreatedAt = DateTime.UtcNow },
                 new SubRole { Id = Guid.NewGuid().ToString(), Name = SubRolesStrings.Institutional, RoleId = investorRoleId, CreatedAt = DateTime.UtcNow },
                 new SubRole { Id = Guid.NewGuid().ToString(), Name = SubRolesStrings.Retail, RoleId = investorRoleId, CreatedAt = DateTime.UtcNow },
+                new SubRole { Id = Guid.NewGuid().ToString(), Name = SubRolesStrings.TokenIssuer, RoleId = issuerRoleId, CreatedAt = DateTime.UtcNow },
                 new SubRole { Id = Guid.NewGuid().ToString(), Name = SubRolesStrings.Custodian, RoleId = partnerRoleId, CreatedAt = DateTime.UtcNow },
                 new SubRole { Id = Guid.NewGuid().ToString(), Name = SubRolesStrings.PropertyManager, RoleId = partnerRoleId, CreatedAt = DateTime.UtcNow }
             );
 
             builder.Entity<TokenListingStatus>().HasData(
-                new TokenListingStatus { Id = 1, Status ="Pre-Selling", CreatedAt = DateTime.UtcNow }, 
-                new TokenListingStatus { Id = 2, Status = "Selling" , CreatedAt = DateTime.UtcNow },
-                new TokenListingStatus { Id = 3, Status = "Fully Sold" , CreatedAt = DateTime.UtcNow },
-                new TokenListingStatus { Id = 4, Status = "Trading", CreatedAt = DateTime.UtcNow },
-                new TokenListingStatus { Id = 5, Status = "Exited", CreatedAt = DateTime.UtcNow }
+                new TokenListingStatus { Id = 1, Status = "Off-Plan", CreatedAt = DateTime.UtcNow},
+                new TokenListingStatus { Id = 2, Status ="Wait-listed", CreatedAt = DateTime.UtcNow }, 
+                new TokenListingStatus { Id = 3, Status = "Selling" , CreatedAt = DateTime.UtcNow },
+                new TokenListingStatus { Id = 4, Status = "Fully Sold" , CreatedAt = DateTime.UtcNow },
+                new TokenListingStatus { Id = 5, Status = "Trading", CreatedAt = DateTime.UtcNow },
+                new TokenListingStatus { Id = 6, Status = "Exited", CreatedAt = DateTime.UtcNow }
             );
 
             builder.Entity<TokenTransactionType>().HasData(
@@ -159,6 +170,22 @@ namespace Invidux_Data.Context
                 new TwoFactorType { Id = 1, Type = TwoFactorTypeStrings.Email, CreatedAt = DateTime.UtcNow },
                 new TwoFactorType { Id = 2, Type = TwoFactorTypeStrings.GoogleAuth, CreatedAt = DateTime.UtcNow }
             );
+
+            builder.Entity<UserIncomeInfo>(entity =>
+            {
+                entity.Property(e => e.InvestmentLimitUsed)
+                      .HasPrecision(18, 2); // Set precision and scale    
+                entity.Property(e => e.RemainingAllowance)
+                      .HasPrecision(18, 2); // Set precision and scale                
+            });
+
+            builder.Entity<UserToken>(entity =>
+            {
+                entity.Property(e => e.Available)
+                      .HasPrecision(18, 2); // Set precision and scale    
+                entity.Property(e => e.Earnings)
+                      .HasPrecision(18, 2); // Set precision and scale                
+            });
         }
 
         public DbSet<AppRole> AppRoles { get; set; }
@@ -172,6 +199,7 @@ namespace Invidux_Data.Context
         public DbSet<KycStatus> KycStatuses { get; set; }
         public DbSet<PaymentMethod> PaymentMethods { get; set; }
         public DbSet<PropertyClass> PropertyClasses { get; set; }
+        public DbSet<SecurityToken> SecurityTokens { get; set; }
         public DbSet<SecurityType> SecurityTypes { get; set; }
         public DbSet<SubRole> SubRoles { get; set; }
         public DbSet<TokenListingStatus> TokenListingStatuses { get; set; }
@@ -185,9 +213,8 @@ namespace Invidux_Data.Context
         public DbSet<UserInfo> UserInformation { get; set; }
         public DbSet<UserKycInfo> UserKycInfos { get; set; }
         public DbSet<UserNextOfKin> UserNextOfKins { get; set; }
-        public DbSet<UserSubRole> UserSubRoles { get; set; }
         public DbSet<UserTwoFactorCover> UserTwoFactorCovers { get; set; }
-        public DbSet<VerificationToken> VerificationTokens { get; set; }
+        public DbSet<UserToken> UserTokens {  get; set; }
         public DbSet<Wallet> Wallets { get; set; }
 
 

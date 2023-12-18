@@ -50,7 +50,7 @@ namespace Invidux_Core.Repository.Implementations
             {
                 Email = user.Email,
                 UserName = user.Email,
-                RegistrationStatus = RegStatusStrings.Pending,
+                RegistrationStatus = StatusStrings.Pending,
                 OtpSentCount = 5,
                 RegistrationDate = DateTime.UtcNow,
             };
@@ -66,14 +66,14 @@ namespace Invidux_Core.Repository.Implementations
             }
             await _userManager.AddToRoleAsync(newUser, RoleStrings.Investor);
 
-            var token = new VerificationToken
+            var token = new SecurityToken
             {
                 UserId = newUser.Id,
                 Email = newUser.Email,
                 SecurityType = SecurityTypeStrings.UserRegistration,
                 Otp = TokenGenerator.GetUniqueKey(6)
             };
-            dc.VerificationTokens.Add(token);
+            dc.SecurityTokens.Add(token);
             await dc.SaveChangesAsync();
             string subject = "Confirm your email";
             string message = $"<p>Your email confirmation token <span>{token.Otp}</span> expires in 10 minutes.</p>";
@@ -81,10 +81,11 @@ namespace Invidux_Core.Repository.Implementations
             var response = new UserRegistrationDto
             {
                 Id = newUser.Id,
-                RegistrationStatus = newUser.RegistrationStatus,
+                Status = newUser.RegistrationStatus,
                 Email = newUser.Email,
+                Role = RoleStrings.Investor,
                 //Otp = token.Otp,
-                RegistrationDate = newUser.RegistrationDate,
+                CreatedAt = newUser.RegistrationDate,
                 OtpAllowance = newUser.OtpSentCount,
             };
 
@@ -92,46 +93,52 @@ namespace Invidux_Core.Repository.Implementations
         }
 
         // This unit of work takes care of user email verifation
-        public async Task<string> VerifyOtp(int otp)
+        public async Task<string> VerifyOtp(int otp, string email)
         {
             // Find the OTP in the database
-            var existingToken = await dc.VerificationTokens.SingleOrDefaultAsync(t => t.Otp == otp);
+            var existingToken = await dc.SecurityTokens.SingleOrDefaultAsync(t => t.Otp == otp);
 
             if (existingToken != null)
             {
-                // Check if the token has not expired
-                if (existingToken.ExpiresOn >= DateTime.UtcNow)
+               if (existingToken.Email == email)
                 {
-
-                    if (existingToken.SecurityType == SecurityTypeStrings.UserRegistration)
+                    // Check if the token has not expired
+                    if (existingToken.ExpiresOn >= DateTime.UtcNow)
                     {
-                        // Set email verification to true for the user
-                        var user = await _userManager.FindByIdAsync(existingToken.UserId);
-                        if (user != null)
+
+                        if (existingToken.SecurityType == SecurityTypeStrings.UserRegistration)
                         {
-                            if (user.RegistrationStatus == RegStatusStrings.Pending)
+                            // Set email verification to true for the user
+                            var user = await _userManager.FindByIdAsync(existingToken.UserId);
+                            if (user != null)
                             {
-                                user.EmailConfirmed = true;
-                                user.RegistrationStatus = RegStatusStrings.Active;
-                                user.UpdatedAt = DateTime.UtcNow;
-                                await _userManager.UpdateAsync(user);
+                                if (user.RegistrationStatus == StatusStrings.Pending)
+                                {
+                                    user.EmailConfirmed = true;
+                                    user.RegistrationStatus = StatusStrings.Verified;
+                                    user.OtpSentCount = 5;
+                                    user.UpdatedAt = DateTime.UtcNow;
+                                    await _userManager.UpdateAsync(user);
+                                }
+
+                                // Delete the OTP record from the database
+                                dc.SecurityTokens.Remove(existingToken);
+                                await dc.SaveChangesAsync();
+
+                                return user.RegistrationStatus;
                             }
 
-                            // Delete the OTP record from the database
-                            dc.VerificationTokens.Remove(existingToken);
-                            await dc.SaveChangesAsync();
-
-                            return user.RegistrationStatus;
+                            return null;
                         }
-
                         return null;
                     }
+                    dc.SecurityTokens.Remove(existingToken);
+                    await dc.SaveChangesAsync();
+                    // Return null if the OTP has expired
                     return null;
-                }
-                // Return null if the OTP has expired
-                return null;
+               }
+               throw new Exception("Invalid account");
             }
-
             // Return null if the OTP does not exist
             return null;
         }
@@ -143,20 +150,20 @@ namespace Invidux_Core.Repository.Implementations
 
             if (user != null)
             {
-                if(user.RegistrationStatus == RegStatusStrings.Pending)
+                if(user.RegistrationStatus == StatusStrings.Pending)
                 {
                     // Check if the user's otpsentcount is not 0
                     if (user.OtpSentCount != 0)
                     {
                         // Generate a new OTP
-                        var token = new VerificationToken
+                        var token = new SecurityToken
                         {
                             UserId = user.Id,
                             Email = email,
                             SecurityType = SecurityTypeStrings.UserRegistration,
                             Otp = TokenGenerator.GetUniqueKey(6)
                         };
-                        dc.VerificationTokens.Add(token);
+                        dc.SecurityTokens.Add(token);
                         await dc.SaveChangesAsync();
                         string subject = "Confirm your email";
                         string message = $"<p>Your email confirmation token <span>{token.Otp}</span> expires in 10 minutes.</p>";
@@ -181,7 +188,7 @@ namespace Invidux_Core.Repository.Implementations
                     }
                     else
                     {
-                        user.RegistrationStatus = RegStatusStrings.Restricted;
+                        user.RegistrationStatus = StatusStrings.Restricted;
                         var result = await _userManager.UpdateAsync(user);
 
                         if (!result.Succeeded)
@@ -193,7 +200,7 @@ namespace Invidux_Core.Repository.Implementations
                         return -1;
                     }
                 }
-                else if (user.RegistrationStatus == RegStatusStrings.Restricted)
+                else if (user.RegistrationStatus == StatusStrings.Restricted)
                 {
                     return -1;
                 }
@@ -224,15 +231,15 @@ namespace Invidux_Core.Repository.Implementations
                 {
                     // Update the existing user's profile based on the CompleteRegistration data
 
+                    var subRole = await dc.SubRoles.FirstAsync(sr => sr.Name == SubRolesStrings.Retail);
                     existingUser.UserName = user.Username;
                     existingUser.PhoneNumber = user.Phone;
-                    existingUser.TwoFactorType = TwoFactorTypeStrings.Email;
+                    existingUser.OtpSentCount = 5;
                     existingUser.UpdatedAt = DateTime.UtcNow;
+                    existingUser.SubRoleId =  subRole.Id;
                     
                     // Update the user's profile using the UserManager
-                    var result = await _userManager.UpdateAsync(existingUser);
-
-                    
+                    var result = await _userManager.UpdateAsync(existingUser);                    
 
                     if (result.Succeeded)
                     {
@@ -243,6 +250,8 @@ namespace Invidux_Core.Repository.Implementations
                             MiddleName = user.MiddleName,
                             LastName = user.LastName,
                             UserId = existingUser.Id,
+                            // Assuming uploadedFile is an array or a list
+                            //ImageName = uploadedFile?[0] ?? "",
                             CreatedAt = DateTime.UtcNow,
                         };
                         var userAddress = new UserAddress
@@ -251,6 +260,24 @@ namespace Invidux_Core.Repository.Implementations
                             CreatedAt = DateTime.UtcNow,
                             CountryId = user.CountryId
                         };
+
+                        var kycInfo = new UserKycInfo
+                        {
+                            UserId = existingUser.Id,
+                            Level = KycLevelStrings.Level1,
+                            Status = KycStatusStrings.Pending,
+                            CreatedAt = DateTime.UtcNow
+                        };
+                        var wallet = new Wallet
+                        {
+                            Id = Guid.NewGuid().ToString(),
+                            Active = false,
+                            PinSet = false,
+                            WalletPin = 0,
+                            UserId = existingUser.Id
+                        };
+                        dc.Wallets.Add(wallet);
+                        dc.UserKycInfos.Add(kycInfo);
                         dc.UserAddresses.Add(userAddress);
                         dc.UserInformation.Add(userInfo);
                         await dc.SaveChangesAsync();
