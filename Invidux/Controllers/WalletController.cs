@@ -12,7 +12,6 @@ namespace Invidux_Api.Controllers
     /// <summary>
     /// This controller takes care of user wallet functionalities
     /// </summary>
-    [Route("wallet")]
     public class WalletController : BaseController
     {
         private readonly InviduxDBContext dc;
@@ -35,13 +34,12 @@ namespace Invidux_Api.Controllers
         [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status203NonAuthoritative)]
         [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status206PartialContent)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
-        [HttpGet("current-user/{userId}")]
-        public async Task<IActionResult> GetUserWallet(string userId)
+        [HttpGet("wallet/current-user")]
+        public async Task<IActionResult> GetUserWallet()
         {
             try
             {
-                string USERID = GetUserId();
-                Console.WriteLine("Claims User Id :" + USERID);
+                string userId = GetUserId();
                 var wallet = await uow.WalletRepo.GetWalletAsync(userId);
                 if (wallet == null)
                 {
@@ -91,11 +89,12 @@ namespace Invidux_Api.Controllers
         /// </summary>
         /// <param name="walletDto"></param>
         /// <returns></returns>
-        [HttpPatch("current-user/activate/{userId}")]
-        public async Task<IActionResult> ActivateWallet(ActivateWalletDto walletDto, string userId)
+        [HttpPatch("wallet/current-user/activate")]
+        public async Task<IActionResult> ActivateWallet(ActivateWalletDto walletDto)
         {
             try
             {
+                string userId = GetUserId();
                 throw new NotImplementedException();
             }
             catch (Exception ex)
@@ -113,11 +112,12 @@ namespace Invidux_Api.Controllers
         [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponseDTO), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
-        [HttpPatch("current-user/set-wallet-pin/{userId}")]
-        public async Task<IActionResult> SetWalletPin(SetWalletPinDto setWalletPin, string userId)
+        [HttpPatch("wallet/current-user/set-wallet-pin")]
+        public async Task<IActionResult> SetWalletPin(SetWalletPinDto setWalletPin)
         {
             try
             {
+                string userId = GetUserId();
                 var setPin = await uow.WalletRepo.SetWalletPin(setWalletPin, userId);
                 if (!setPin)
                 {
