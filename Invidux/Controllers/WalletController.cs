@@ -4,7 +4,6 @@ using Invidux_Data.Context;
 using Invidux_Data.Dtos;
 using Invidux_Data.Dtos.Request;
 using Invidux_Data.Dtos.Response;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -13,10 +12,8 @@ namespace Invidux_Api.Controllers
     /// <summary>
     /// This controller takes care of user wallet functionalities
     /// </summary>
-    [Route("api/v1/wallet")]
-    [ApiController]
-    [Authorize]
-    public class WalletController : ControllerBase
+    [Route("wallet")]
+    public class WalletController : BaseController
     {
         private readonly InviduxDBContext dc;
         private readonly IUnitofWork uow;
@@ -43,6 +40,8 @@ namespace Invidux_Api.Controllers
         {
             try
             {
+                string USERID = GetUserId();
+                Console.WriteLine("Claims User Id :" + USERID);
                 var wallet = await uow.WalletRepo.GetWalletAsync(userId);
                 if (wallet == null)
                 {

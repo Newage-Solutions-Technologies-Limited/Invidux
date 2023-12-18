@@ -1,24 +1,20 @@
 ﻿using AutoMapper;
 using Invidux_Core.Repository.Interfaces;
+using Invidux_Core.Services;
+using Invidux_Data.Dtos;
 using Invidux_Data.Dtos.Request;
 using Invidux_Data.Dtos.Response;
-using Invidux_Data.Dtos;
 using Invidux_Domain.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using Microsoft.AspNetCore.Authorization;
-using Invidux_Core.Services;
 
 namespace Invidux_Api.Controllers
 {
     /// <summary>
     /// This controller handles user centric actions
     /// </summary>
-    [Route("api/v1/profile")]
-    [ApiController]
-    [Authorize]
-    public class UserController : ControllerBase
+    [Route("profile")]
+    public class UserController : BaseController
     {
         private readonly IUnitofWork uow;
 
