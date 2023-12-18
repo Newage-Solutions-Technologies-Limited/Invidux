@@ -229,6 +229,14 @@ namespace Invidux_Core.Repository.Implementations
 
                 if (isValid)
                 {
+                    if(existingUser.RegistrationStatus == StatusStrings.Restricted)
+                    {
+                        throw new Exception("Your account is restricted");
+                    }
+                    if(existingUser.RegistrationStatus == StatusStrings.Pending)
+                    {
+                        throw new Exception("Please verify your account");
+                    }
                     // Update the existing user's profile based on the CompleteRegistration data
 
                     var subRole = await dc.SubRoles.FirstAsync(sr => sr.Name == SubRolesStrings.Retail);
@@ -236,10 +244,10 @@ namespace Invidux_Core.Repository.Implementations
                     existingUser.PhoneNumber = user.Phone;
                     existingUser.OtpSentCount = 5;
                     existingUser.UpdatedAt = DateTime.UtcNow;
-                    existingUser.SubRoleId =  subRole.Id;
-                    
+                    existingUser.SubRoleId = subRole.Id;
+
                     // Update the user's profile using the UserManager
-                    var result = await _userManager.UpdateAsync(existingUser);                    
+                    var result = await _userManager.UpdateAsync(existingUser);
 
                     if (result.Succeeded)
                     {

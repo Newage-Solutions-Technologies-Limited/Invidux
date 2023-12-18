@@ -142,6 +142,15 @@ namespace Invidux_Api.Controllers
                 // Verifying the OTP (One-Time Password) using UnitOfWork
                 var result = await uow.RegistrationRepo.VerifyOtp(otp.Otp, otp.Email);
 
+                if (result == null)
+                {
+                    // Returning a BadRequest response 
+                    var errorResponse = new ErrorResponseDTO(
+                        HttpStatusCode.BadRequest,
+                        new List<string> { "Unknown error occured" }
+                    );
+                    return BadRequest(errorResponse);
+                }
                 if (result != null && result == RegistrationStatus.Restricted.ToString())
                 {
                     // Returning a BadRequest response indicating the user is restricted
