@@ -66,9 +66,6 @@ namespace Invidux_Core.Repository.Implementations
             // Performs the password sign-in attempt
             var result = await _signInManager.PasswordSignInAsync(userName, password, isPersistent: false, lockoutOnFailure: false);
 
-            // Logs user info to the console
-            Console.WriteLine("User Info\n" + result.ToString());
-
             var response = new LoginResponse();
 
             // Checks if the password sign-in attempt succeeded
