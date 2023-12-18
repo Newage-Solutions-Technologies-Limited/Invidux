@@ -55,7 +55,7 @@ namespace Invidux_Core.Repository.Implementations
                 RegistrationDate = DateTime.UtcNow,
             };
             newUser.EmailConfirmed = false;
-            var result = await _userManager.CreateAsync(newUser);
+            var result = await _userManager.CreateAsync(newUser, user.Password);
             if (!result.Succeeded)
             {
                 foreach (var error in result.Errors)
@@ -251,7 +251,6 @@ namespace Invidux_Core.Repository.Implementations
 
                     if (result.Succeeded)
                     {
-                        await _userManager.AddPasswordAsync(existingUser, user.Password);
                         var userInfo = new UserInfo
                         {
                             FirstName = user.FirstName,
