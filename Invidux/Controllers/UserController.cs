@@ -50,7 +50,7 @@ namespace Invidux_Api.Controllers
                     // Returning a BadRequest response indicating the user is not found
                     var errorResponse = new ErrorResponseDTO(
                         HttpStatusCode.BadRequest,
-                        new List<string> { "User not found" }
+                         "User not found" 
                     );
                     return BadRequest(errorResponse);
                 }
@@ -63,7 +63,7 @@ namespace Invidux_Api.Controllers
                     // Returning a BadRequest response for an unknown error
                     var errorResponse = new ErrorResponseDTO(
                         HttpStatusCode.BadRequest,
-                        new List<string> { "Unknown error occurred" }
+                        "Unknown error occurred" 
                     );
                     return BadRequest(errorResponse);
                 }
@@ -115,7 +115,7 @@ namespace Invidux_Api.Controllers
                     // Returning a BadRequest response for an unknown error
                     var errorResponse = new ErrorResponseDTO(
                         HttpStatusCode.BadRequest,
-                        new List<string> { "Unknown error occurred" }
+                        "Unknown error occurred"
                     );
                     return BadRequest(errorResponse);
                 }
@@ -177,7 +177,7 @@ namespace Invidux_Api.Controllers
                     // Returning a BadRequest response for an unknown error
                     var errorResponse = new ErrorResponseDTO(
                         HttpStatusCode.BadRequest,
-                        new List<string> { "Unknown error occurred" }
+                        "Unknown error occurred"
                     );
                     return BadRequest(errorResponse);
                 }
@@ -236,7 +236,7 @@ namespace Invidux_Api.Controllers
                     // Returning a BadRequest response for an unknown error
                     var errorResponse = new ErrorResponseDTO(
                         HttpStatusCode.BadRequest,
-                        new List<string> { "Unknown error occurred" }
+                        "Unknown error occurred" 
                     );
                     return BadRequest(errorResponse);
                 }
@@ -289,7 +289,7 @@ namespace Invidux_Api.Controllers
                 {
                     var errorResponse = new ErrorResponseDTO(
                         HttpStatusCode.BadRequest,
-                        new List<string> { "Unknown error occurred" }
+                        "Unknown error occurred"
                     );
                     return BadRequest(errorResponse);
                 }
@@ -302,7 +302,7 @@ namespace Invidux_Api.Controllers
                 {
                     var errorResponse = new ErrorResponseDTO(
                         HttpStatusCode.BadRequest,
-                        new List<string> { "Unknown error occurred" }
+                        "Unknown error occurred"
                     );
                     return BadRequest(errorResponse);
                 }
@@ -347,7 +347,7 @@ namespace Invidux_Api.Controllers
                 {
                     var errorResponse = new ErrorResponseDTO(
                        HttpStatusCode.BadRequest,
-                       new List<string> { "Unknown error occurred" }
+                       "Unknown error occurred"
                    );
                     return BadRequest(errorResponse);
                 }

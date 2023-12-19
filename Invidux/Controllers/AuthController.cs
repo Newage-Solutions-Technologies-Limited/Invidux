@@ -53,7 +53,7 @@ namespace Invidux_Api.Controllers
                     // Returning a BadRequest response indicating the user must agree to terms
                     var errorResponse = new ErrorResponseDTO(
                         HttpStatusCode.BadRequest,
-                        new List<string> { "User must agree to terms and conditions." }
+                        "User must agree to terms and conditions."
                     );
                     return BadRequest(errorResponse);
                 }
@@ -67,7 +67,7 @@ namespace Invidux_Api.Controllers
                         // Returning a BadRequest response indicating the user is restricted
                         var errorResponse = new ErrorResponseDTO(
                             HttpStatusCode.BadRequest,
-                            new List<string> { "User has been restricted" }
+                            "User has been restricted"
                         );
                         return BadRequest(errorResponse);
                     }
@@ -76,7 +76,7 @@ namespace Invidux_Api.Controllers
                         // Returning a BadRequest response indicating the user is already registered
                         var errorResponse = new ErrorResponseDTO(
                             HttpStatusCode.BadRequest,
-                            new List<string> { "User already registered" }
+                            "User already registered"
                         );
                         return BadRequest(errorResponse);
                     }
@@ -95,7 +95,7 @@ namespace Invidux_Api.Controllers
                     // Returning a BadRequest response indicating registration failure
                     var errorResponse = new ErrorResponseDTO(
                         HttpStatusCode.BadRequest,
-                        new List<string> { "Registration failed." }
+                        "Registration failed."
                     );
                     return BadRequest(errorResponse);
                 }
@@ -147,7 +147,7 @@ namespace Invidux_Api.Controllers
                     // Returning a BadRequest response 
                     var errorResponse = new ErrorResponseDTO(
                         HttpStatusCode.BadRequest,
-                        new List<string> { "Unknown error occured" }
+                        "Unknown error occured"
                     );
                     return BadRequest(errorResponse);
                 }
@@ -156,7 +156,7 @@ namespace Invidux_Api.Controllers
                     // Returning a BadRequest response indicating the user is restricted
                     var errorResponse = new ErrorResponseDTO(
                         HttpStatusCode.BadRequest,
-                        new List<string> { "User has been restricted" }
+                        "User has been restricted"
                     );
                     return BadRequest(errorResponse);
                 }
@@ -207,7 +207,7 @@ namespace Invidux_Api.Controllers
                     // Returning a BadRequest response indicating the user is restricted
                     var errorResponse = new ErrorResponseDTO(
                         HttpStatusCode.BadRequest,
-                        new List<string> { "User has been restricted." }
+                        "User has been restricted."
                     );
                     return BadRequest(errorResponse);
                 }
@@ -253,7 +253,7 @@ namespace Invidux_Api.Controllers
                     // Returning a BadRequest response indicating registration failure
                     var errorResponse = new ErrorResponseDTO(
                        HttpStatusCode.BadRequest,
-                       new List<string> { "Registration failed." }
+                       "Registration failed."
                    );
                     return BadRequest(errorResponse);
                 }
@@ -309,7 +309,7 @@ namespace Invidux_Api.Controllers
                     // Returning a BadRequest response indicating the user is not registered
                     var errorResponse = new ErrorResponseDTO(
                         HttpStatusCode.BadRequest,
-                        new List<string> { "User not registered" }
+                        "User not registered"
                     );
                     return BadRequest(errorResponse);
                 }
@@ -320,7 +320,7 @@ namespace Invidux_Api.Controllers
                         // Returning a BadRequest response indicating the user is restricted
                         var errorResponse = new ErrorResponseDTO(
                             HttpStatusCode.BadRequest,
-                            new List<string> { "User has been restricted" }
+                            "User has been restricted"
                         );
                         return BadRequest(errorResponse);
                     }
@@ -389,7 +389,7 @@ namespace Invidux_Api.Controllers
                     // Handle the case when registration fails
                     var errorResponse = new ErrorResponseDTO(
                         HttpStatusCode.BadRequest,
-                        new List<string> { "Unknown error occured" }
+                        "Unknown error occured"
                     );
                     return BadRequest(errorResponse);
                 }
@@ -398,7 +398,7 @@ namespace Invidux_Api.Controllers
                     // Handle the case when registration fails
                     var errorResponse = new ErrorResponseDTO(
                         HttpStatusCode.BadRequest,
-                        new List<string> { "User has been restricted" }
+                        "User has been restricted"
                     );
                     return BadRequest(errorResponse);
                 }

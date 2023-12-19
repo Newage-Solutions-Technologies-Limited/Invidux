@@ -46,7 +46,7 @@ namespace Invidux_Api.Controllers
                     // Returning a BadRequest response indicating the user is not found
                     var errorResponse = new ErrorResponseDTO(
                         HttpStatusCode.BadRequest,
-                        new List<string> { "Wallet not found" }
+                         "Wallet not found" 
                     );
                     return BadRequest(errorResponse);
                 }
@@ -124,7 +124,7 @@ namespace Invidux_Api.Controllers
                     // Returning a BadRequest response indicating the user is not found
                     var errorResponse = new ErrorResponseDTO(
                         HttpStatusCode.BadRequest,
-                        new List<string> { "Invalid old pin" }
+                        "Invalid old pin"
                     );
                     return BadRequest(errorResponse);
                 }
