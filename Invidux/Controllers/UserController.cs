@@ -1,24 +1,19 @@
 ﻿using AutoMapper;
 using Invidux_Core.Repository.Interfaces;
+using Invidux_Core.Services;
+using Invidux_Data.Dtos;
 using Invidux_Data.Dtos.Request;
 using Invidux_Data.Dtos.Response;
-using Invidux_Data.Dtos;
 using Invidux_Domain.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using Microsoft.AspNetCore.Authorization;
-using Invidux_Core.Services;
 
 namespace Invidux_Api.Controllers
 {
     /// <summary>
     /// This controller handles user centric actions
     /// </summary>
-    [Route("api/v1/profile")]
-    [ApiController]
-    [Authorize]
-    public class UserController : ControllerBase
+    public class UserController : BaseController
     {
         private readonly IUnitofWork uow;
 
@@ -41,11 +36,12 @@ namespace Invidux_Api.Controllers
         [ProducesResponseType(typeof(ErrorResponseDTO), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status203NonAuthoritative)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
-        [HttpGet("current-user/{userId}")]
-        public async Task<IActionResult> GetUserById(string userId)
+        [HttpGet("profile/current-user")]
+        public async Task<IActionResult> GetUserById()
         {
             try
             {
+                string userId = GetUserId();
                 // Retrieving the user's profile using the provided userId
                 var user = await uow.UserRepo.GetUserProfile(userId);
 
@@ -54,7 +50,7 @@ namespace Invidux_Api.Controllers
                     // Returning a BadRequest response indicating the user is not found
                     var errorResponse = new ErrorResponseDTO(
                         HttpStatusCode.BadRequest,
-                        new List<string> { "User not found" }
+                         "User not found" 
                     );
                     return BadRequest(errorResponse);
                 }
@@ -67,7 +63,7 @@ namespace Invidux_Api.Controllers
                     // Returning a BadRequest response for an unknown error
                     var errorResponse = new ErrorResponseDTO(
                         HttpStatusCode.BadRequest,
-                        new List<string> { "Unknown error occurred" }
+                        "Unknown error occurred" 
                     );
                     return BadRequest(errorResponse);
                 }
@@ -97,11 +93,12 @@ namespace Invidux_Api.Controllers
         //[ProducesResponseType(typeof(Response<UserProfileDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponseDTO), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
-        [HttpPatch("current-user/{userId}")]
-        public async Task<IActionResult> UpdatePersonalInfo(PersonalInfoDto user, string userId)
+        [HttpPatch("profile/current-user")]
+        public async Task<IActionResult> UpdatePersonalInfo(PersonalInfoDto user)
         {
             try
             {
+                string userId = GetUserId();
                 // Checking if the incoming model is valid
                 if (!ModelState.IsValid)
                 {
@@ -118,7 +115,7 @@ namespace Invidux_Api.Controllers
                     // Returning a BadRequest response for an unknown error
                     var errorResponse = new ErrorResponseDTO(
                         HttpStatusCode.BadRequest,
-                        new List<string> { "Unknown error occurred" }
+                        "Unknown error occurred"
                     );
                     return BadRequest(errorResponse);
                 }
@@ -158,11 +155,12 @@ namespace Invidux_Api.Controllers
         [ProducesResponseType(typeof(ErrorResponseDTO), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status203NonAuthoritative)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
-        [HttpPost("current-user/next-of-kin/{userId}")]
-        public async Task<IActionResult> CreateNextofKin(NextOfKinDto nextOfKin, string userId)
+        [HttpPost("profile/current-user/next-of-kin")]
+        public async Task<IActionResult> CreateNextofKin(NextOfKinDto nextOfKin)
         {
             try
             {
+                string userId = GetUserId();
                 // Checking if the incoming model is valid
                 if (!ModelState.IsValid)
                 {
@@ -179,7 +177,7 @@ namespace Invidux_Api.Controllers
                     // Returning a BadRequest response for an unknown error
                     var errorResponse = new ErrorResponseDTO(
                         HttpStatusCode.BadRequest,
-                        new List<string> { "Unknown error occurred" }
+                        "Unknown error occurred"
                     );
                     return BadRequest(errorResponse);
                 }
@@ -216,11 +214,12 @@ namespace Invidux_Api.Controllers
         /// <returns></returns>
         [ProducesResponseType(typeof(ErrorResponseDTO), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
-        [HttpPatch("current-user/next-of-kin/{userId}")]
-        public async Task<IActionResult> UpdateNextofKin(NextOfKinDto nextOfKin, string userId)
+        [HttpPatch("profile/current-user/next-of-kin")]
+        public async Task<IActionResult> UpdateNextofKin(NextOfKinDto nextOfKin)
         {
             try
             {
+                string userId = GetUserId();
                 // Checking if the incoming model is valid
                 if (!ModelState.IsValid)
                 {
@@ -237,7 +236,7 @@ namespace Invidux_Api.Controllers
                     // Returning a BadRequest response for an unknown error
                     var errorResponse = new ErrorResponseDTO(
                         HttpStatusCode.BadRequest,
-                        new List<string> { "Unknown error occurred" }
+                        "Unknown error occurred" 
                     );
                     return BadRequest(errorResponse);
                 }
@@ -268,11 +267,12 @@ namespace Invidux_Api.Controllers
         /// <returns></returns>
         [ProducesResponseType(typeof(ErrorResponseDTO), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
-        [HttpPost("current-user/security/{userId}")]
-        public async Task<IActionResult> UpdateSecurityInfo(SecurityDto securityDto, string userId)
+        [HttpPost("profile/current-user/security")]
+        public async Task<IActionResult> UpdateSecurityInfo(SecurityDto securityDto)
         {
             try
             {
+                string userId = GetUserId();
                 // Checking if the incoming model is valid
                 if (!ModelState.IsValid)
                 {
@@ -289,20 +289,20 @@ namespace Invidux_Api.Controllers
                 {
                     var errorResponse = new ErrorResponseDTO(
                         HttpStatusCode.BadRequest,
-                        new List<string> { "Unknown error occurred" }
+                        "Unknown error occurred"
                     );
                     return BadRequest(errorResponse);
                 }
 
                 // Attempt to update the security information for the user
-                var result = await uow.UserRepo.UpdateSecurity(securityDto);
+                var result = await uow.UserRepo.UpdateSecurity(securityDto, userId);
 
                 // If the update operation fails, return a BadRequest response for an unknown error
                 if (!result)
                 {
                     var errorResponse = new ErrorResponseDTO(
                         HttpStatusCode.BadRequest,
-                        new List<string> { "Unknown error occurred" }
+                        "Unknown error occurred"
                     );
                     return BadRequest(errorResponse);
                 }
@@ -328,11 +328,12 @@ namespace Invidux_Api.Controllers
         [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponseDTO), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
-        [HttpPost("current-user/set-kyc/{userId}")]
-        public async Task<ActionResult> SetKYC(KYCRequest kyc, string userId)
+        [HttpPost("profile/current-user/set-kyc")]
+        public async Task<ActionResult> SetKYC(KYCRequest kyc)
         {
             try
             {
+                string userId = GetUserId();
                 // Checking if the incoming model is valid
                 if (!ModelState.IsValid)
                 {
@@ -346,7 +347,7 @@ namespace Invidux_Api.Controllers
                 {
                     var errorResponse = new ErrorResponseDTO(
                        HttpStatusCode.BadRequest,
-                       new List<string> { "Unknown error occurred" }
+                       "Unknown error occurred"
                    );
                     return BadRequest(errorResponse);
                 }

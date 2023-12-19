@@ -48,7 +48,7 @@ namespace Invidux_Data.Dtos.AutoMapping
                 .ConvertUsing(src => src.Type);
 
             /****************************Utility Get Mappings**************************/
-
+            CreateMap<Country, CountryResponse>();
             CreateMap<InvestmentType, InvestmentTypeDto>();
             CreateMap<KycIdCard, KycIdCardDto>();
             CreateMap<KycLevel,  KycLevelDto>();

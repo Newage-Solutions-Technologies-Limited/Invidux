@@ -4,7 +4,6 @@ using Invidux_Data.Context;
 using Invidux_Data.Dtos;
 using Invidux_Data.Dtos.Request;
 using Invidux_Data.Dtos.Response;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -13,10 +12,7 @@ namespace Invidux_Api.Controllers
     /// <summary>
     /// This controller takes care of user wallet functionalities
     /// </summary>
-    [Route("api/v1/wallet")]
-    [ApiController]
-    [Authorize]
-    public class WalletController : ControllerBase
+    public class WalletController : BaseController
     {
         private readonly InviduxDBContext dc;
         private readonly IUnitofWork uow;
@@ -38,18 +34,19 @@ namespace Invidux_Api.Controllers
         [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status203NonAuthoritative)]
         [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status206PartialContent)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
-        [HttpGet("current-user/{userId}")]
-        public async Task<IActionResult> GetUserWallet(string userId)
+        [HttpGet("wallet/current-user")]
+        public async Task<IActionResult> GetUserWallet()
         {
             try
             {
+                string userId = GetUserId();
                 var wallet = await uow.WalletRepo.GetWalletAsync(userId);
                 if (wallet == null)
                 {
                     // Returning a BadRequest response indicating the user is not found
                     var errorResponse = new ErrorResponseDTO(
                         HttpStatusCode.BadRequest,
-                        new List<string> { "Wallet not found" }
+                         "Wallet not found" 
                     );
                     return BadRequest(errorResponse);
                 }
@@ -92,11 +89,12 @@ namespace Invidux_Api.Controllers
         /// </summary>
         /// <param name="walletDto"></param>
         /// <returns></returns>
-        [HttpPatch("current-user/activate/{userId}")]
-        public async Task<IActionResult> ActivateWallet(ActivateWalletDto walletDto, string userId)
+        [HttpPatch("wallet/current-user/activate")]
+        public async Task<IActionResult> ActivateWallet(ActivateWalletDto walletDto)
         {
             try
             {
+                string userId = GetUserId();
                 throw new NotImplementedException();
             }
             catch (Exception ex)
@@ -114,18 +112,19 @@ namespace Invidux_Api.Controllers
         [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponseDTO), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
-        [HttpPatch("current-user/set-wallet-pin/{userId}")]
-        public async Task<IActionResult> SetWalletPin(SetWalletPinDto setWalletPin, string userId)
+        [HttpPatch("wallet/current-user/set-wallet-pin")]
+        public async Task<IActionResult> SetWalletPin(SetWalletPinDto setWalletPin)
         {
             try
             {
+                string userId = GetUserId();
                 var setPin = await uow.WalletRepo.SetWalletPin(setWalletPin, userId);
                 if (!setPin)
                 {
                     // Returning a BadRequest response indicating the user is not found
                     var errorResponse = new ErrorResponseDTO(
                         HttpStatusCode.BadRequest,
-                        new List<string> { "Invalid old pin" }
+                        "Invalid old pin"
                     );
                     return BadRequest(errorResponse);
                 }

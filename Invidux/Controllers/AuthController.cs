@@ -1,11 +1,9 @@
 ﻿using Invidux_Core.Repository.Interfaces;
-using Invidux_Core.Services;
 using Invidux_Data.Dtos;
 using Invidux_Data.Dtos.Request;
 using Invidux_Data.Dtos.Response;
 using Invidux_Domain.Utilities;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing.Constraints;
 using System.Net;
 
 namespace Invidux_Api.Controllers
@@ -53,7 +51,7 @@ namespace Invidux_Api.Controllers
                     // Returning a BadRequest response indicating the user must agree to terms
                     var errorResponse = new ErrorResponseDTO(
                         HttpStatusCode.BadRequest,
-                        new List<string> { "User must agree to terms and conditions." }
+                        "User must agree to terms and conditions."
                     );
                     return BadRequest(errorResponse);
                 }
@@ -62,21 +60,21 @@ namespace Invidux_Api.Controllers
                 var userExists = await uow.RegistrationRepo.UserAlreadyExists(user.Email);
                 if (userExists != null)
                 {
-                    if (userExists == RegistrationStatus.Restricted.ToString())
+                    if (userExists == StatusStrings.Restricted)
                     {
                         // Returning a BadRequest response indicating the user is restricted
                         var errorResponse = new ErrorResponseDTO(
                             HttpStatusCode.BadRequest,
-                            new List<string> { "User has been restricted" }
+                            "User has been restricted"
                         );
                         return BadRequest(errorResponse);
                     }
-                    else if (userExists == RegistrationStatus.Active.ToString())
+                    else if (userExists == StatusStrings.Verified)
                     {
                         // Returning a BadRequest response indicating the user is already registered
                         var errorResponse = new ErrorResponseDTO(
                             HttpStatusCode.BadRequest,
-                            new List<string> { "User already registered" }
+                            "User already registered"
                         );
                         return BadRequest(errorResponse);
                     }
@@ -95,7 +93,7 @@ namespace Invidux_Api.Controllers
                     // Returning a BadRequest response indicating registration failure
                     var errorResponse = new ErrorResponseDTO(
                         HttpStatusCode.BadRequest,
-                        new List<string> { "Registration failed." }
+                        "Registration failed."
                     );
                     return BadRequest(errorResponse);
                 }
@@ -139,15 +137,37 @@ namespace Invidux_Api.Controllers
                         ModelState));
                 }
 
-                // Verifying the OTP (One-Time Password) using UnitOfWork
-                var result = await uow.RegistrationRepo.VerifyOtp(otp.Otp, otp.Email);
-
-                if (result != null && result == RegistrationStatus.Restricted.ToString())
+                var userExists = await uow.RegistrationRepo.UserAlreadyExists(otp.Email);
+                if (userExists == StatusStrings.Restricted)
                 {
                     // Returning a BadRequest response indicating the user is restricted
                     var errorResponse = new ErrorResponseDTO(
                         HttpStatusCode.BadRequest,
-                        new List<string> { "User has been restricted" }
+                        "User has been restricted"
+                    );
+                    return BadRequest(errorResponse);
+                }
+
+                var validateOtp = await uow.ValidateOtp(otp.Otp, otp.Email);
+                if (validateOtp == 0)
+                {
+                    // Returning a BadRequest response 
+                    var errorResponse = new ErrorResponseDTO(
+                        HttpStatusCode.BadRequest,
+                        "Invalid Otp"
+                    );
+                    return BadRequest(errorResponse);
+                }
+               
+                // Verifying the OTP (One-Time Password) using UnitOfWork
+                var result = await uow.RegistrationRepo.VerifyOtp(otp.Otp, otp.Email);
+
+                if (result == null)
+                {
+                    // Returning a BadRequest response 
+                    var errorResponse = new ErrorResponseDTO(
+                        HttpStatusCode.BadRequest,
+                        "Unknown error occured"
                     );
                     return BadRequest(errorResponse);
                 }
@@ -198,7 +218,7 @@ namespace Invidux_Api.Controllers
                     // Returning a BadRequest response indicating the user is restricted
                     var errorResponse = new ErrorResponseDTO(
                         HttpStatusCode.BadRequest,
-                        new List<string> { "User has been restricted." }
+                        "User has been restricted."
                     );
                     return BadRequest(errorResponse);
                 }
@@ -221,6 +241,7 @@ namespace Invidux_Api.Controllers
         /// <param name="photoFile"></param>
         /// <returns></returns>
         [ProducesResponseType(typeof(Response<UserRegistrationDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status203NonAuthoritative)]
         [ProducesResponseType(typeof(ErrorResponseDTO), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
         [HttpPost("complete-registration")]
@@ -234,7 +255,37 @@ namespace Invidux_Api.Controllers
                     // Returning a BadRequest response with details of invalid ModelState
                     return BadRequest(new ModelStateErrorResponseDTO(HttpStatusCode.BadRequest,
                         ModelState));
-                }                
+                }
+
+                // Checking if the user already exists
+                var userExists = await uow.RegistrationRepo.UserAlreadyExists(user.Email);
+                if (userExists != null)
+                {
+                    if (userExists == StatusStrings.Restricted)
+                    {
+                        // Returning a BadRequest response indicating the user is restricted
+                        var errorResponse = new ErrorResponseDTO(
+                            HttpStatusCode.BadRequest,
+                            "User has been restricted"
+                        );
+                        return BadRequest(errorResponse);
+                    }
+                    else if (userExists == StatusStrings.Pending)
+                    {
+
+                        // Asking the user to verify the account
+                        return StatusCode(StatusCodes.Status203NonAuthoritative, "Please verify your account.");
+                    }
+                }
+                else
+                {
+                    // Returning a BadRequest response indicating the user is not found
+                    var errorResponse = new ErrorResponseDTO(
+                        HttpStatusCode.BadRequest,
+                        "User does not exist"
+                    );
+                    return BadRequest(errorResponse);
+                }
 
                 // Completing user registration using the provided details
                 var result = await uow.RegistrationRepo.CompleteRegistration(user);
@@ -244,7 +295,7 @@ namespace Invidux_Api.Controllers
                     // Returning a BadRequest response indicating registration failure
                     var errorResponse = new ErrorResponseDTO(
                        HttpStatusCode.BadRequest,
-                       new List<string> { "Registration failed." }
+                       "Registration failed."
                    );
                     return BadRequest(errorResponse);
                 }
@@ -300,7 +351,7 @@ namespace Invidux_Api.Controllers
                     // Returning a BadRequest response indicating the user is not registered
                     var errorResponse = new ErrorResponseDTO(
                         HttpStatusCode.BadRequest,
-                        new List<string> { "User not registered" }
+                        "User not registered"
                     );
                     return BadRequest(errorResponse);
                 }
@@ -311,7 +362,7 @@ namespace Invidux_Api.Controllers
                         // Returning a BadRequest response indicating the user is restricted
                         var errorResponse = new ErrorResponseDTO(
                             HttpStatusCode.BadRequest,
-                            new List<string> { "User has been restricted" }
+                            "User has been restricted"
                         );
                         return BadRequest(errorResponse);
                     }
@@ -372,6 +423,28 @@ namespace Invidux_Api.Controllers
                         ModelState));
                 }
 
+                var userExists = await uow.RegistrationRepo.UserAlreadyExists(otp.Email);
+                if (userExists == StatusStrings.Restricted)
+                {
+                    // Returning a BadRequest response indicating the user is restricted
+                    var errorResponse = new ErrorResponseDTO(
+                        HttpStatusCode.BadRequest,
+                        "User has been restricted"
+                    );
+                    return BadRequest(errorResponse);
+                }
+
+                var validateOtp = await uow.ValidateOtp(otp.Otp, otp.Email);
+                if (validateOtp == 0 || validateOtp == -1)
+                {
+                    // Returning a BadRequest response 
+                    var errorResponse = new ErrorResponseDTO(
+                        HttpStatusCode.BadRequest,
+                        "Invalid Otp"
+                    );
+                    return BadRequest(errorResponse);
+                }
+
                 // Verifying the OTP (Two-step verification) using the provided OTP
                 var result = await uow.UserRepo.VerifyOtp(otp.Otp, otp.Email);
 
@@ -380,20 +453,11 @@ namespace Invidux_Api.Controllers
                     // Handle the case when registration fails
                     var errorResponse = new ErrorResponseDTO(
                         HttpStatusCode.BadRequest,
-                        new List<string> { "Unknown error occured" }
+                        "Unknown error occured"
                     );
                     return BadRequest(errorResponse);
                 }
-                if (result != null && result.RegistrationStatus == StatusStrings.Restricted)
-                {
-                    // Handle the case when registration fails
-                    var errorResponse = new ErrorResponseDTO(
-                        HttpStatusCode.BadRequest,
-                        new List<string> { "User has been restricted" }
-                    );
-                    return BadRequest(errorResponse);
-                }
-                // Registration was successful; you can return a success response or any other data
+                // Login was successful; you can return a success response or any other data
                 var response = new Response<LoginResponse>
                 {
                     Successful = true,

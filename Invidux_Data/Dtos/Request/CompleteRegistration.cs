@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Invidux_Domain.Utilities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -32,9 +33,6 @@ namespace Invidux_Data.Dtos.Request
 
         [Required]
         public int CountryId { get; set; }
-
-        [Required]
-        [DataType(DataType.Password)]
-        public string Password { get; set; }
+        public SourceEnums? Source { get; set; }
     }
 }

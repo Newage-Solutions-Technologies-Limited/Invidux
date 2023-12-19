@@ -1,3 +1,4 @@
+using Invidux_Core.Extensions;
 using Invidux_Core.Helpers;
 using Invidux_Core.Repository.Implementations;
 using Invidux_Core.Repository.Interfaces;
@@ -78,18 +79,14 @@ builder.WebHost.ConfigureKestrel(serverOptions =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+/*if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
-    app.UseSwagger();
-    app.UseSwaggerUI(c => c.SwaggerEndpoint("../swagger/v1/swagger.json", "Invidux v1"));
-}
-else
-{
-    app.UseSwagger();
-    app.UseSwaggerUI(c => c.SwaggerEndpoint("../swagger/v1/swagger.json", "Invidux v1"));
-}
-
+    
+}*/
+ app.ConfigureExceptionHandler(app.Environment);
+app.UseSwagger();
+app.UseSwaggerUI(c => c.SwaggerEndpoint("../swagger/v1/swagger.json", "Invidux v1"));
 
 app.UseRouting();
 app.UseHsts();
@@ -101,5 +98,19 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var dc = services.GetRequiredService<InviduxDBContext>();
+        InviduxDBContext.SeedCountries(dc);
+    }
+    catch (Exception ex)
+    {
+        // Log the exception
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred while seeding the database.");
+    }
+}
 app.Run();

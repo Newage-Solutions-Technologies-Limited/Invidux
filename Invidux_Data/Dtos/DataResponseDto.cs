@@ -88,9 +88,9 @@ namespace Invidux_Data.Dtos
 
     public class ErrorResponseDTO : DataResponseAbstractDTO
     {
-        public IEnumerable<string> ErrorMessages { get; set; }
+        public string ErrorMessages { get; set; }
 
-        public ErrorResponseDTO(HttpStatusCode statusCode, IEnumerable<string> errors)
+        public ErrorResponseDTO(HttpStatusCode statusCode, string errors)
         {
             Status = statusCode;
             ErrorMessages = errors;

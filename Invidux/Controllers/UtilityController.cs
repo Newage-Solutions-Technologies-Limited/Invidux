@@ -59,7 +59,7 @@ namespace Invidux_Api.Controllers
                     // Create an error response with a 400 Bad Request status and a message indicating no roles were created
                     var errorResponse = new ErrorResponseDTO(
                        HttpStatusCode.BadRequest,
-                       new List<string> { "No roles created" }
+                       "No roles created" 
                     );
                     return BadRequest(errorResponse);
                 }
@@ -107,7 +107,7 @@ namespace Invidux_Api.Controllers
                     // Create an error response with a 400 Bad Request status and a message indicating the role was not found
                     var errorResponse = new ErrorResponseDTO(
                        HttpStatusCode.BadRequest,
-                       new List<string> { "Role not found" }
+                       "Role not found"
                     );
                     return BadRequest(errorResponse);
                 }
@@ -155,7 +155,7 @@ namespace Invidux_Api.Controllers
                     // Create an error response with a 400 Bad Request status and a message indicating the role was not found or sub-roles not created
                     var errorResponse = new ErrorResponseDTO(
                        HttpStatusCode.BadRequest,
-                       new List<string> { "Role not found or Sub Roles not created" }
+                       "Role not found or Sub Roles not created"
                     );
                     return BadRequest(errorResponse);
                 }
@@ -202,7 +202,7 @@ namespace Invidux_Api.Controllers
                     // Create an error response with a 400 Bad Request status and a message indicating that sub-roles were not created
                     var errorResponse = new ErrorResponseDTO(
                        HttpStatusCode.BadRequest,
-                       new List<string> { "Sub Roles not created" }
+                       "Sub Roles not created"
                     );
                     return BadRequest(errorResponse);
                 }
@@ -250,7 +250,7 @@ namespace Invidux_Api.Controllers
                     // Create an error response with a 400 Bad Request status and a message indicating that the sub-role was not found
                     var errorResponse = new ErrorResponseDTO(
                        HttpStatusCode.BadRequest,
-                       new List<string> { "Sub Role not found" }
+                       "Sub Role not found"
                     );
                     return BadRequest(errorResponse);
                 }
@@ -297,7 +297,7 @@ namespace Invidux_Api.Controllers
                     // Create an error response with a 400 Bad Request status and a message indicating that KYC statuses were not found
                     var errorResponse = new ErrorResponseDTO(
                       HttpStatusCode.BadRequest,
-                      new List<string> { "Kyc Statuses not created" }
+                      "Kyc Statuses not created"
                     );
                     return BadRequest(errorResponse);
                 }
@@ -345,7 +345,7 @@ namespace Invidux_Api.Controllers
                     // Create an error response indicating KYC status not found
                     var errorResponse = new ErrorResponseDTO(
                      HttpStatusCode.BadRequest,
-                     new List<string> { "Kyc Status not found" }
+                     "Kyc Status not found"
                     );
 
                     // Return a BadRequest with the error response
@@ -399,7 +399,7 @@ namespace Invidux_Api.Controllers
                     // Create an error response indicating KYC levels are not created
                     var errorResponse = new ErrorResponseDTO(
                         HttpStatusCode.BadRequest,
-                        new List<string> { "Kyc levels not created" }
+                        "Kyc levels not created"
                     );
 
                     // Return a BadRequest status with the error response
@@ -454,7 +454,7 @@ namespace Invidux_Api.Controllers
                     // Create an error response indicating the specified KYC level was not found
                     var errorResponse = new ErrorResponseDTO(
                         HttpStatusCode.BadRequest,
-                        new List<string> { "Kyc level not found" }
+                        "Kyc level not found"
                     );
 
                     // Return a BadRequest with the error response
@@ -508,7 +508,7 @@ namespace Invidux_Api.Controllers
                     // Create an error response indicating the absence of KYC ID cards
                     var errorResponse = new ErrorResponseDTO(
                         HttpStatusCode.BadRequest,
-                        new List<string> { "Kyc id cards not created" }
+                        "Kyc id cards not created"
                     );
 
                     // Return a BadRequest status with the error response
@@ -562,7 +562,7 @@ namespace Invidux_Api.Controllers
                     // Create an error response indicating the specified KYC ID card was not found
                     var errorResponse = new ErrorResponseDTO(
                         HttpStatusCode.BadRequest,
-                        new List<string> { "Kyc id card not found" }
+                        "Kyc id card not found"
                     );
 
                     // Return a BadRequest status with the error response
@@ -615,7 +615,7 @@ namespace Invidux_Api.Controllers
                     // Create an error response indicating the absence of security types
                     var errorResponse = new ErrorResponseDTO(
                         HttpStatusCode.BadRequest,
-                        new List<string> { "Security types not created" }
+                        "Security types not created"
                     );
 
                     // Return a BadRequest status with the error response
@@ -669,7 +669,7 @@ namespace Invidux_Api.Controllers
                     // Create an error response indicating the specified security type was not found
                     var errorResponse = new ErrorResponseDTO(
                         HttpStatusCode.BadRequest,
-                        new List<string> { "Security type not found" }
+                        "Security type not found"
                     );
 
                     // Return a BadRequest status with the error response
@@ -722,7 +722,7 @@ namespace Invidux_Api.Controllers
                     // Create an error response indicating the absence of 2FA covers
                     var errorResponse = new ErrorResponseDTO(
                        HttpStatusCode.BadRequest,
-                       new List<string> { "Two factor covers not created" }
+                       "Two factor covers not created"
                     );
 
                     // Return a BadRequest status with the error response
@@ -776,7 +776,7 @@ namespace Invidux_Api.Controllers
                     // Create an error response indicating the specified 2FA cover was not found
                     var errorResponse = new ErrorResponseDTO(
                        HttpStatusCode.BadRequest,
-                       new List<string> { "Two factor cover not found" }
+                        "Two factor cover not found"
                     );
 
                     // Return a BadRequest status with the error response
@@ -830,7 +830,7 @@ namespace Invidux_Api.Controllers
                     // Create an error response indicating the absence of 2FA types
                     var errorResponse = new ErrorResponseDTO(
                        HttpStatusCode.BadRequest,
-                       new List<string> { "Two factor types not created" }
+                       "Two factor types not created"
                     );
 
                     // Return a BadRequest status with the error response
@@ -884,7 +884,7 @@ namespace Invidux_Api.Controllers
                     // Create an error response indicating the specified 2FA type was not found
                     var errorResponse = new ErrorResponseDTO(
                        HttpStatusCode.BadRequest,
-                       new List<string> { "Two factor type not found" }
+                       "Two factor type not found"
                     );
 
                     // Return a BadRequest status with the error response
@@ -937,7 +937,7 @@ namespace Invidux_Api.Controllers
                     // Create an error response indicating the absence of token listing statuses
                     var errorResponse = new ErrorResponseDTO(
                        HttpStatusCode.BadRequest,
-                       new List<string> { "Token listing statuses not created" }
+                       "Token listing statuses not created"
                     );
 
                     // Return a BadRequest status with the error response
@@ -991,7 +991,7 @@ namespace Invidux_Api.Controllers
                     // Create an error response indicating the specified token listing status was not found
                     var errorResponse = new ErrorResponseDTO(
                        HttpStatusCode.BadRequest,
-                       new List<string> { "Token listing status not found" }
+                       "Token listing status not found"
                     );
 
                     // Return a BadRequest status with the error response
@@ -1044,7 +1044,7 @@ namespace Invidux_Api.Controllers
                     // Create an error response indicating the absence of property classes
                     var errorResponse = new ErrorResponseDTO(
                        HttpStatusCode.BadRequest,
-                       new List<string> { "Property classes not created" }
+                       "Property classes not created"
                     );
 
                     // Return a BadRequest status with the error response
@@ -1098,7 +1098,7 @@ namespace Invidux_Api.Controllers
                     // Create an error response indicating that the specified property class was not found
                     var errorResponse = new ErrorResponseDTO(
                        HttpStatusCode.BadRequest,
-                       new List<string> { "Property class not found" }
+                       "Property class not found"
                     );
 
                     // Return a BadRequest status with the error response
@@ -1151,7 +1151,7 @@ namespace Invidux_Api.Controllers
                     // Create an error response indicating the absence of investment types
                     var errorResponse = new ErrorResponseDTO(
                        HttpStatusCode.BadRequest,
-                       new List<string> { "Investment types not created" }
+                       "Investment types not created"
                     );
 
                     // Return a BadRequest status with the error response
@@ -1205,7 +1205,7 @@ namespace Invidux_Api.Controllers
                     // Create an error response indicating that the specified investment type was not found
                     var errorResponse = new ErrorResponseDTO(
                        HttpStatusCode.BadRequest,
-                       new List<string> { "Investment type not found" }
+                       "Investment type not found"
                     );
 
                     // Return a BadRequest status with the error response
@@ -1258,7 +1258,7 @@ namespace Invidux_Api.Controllers
                     // Create an error response indicating the absence of token transaction types
                     var errorResponse = new ErrorResponseDTO(
                        HttpStatusCode.BadRequest,
-                       new List<string> { "Token transaction types not created" }
+                       "Token transaction types not created"
                     );
 
                     // Return a BadRequest status with the error response
@@ -1312,7 +1312,7 @@ namespace Invidux_Api.Controllers
                     // Create an error response indicating that the specified token transaction type was not found
                     var errorResponse = new ErrorResponseDTO(
                        HttpStatusCode.BadRequest,
-                       new List<string> { "Token Transaction type not found" }
+                       "Token Transaction type not found"
                     );
 
                     // Return a BadRequest status with the error response
@@ -1365,7 +1365,7 @@ namespace Invidux_Api.Controllers
                     // Create an error response indicating the absence of transaction types
                     var errorResponse = new ErrorResponseDTO(
                        HttpStatusCode.BadRequest,
-                       new List<string> { "Transaction types not created" }
+                       "Transaction types not created"
                     );
 
                     // Return a BadRequest status with the error response
@@ -1419,7 +1419,7 @@ namespace Invidux_Api.Controllers
                     // Create an error response indicating that the specified transaction type was not found
                     var errorResponse = new ErrorResponseDTO(
                        HttpStatusCode.BadRequest,
-                       new List<string> { "Transaction type not found" }
+                       "Transaction type not found"
                     );
 
                     // Return a BadRequest status with the error response
@@ -1473,7 +1473,7 @@ namespace Invidux_Api.Controllers
                     // Create an error response indicating the absence of payment methods
                     var errorResponse = new ErrorResponseDTO(
                        HttpStatusCode.BadRequest,
-                       new List<string> { "Payment methods not created" }
+                       "Payment methods not created"
                     );
 
                     // Return a BadRequest status with the error response
@@ -1528,7 +1528,7 @@ namespace Invidux_Api.Controllers
                     // Create an error response indicating that the specified payment method was not found
                     var errorResponse = new ErrorResponseDTO(
                        HttpStatusCode.BadRequest,
-                       new List<string> { "Payment method not found" }
+                       "Payment method not found"
                     );
 
                     // Return a BadRequest status with the error response
@@ -1547,6 +1547,93 @@ namespace Invidux_Api.Controllers
                 };
 
                 // Return the successful response with OK status
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions that occur during the process
+
+                // Log the exception here (code for logging is not shown)
+
+                // Return a 500 Internal Server Error with the exception message
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Endpoint to get all countries
+        /// </summary>
+        /// <returns></returns>
+        [ProducesResponseType(typeof(ResponseArrayDTO<CountryResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponseDTO), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
+        [HttpGet("countries")]
+        public async Task<IActionResult> GetCountries()
+        {
+            try
+            {
+                var countries = await uow.UtitlityRepo.GetCountriesAsync();
+                if (countries == null)
+                {
+                    var errorResponse = new ErrorResponseDTO(
+                       HttpStatusCode.BadRequest,
+                       "Countries not created"
+                    );
+
+                    // Return a BadRequest status with the error response
+                    return BadRequest(errorResponse);
+                }
+                var countriesDto = mapper.Map<IEnumerable<CountryResponse>>(countries);
+                var response = new ResponseArrayDTO<CountryResponse>
+                {
+                    Successful = true,
+                    Message= "success",
+                    Data = countriesDto
+                };
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions that occur during the process
+
+                // Log the exception here (code for logging is not shown)
+
+                // Return a 500 Internal Server Error with the exception message
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Endpoint to get a specific country by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [ProducesResponseType(typeof(Response<CountryResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponseDTO), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
+        [HttpGet("countries/{id}")]
+        public async Task<IActionResult> GetCountryById(int id)
+        {
+            try
+            {
+                var country = await uow.UtitlityRepo.GetCountryAsync(id);
+                if (country == null)
+                {
+                    var errorResponse = new ErrorResponseDTO(
+                       HttpStatusCode.BadRequest,
+                       "Country not found"
+                    );
+
+                    // Return a BadRequest status with the error response
+                    return BadRequest(errorResponse);
+                }
+                var countryDto = mapper.Map<CountryResponse>(country);
+                var response = new Response<CountryResponse>
+                {
+                    Successful = true,
+                    Message = "success",
+                    Data = countryDto
+                };
                 return Ok(response);
             }
             catch (Exception ex)

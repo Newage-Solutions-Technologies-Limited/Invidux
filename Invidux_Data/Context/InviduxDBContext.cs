@@ -1,4 +1,5 @@
-﻿using Invidux_Domain.Models;
+﻿using Invidux_Data.CountySeeding;
+using Invidux_Domain.Models;
 using Invidux_Domain.Utilities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -14,6 +15,15 @@ namespace Invidux_Data.Context
             : base(options)
         {
             _userContextService = userContextService;   
+        }
+
+        // Seed Countries if table is empty
+        public static void SeedCountries(InviduxDBContext dc)
+        {
+            if (!dc.Countries.Any())
+            {
+                dc.Database.ExecuteSqlRaw(SqlScripts.SeedCountriesSql);
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

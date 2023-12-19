@@ -49,13 +49,13 @@ namespace Invidux_Core.Repository.Implementations
             var newUser = new AppUser
             {
                 Email = user.Email,
-                UserName = user.Email,
+                UserName = user.Email ,
                 RegistrationStatus = StatusStrings.Pending,
                 OtpSentCount = 5,
                 RegistrationDate = DateTime.UtcNow,
             };
             newUser.EmailConfirmed = false;
-            var result = await _userManager.CreateAsync(newUser);
+            var result = await _userManager.CreateAsync(newUser, user.Password);
             if (!result.Succeeded)
             {
                 foreach (var error in result.Errors)
@@ -69,7 +69,7 @@ namespace Invidux_Core.Repository.Implementations
             var token = new SecurityToken
             {
                 UserId = newUser.Id,
-                Email = newUser.Email,
+                Email = newUser.Email ,
                 SecurityType = SecurityTypeStrings.UserRegistration,
                 Otp = TokenGenerator.GetUniqueKey(6)
             };
@@ -95,58 +95,56 @@ namespace Invidux_Core.Repository.Implementations
         // This unit of work takes care of user email verifation
         public async Task<string> VerifyOtp(int otp, string email)
         {
-            // Find the OTP in the database
             var existingToken = await dc.SecurityTokens.SingleOrDefaultAsync(t => t.Otp == otp);
-
-            if (existingToken != null)
+            if (existingToken == null)
             {
-               if (existingToken.Email == email)
+                // Return null if the OTP does not exist
+                throw new Exception("Invalid otp");
+            }
+            if (existingToken.Email == email)
+            {
+                // Check if the token has not expired
+                if (existingToken.ExpiresOn >= DateTime.UtcNow)
                 {
-                    // Check if the token has not expired
-                    if (existingToken.ExpiresOn >= DateTime.UtcNow)
+
+                    if (existingToken.SecurityType == SecurityTypeStrings.UserRegistration)
                     {
-
-                        if (existingToken.SecurityType == SecurityTypeStrings.UserRegistration)
+                        // Set email verification to true for the user
+                        var user = await _userManager.FindByIdAsync(existingToken.UserId);
+                        if (user != null)
                         {
-                            // Set email verification to true for the user
-                            var user = await _userManager.FindByIdAsync(existingToken.UserId);
-                            if (user != null)
+                            if (user.RegistrationStatus == StatusStrings.Pending)
                             {
-                                if (user.RegistrationStatus == StatusStrings.Pending)
-                                {
-                                    user.EmailConfirmed = true;
-                                    user.RegistrationStatus = StatusStrings.Verified;
-                                    user.OtpSentCount = 5;
-                                    user.UpdatedAt = DateTime.UtcNow;
-                                    await _userManager.UpdateAsync(user);
-                                }
-
-                                // Delete the OTP record from the database
-                                dc.SecurityTokens.Remove(existingToken);
-                                await dc.SaveChangesAsync();
-
-                                return user.RegistrationStatus;
+                                user.EmailConfirmed = true;
+                                user.RegistrationStatus = StatusStrings.Verified;
+                                user.OtpSentCount = 5;
+                                user.UpdatedAt = DateTime.UtcNow;
+                                await _userManager.UpdateAsync(user);
                             }
 
-                            return null;
+                            // Delete the OTP record from the database
+                            dc.SecurityTokens.Remove(existingToken);
+                            await dc.SaveChangesAsync();
+
+                            return user.RegistrationStatus;
                         }
+
                         return null;
                     }
-                    dc.SecurityTokens.Remove(existingToken);
-                    await dc.SaveChangesAsync();
-                    // Return null if the OTP has expired
                     return null;
-               }
-               throw new Exception("Invalid account");
+                }
+                dc.SecurityTokens.Remove(existingToken);
+                await dc.SaveChangesAsync();
+                // Throw exception if the OTP has expired
+                throw new Exception("Otp has expired");
             }
-            // Return null if the OTP does not exist
-            return null;
+            throw new Exception("Invalid account");
         }
 
         // This unit of work takes care of verifation otp request
         public async Task<int> ResendOtp(string email)
         {
-            var user = await _userManager.FindByEmailAsync(email);
+            var user = await _userManager.FindByEmailAsync(email );
 
             if (user != null)
             {
@@ -159,7 +157,7 @@ namespace Invidux_Core.Repository.Implementations
                         var token = new SecurityToken
                         {
                             UserId = user.Id,
-                            Email = email,
+                            Email = email ,
                             SecurityType = SecurityTypeStrings.UserRegistration,
                             Otp = TokenGenerator.GetUniqueKey(6)
                         };
@@ -214,12 +212,11 @@ namespace Invidux_Core.Repository.Implementations
             throw new Exception("User not found or no OTP generated");
         }
 
-
         // This unit of work takes care of user registration completion
         public async Task<UserRegistrationDto> CompleteRegistration(CompleteRegistration user)
         {
             // Find the existing user by their username or other unique identifier
-            var existingUser = await _userManager.FindByEmailAsync(user.Email);
+            var existingUser = await _userManager.FindByEmailAsync(user.Email );
 
             if (existingUser != null)
             {
@@ -236,14 +233,13 @@ namespace Invidux_Core.Repository.Implementations
                     existingUser.PhoneNumber = user.Phone;
                     existingUser.OtpSentCount = 5;
                     existingUser.UpdatedAt = DateTime.UtcNow;
-                    existingUser.SubRoleId =  subRole.Id;
-                    
+                    existingUser.SubRoleId = subRole.Id;
+
                     // Update the user's profile using the UserManager
-                    var result = await _userManager.UpdateAsync(existingUser);                    
+                    var result = await _userManager.UpdateAsync(existingUser);
 
                     if (result.Succeeded)
                     {
-                        await _userManager.AddPasswordAsync(existingUser, user.Password);
                         var userInfo = new UserInfo
                         {
                             FirstName = user.FirstName,
@@ -302,19 +298,18 @@ namespace Invidux_Core.Repository.Implementations
                     else
                     {
                         // Handle update failure (e.g., return error messages)
-                        throw new Exception("Registration failed.");
+                        throw new Exception("Failed to update account.");
                     }
                 }
                 else
                 {
                     // Handle validation errors (e.g., return validation error messages)
                     // You can access the validationResults to get error details
-                    throw new Exception("Registration failed.");
+                    throw new Exception("Invalid information provided");
                 }
             }
             else
-            {
-                
+            {                
                 return null;
             }
         }

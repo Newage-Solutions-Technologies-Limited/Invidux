@@ -39,6 +39,7 @@ namespace Invidux_Core.Interfaces
         Task<TransactionType> GetTransactionTypeAsync(int id);
         Task<IEnumerable<PaymentMethod>> GetPaymentMethodsAsync();
         Task<PaymentMethod> GetPaymentMethodAsync(int id);
-
+        Task<IEnumerable<Country>> GetCountriesAsync();
+        Task<Country> GetCountryAsync(int id);
     }
 }
