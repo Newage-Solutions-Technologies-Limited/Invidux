@@ -95,16 +95,27 @@ namespace Invidux_Core.Repository.Implementations
         public async Task<bool> CheckOtp(int otp, string email)
         {
             var securityToken = await dc.SecurityTokens.SingleOrDefaultAsync(t => t.Otp == otp || t.Email == email.ToLower());
-            if (securityToken == null)
+            if (securityToken == null || securityToken.Otp != otp)
             {
                 return false;
             }
 
             if(securityToken.Otp != otp)
             {
-                securityToken.OtpAttemptCount -= 1;
-                dc.SecurityTokens.Update(securityToken);
-                dc.SaveChanges();
+                var user = await _userManager.FindByIdAsync(securityToken.UserId);
+                if(securityToken.OtpAttemptCount == 0)
+                {
+                    user.RegistrationStatus = StatusStrings.Restricted;
+                    await _userManager.UpdateAsync(user);
+                    dc.SecurityTokens.Remove(securityToken);
+                }
+                else
+                {
+                    securityToken.OtpAttemptCount -= 1;
+                    dc.SecurityTokens.Update(securityToken);
+                }
+                
+                await dc.SaveChangesAsync();
                 return false;
             }
             return true;
@@ -236,6 +247,26 @@ namespace Invidux_Core.Repository.Implementations
             throw new Exception("User not found or no OTP generated");
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns>
+        /// -1 = if user is found and registration status is restricted
+        /// 0 = if user is not found
+        /// 1 = if user is found and registration status is pending
+        /// </returns>
+        public async Task<int> ValidateNewUser(string email)
+        {
+            // Find the existing user by their username or other unique identifier
+            var existingUser = await _userManager.FindByEmailAsync(email.ToLower());
+            if (existingUser != null) 
+            {
+                if (existingUser.RegistrationStatus == StatusStrings.Restricted) return -1;
+                if (existingUser.RegistrationStatus == StatusStrings.Pending) return 1;
+            }
+            return 0;
+        }
 
         // This unit of work takes care of user registration completion
         public async Task<UserRegistrationDto> CompleteRegistration(CompleteRegistration user)
@@ -251,14 +282,6 @@ namespace Invidux_Core.Repository.Implementations
 
                 if (isValid)
                 {
-                    if(existingUser.RegistrationStatus == StatusStrings.Restricted)
-                    {
-                        throw new Exception("Your account is restricted");
-                    }
-                    if(existingUser.RegistrationStatus == StatusStrings.Pending)
-                    {
-                        throw new Exception("Please verify your account");
-                    }
                     // Update the existing user's profile based on the CompleteRegistration data
 
                     var subRole = await dc.SubRoles.FirstAsync(sr => sr.Name == SubRolesStrings.Retail);
@@ -331,19 +354,18 @@ namespace Invidux_Core.Repository.Implementations
                     else
                     {
                         // Handle update failure (e.g., return error messages)
-                        throw new Exception("Registration failed.");
+                        throw new Exception("Failed to update account.");
                     }
                 }
                 else
                 {
                     // Handle validation errors (e.g., return validation error messages)
                     // You can access the validationResults to get error details
-                    throw new Exception("Registration failed.");
+                    throw new Exception("Invalid information provided");
                 }
             }
             else
-            {
-                
+            {                
                 return null;
             }
         }

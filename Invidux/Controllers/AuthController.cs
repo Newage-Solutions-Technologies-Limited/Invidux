@@ -230,6 +230,7 @@ namespace Invidux_Api.Controllers
         /// <param name="photoFile"></param>
         /// <returns></returns>
         [ProducesResponseType(typeof(Response<UserRegistrationDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status203NonAuthoritative)]
         [ProducesResponseType(typeof(ErrorResponseDTO), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
         [HttpPost("complete-registration")]
@@ -243,7 +244,34 @@ namespace Invidux_Api.Controllers
                     // Returning a BadRequest response with details of invalid ModelState
                     return BadRequest(new ModelStateErrorResponseDTO(HttpStatusCode.BadRequest,
                         ModelState));
-                }                
+                }       
+                
+                var validateStatus = await uow.RegistrationRepo.ValidateNewUser(user.Email);
+                if(validateStatus == -1) 
+                {
+                    // Returning a BadRequest response indicating the user is restricted
+                    var errorResponse = new ErrorResponseDTO(
+                        HttpStatusCode.BadRequest,
+                        "User has been restricted"
+                    );
+                    return BadRequest(errorResponse);
+                }
+
+                if (validateStatus == 0) 
+                {
+                    // Returning a BadRequest response indicating the user is restricted
+                    var errorResponse = new ErrorResponseDTO(
+                        HttpStatusCode.BadRequest,
+                        "User does not exist"
+                    );
+                    return BadRequest(errorResponse);
+                }
+
+                if (validateStatus == 1) 
+                {
+                    // Asking the user to verify the account
+                    return StatusCode(StatusCodes.Status203NonAuthoritative, "Please verify your account.");
+                }
 
                 // Completing user registration using the provided details
                 var result = await uow.RegistrationRepo.CompleteRegistration(user);

@@ -150,16 +150,27 @@ namespace Invidux_Core.Repository.Implementations
         public async Task<bool> CheckOtp(int otp, string email)
         {
             var securityToken = await dc.SecurityTokens.SingleOrDefaultAsync(t => t.Otp == otp || t.Email == email.ToLower());
-            if (securityToken == null)
+            if (securityToken == null || securityToken.Otp != otp)
             {
                 return false;
             }
 
             if (securityToken.Otp != otp)
             {
-                securityToken.OtpAttemptCount -= 1;
-                dc.SecurityTokens.Update(securityToken);
-                dc.SaveChanges();
+                var user = await _userManager.FindByIdAsync(securityToken.UserId);
+                if (securityToken.OtpAttemptCount == 0)
+                {
+                    user.RegistrationStatus = StatusStrings.Restricted;
+                    await _userManager.UpdateAsync(user);
+                    dc.SecurityTokens.Remove(securityToken);
+                }
+                else
+                {
+                    securityToken.OtpAttemptCount -= 1;
+                    dc.SecurityTokens.Update(securityToken);
+                }
+
+                await dc.SaveChangesAsync();
                 return false;
             }
             return true;

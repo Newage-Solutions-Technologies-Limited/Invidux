@@ -7,6 +7,7 @@ namespace Invidux_Core.Repository.Interfaces
     public interface IRegistrationRepo
     {
         Task<UserRegistrationDto> Register(RegistrationDTO user);
+        Task<int> ValidateNewUser(string email);
         Task<UserRegistrationDto> CompleteRegistration(CompleteRegistration user);
         Task<bool> CheckOtp(int otp, string email);
         Task<string> VerifyOtp(int otp, string email);
