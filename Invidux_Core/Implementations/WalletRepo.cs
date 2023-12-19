@@ -3,15 +3,19 @@ using Invidux_Data.Context;
 using Invidux_Data.Dtos.Request;
 using Invidux_Domain.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using System.Text;
 
 namespace Invidux_Core.Implementations
 {
     public class WalletRepo: IWalletRepo
     {
         private readonly InviduxDBContext dc;
+        private readonly IConfiguration config;
 
-        public WalletRepo(InviduxDBContext dc)
+        public WalletRepo(IConfiguration config, InviduxDBContext dc)
         {
+            this.config = config;
             this.dc = dc;
         }
 
@@ -30,9 +34,26 @@ namespace Invidux_Core.Implementations
             return wallet;
         }
 
+        /// <summary>
+        /// In progress
+        /// </summary>
+        /// <param name="activateWalletDto"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
         public async Task<bool> ActivateWallet(ActivateWalletDto activateWalletDto, string userId)
         {
-            throw new NotImplementedException();
+            
+            try
+            {
+
+                throw new NotImplementedException();
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine(ex.Message);
+                throw ex;
+            }
         }
 
         public async Task<bool> SetWalletPin(SetWalletPinDto pinDto, string userId)
