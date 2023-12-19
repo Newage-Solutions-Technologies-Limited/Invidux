@@ -92,12 +92,12 @@ namespace Invidux_Core.Repository.Implementations
             return response;
         }
 
-        public async Task<bool> CheckOtp(int otp, string email)
+        public async Task<int> CheckOtp(int otp, string email)
         {
             var securityToken = await dc.SecurityTokens.SingleOrDefaultAsync(t => t.Otp == otp || t.Email == email.ToLower());
-            if (securityToken == null || securityToken.Otp != otp)
+            if (securityToken == null)
             {
-                return false;
+                return 0;
             }
 
             if(securityToken.Otp != otp)
@@ -116,20 +116,14 @@ namespace Invidux_Core.Repository.Implementations
                 }
                 
                 await dc.SaveChangesAsync();
-                return false;
+                return -1;
             }
-            return true;
+            return 1;
         }
 
         // This unit of work takes care of user email verifation
         public async Task<string> VerifyOtp(int otp, string email)
         {
-            var validOtp = await CheckOtp(otp, email);
-            if (!validOtp)
-            {
-                throw new Exception("Invalid otp");
-            }
-
             var existingToken = await dc.SecurityTokens.SingleOrDefaultAsync(t => t.Otp == otp);
             if (existingToken == null)
             {

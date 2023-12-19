@@ -147,12 +147,12 @@ namespace Invidux_Core.Repository.Implementations
             throw new Exception();
         }
 
-        public async Task<bool> CheckOtp(int otp, string email)
+        public async Task<int> CheckOtp(int otp, string email)
         {
             var securityToken = await dc.SecurityTokens.SingleOrDefaultAsync(t => t.Otp == otp || t.Email == email.ToLower());
-            if (securityToken == null || securityToken.Otp != otp)
+            if (securityToken == null)
             {
-                return false;
+                return 0;
             }
 
             if (securityToken.Otp != otp)
@@ -171,19 +171,14 @@ namespace Invidux_Core.Repository.Implementations
                 }
 
                 await dc.SaveChangesAsync();
-                return false;
+                return -1;
             }
-            return true;
+            return 1;
         }
 
         // Verifies the provided OTP (One-Time Password)
         public async Task<LoginResponse> VerifyOtp(int otp, string email)
         {
-            var validOtp = await CheckOtp(otp, email);
-            if (!validOtp)
-            {
-                throw new Exception("Invalid otp");
-            }
             // Find the OTP in the database
             var existingToken = await dc.SecurityTokens.SingleOrDefaultAsync(t => t.Otp == otp);
             var jwtHelper = new JWT(config);

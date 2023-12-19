@@ -8,7 +8,7 @@ namespace Invidux_Core.Repository.Interfaces
     {
         Task<bool> UserExists(string userId);
         Task<LoginResponse> Authenticate(string userName, string password);
-        Task<bool> CheckOtp(int otp, string email);
+        Task<int> CheckOtp(int otp, string email);
         Task<LoginResponse> VerifyOtp(int otp, string email);
         Task<AppUser> GetUserProfile(string userId);
         Task<UserInfo> GetUserInfo(string userId);

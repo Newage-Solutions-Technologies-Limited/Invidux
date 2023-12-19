@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Invidux_Core.Interfaces;
 using Invidux_Core.Implementations;
+using Invidux_Domain.Utilities;
 
 namespace Invidux_Core.Repository.Implementations
 {
@@ -50,6 +51,34 @@ namespace Invidux_Core.Repository.Implementations
         public async Task<bool> SaveAsync()
         {
             return await dc.SaveChangesAsync() > 0;
+        }
+        public async Task<int> ValidateOtp(int otp, string email)
+        {
+            var securityToken = await dc.SecurityTokens.SingleOrDefaultAsync(t => t.Otp == otp || t.Email == email.ToLower());
+            if (securityToken == null)
+            {
+                return 0;
+            }
+
+            if (securityToken.Otp != otp)
+            {
+                var user = await _userManager.FindByIdAsync(securityToken.UserId);
+                if (securityToken.OtpAttemptCount == 0)
+                {
+                    user.RegistrationStatus = StatusStrings.Restricted;
+                    await _userManager.UpdateAsync(user);
+                    dc.SecurityTokens.Remove(securityToken);
+                }
+                else
+                {
+                    securityToken.OtpAttemptCount -= 1;
+                    dc.SecurityTokens.Update(securityToken);
+                }
+
+                await dc.SaveChangesAsync();
+                return -1;
+            }
+            return 1;
         }
 
         /// <summary>
