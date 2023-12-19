@@ -1559,5 +1559,92 @@ namespace Invidux_Api.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
+        /// <summary>
+        /// Endpoint to get all countries
+        /// </summary>
+        /// <returns></returns>
+        [ProducesResponseType(typeof(ResponseArrayDTO<CountryResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponseDTO), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
+        [HttpGet("countries")]
+        public async Task<IActionResult> GetCountries()
+        {
+            try
+            {
+                var countries = await uow.UtitlityRepo.GetCountriesAsync();
+                if (countries == null)
+                {
+                    var errorResponse = new ErrorResponseDTO(
+                       HttpStatusCode.BadRequest,
+                       "Countries not created"
+                    );
+
+                    // Return a BadRequest status with the error response
+                    return BadRequest(errorResponse);
+                }
+                var countriesDto = mapper.Map<IEnumerable<CountryResponse>>(countries);
+                var response = new ResponseArrayDTO<CountryResponse>
+                {
+                    Successful = true,
+                    Message= "success",
+                    Data = countriesDto
+                };
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions that occur during the process
+
+                // Log the exception here (code for logging is not shown)
+
+                // Return a 500 Internal Server Error with the exception message
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Endpoint to get a specific country by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [ProducesResponseType(typeof(Response<CountryResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponseDTO), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
+        [HttpGet("countries/{id}")]
+        public async Task<IActionResult> GetCountryById(int id)
+        {
+            try
+            {
+                var country = await uow.UtitlityRepo.GetCountryAsync(id);
+                if (country == null)
+                {
+                    var errorResponse = new ErrorResponseDTO(
+                       HttpStatusCode.BadRequest,
+                       "Country not found"
+                    );
+
+                    // Return a BadRequest status with the error response
+                    return BadRequest(errorResponse);
+                }
+                var countryDto = mapper.Map<CountryResponse>(country);
+                var response = new Response<CountryResponse>
+                {
+                    Successful = true,
+                    Message = "success",
+                    Data = countryDto
+                };
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions that occur during the process
+
+                // Log the exception here (code for logging is not shown)
+
+                // Return a 500 Internal Server Error with the exception message
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
     }
 }

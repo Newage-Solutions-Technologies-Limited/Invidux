@@ -10,7 +10,7 @@ namespace Invidux_Core.Helpers
             IdentityResult result = await base.ValidateAsync(manager, user, password);
             List<IdentityError> errors = result.Succeeded ? new List<IdentityError>() : result.Errors.ToList();
 
-            if (password.ToLower().Contains(user.UserName.ToLower()))
+            if (password .Contains(user.UserName ))
             {
                 errors.Add(new IdentityError
                 {

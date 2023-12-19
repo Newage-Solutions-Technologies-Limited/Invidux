@@ -107,7 +107,7 @@ namespace Invidux_Core.Repository.Implementations
                         // Creates a verification token with expiration
                         // Saves the token in the database and sends it via email
                         UserId = user.Id,
-                        Email = user.Email.ToLower(),
+                        Email = user.Email ,
                         SecurityType = SecurityTypeStrings.TwoFactorVerification,
                         Otp = TokenGenerator.GetUniqueKey(6),
                         CreatedOn = DateTime.UtcNow,
@@ -159,7 +159,7 @@ namespace Invidux_Core.Repository.Implementations
                 throw new Exception("Invalid otp");
             }
 
-            if (existingToken.Email.ToLower() == email.ToLower())
+            if (existingToken.Email == email )
             {
                 // Check if the token has not expired
                 if (existingToken.ExpiresOn >= DateTime.UtcNow)

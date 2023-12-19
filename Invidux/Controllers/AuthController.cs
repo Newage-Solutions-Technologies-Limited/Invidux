@@ -60,7 +60,7 @@ namespace Invidux_Api.Controllers
                 var userExists = await uow.RegistrationRepo.UserAlreadyExists(user.Email);
                 if (userExists != null)
                 {
-                    if (userExists == RegistrationStatus.Restricted.ToString())
+                    if (userExists == StatusStrings.Restricted)
                     {
                         // Returning a BadRequest response indicating the user is restricted
                         var errorResponse = new ErrorResponseDTO(
@@ -69,7 +69,7 @@ namespace Invidux_Api.Controllers
                         );
                         return BadRequest(errorResponse);
                     }
-                    else if (userExists == RegistrationStatus.Active.ToString())
+                    else if (userExists == StatusStrings.Verified)
                     {
                         // Returning a BadRequest response indicating the user is already registered
                         var errorResponse = new ErrorResponseDTO(
@@ -138,7 +138,7 @@ namespace Invidux_Api.Controllers
                 }
 
                 var userExists = await uow.RegistrationRepo.UserAlreadyExists(otp.Email);
-                if (userExists == RegistrationStatus.Restricted.ToString())
+                if (userExists == StatusStrings.Restricted)
                 {
                     // Returning a BadRequest response indicating the user is restricted
                     var errorResponse = new ErrorResponseDTO(
@@ -149,7 +149,7 @@ namespace Invidux_Api.Controllers
                 }
 
                 var validateOtp = await uow.ValidateOtp(otp.Otp, otp.Email);
-                if (validateOtp == 0 || validateOtp == -1)
+                if (validateOtp == 0)
                 {
                     // Returning a BadRequest response 
                     var errorResponse = new ErrorResponseDTO(
@@ -168,15 +168,6 @@ namespace Invidux_Api.Controllers
                     var errorResponse = new ErrorResponseDTO(
                         HttpStatusCode.BadRequest,
                         "Unknown error occured"
-                    );
-                    return BadRequest(errorResponse);
-                }
-                if (result != null && result == RegistrationStatus.Restricted.ToString())
-                {
-                    // Returning a BadRequest response indicating the user is restricted
-                    var errorResponse = new ErrorResponseDTO(
-                        HttpStatusCode.BadRequest,
-                        "User has been restricted"
                     );
                     return BadRequest(errorResponse);
                 }
@@ -264,33 +255,36 @@ namespace Invidux_Api.Controllers
                     // Returning a BadRequest response with details of invalid ModelState
                     return BadRequest(new ModelStateErrorResponseDTO(HttpStatusCode.BadRequest,
                         ModelState));
-                }       
-                
-                var validateStatus = await uow.RegistrationRepo.ValidateNewUser(user.Email);
-                if(validateStatus == -1) 
-                {
-                    // Returning a BadRequest response indicating the user is restricted
-                    var errorResponse = new ErrorResponseDTO(
-                        HttpStatusCode.BadRequest,
-                        "User has been restricted"
-                    );
-                    return BadRequest(errorResponse);
                 }
 
-                if (validateStatus == 0) 
+                // Checking if the user already exists
+                var userExists = await uow.RegistrationRepo.UserAlreadyExists(user.Email);
+                if (userExists != null)
                 {
-                    // Returning a BadRequest response indicating the user is restricted
+                    if (userExists == StatusStrings.Restricted)
+                    {
+                        // Returning a BadRequest response indicating the user is restricted
+                        var errorResponse = new ErrorResponseDTO(
+                            HttpStatusCode.BadRequest,
+                            "User has been restricted"
+                        );
+                        return BadRequest(errorResponse);
+                    }
+                    else if (userExists == StatusStrings.Pending)
+                    {
+
+                        // Asking the user to verify the account
+                        return StatusCode(StatusCodes.Status203NonAuthoritative, "Please verify your account.");
+                    }
+                }
+                else
+                {
+                    // Returning a BadRequest response indicating the user is not found
                     var errorResponse = new ErrorResponseDTO(
                         HttpStatusCode.BadRequest,
                         "User does not exist"
                     );
                     return BadRequest(errorResponse);
-                }
-
-                if (validateStatus == 1) 
-                {
-                    // Asking the user to verify the account
-                    return StatusCode(StatusCodes.Status203NonAuthoritative, "Please verify your account.");
                 }
 
                 // Completing user registration using the provided details
@@ -430,7 +424,7 @@ namespace Invidux_Api.Controllers
                 }
 
                 var userExists = await uow.RegistrationRepo.UserAlreadyExists(otp.Email);
-                if (userExists == RegistrationStatus.Restricted.ToString())
+                if (userExists == StatusStrings.Restricted)
                 {
                     // Returning a BadRequest response indicating the user is restricted
                     var errorResponse = new ErrorResponseDTO(
@@ -463,16 +457,7 @@ namespace Invidux_Api.Controllers
                     );
                     return BadRequest(errorResponse);
                 }
-                if (result != null && result.RegistrationStatus == StatusStrings.Restricted)
-                {
-                    // Handle the case when registration fails
-                    var errorResponse = new ErrorResponseDTO(
-                        HttpStatusCode.BadRequest,
-                        "User has been restricted"
-                    );
-                    return BadRequest(errorResponse);
-                }
-                // Registration was successful; you can return a success response or any other data
+                // Login was successful; you can return a success response or any other data
                 var response = new Response<LoginResponse>
                 {
                     Successful = true,

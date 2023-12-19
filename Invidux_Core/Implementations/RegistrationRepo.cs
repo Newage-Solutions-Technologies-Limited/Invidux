@@ -31,7 +31,7 @@ namespace Invidux_Core.Repository.Implementations
         public async Task<string> UserAlreadyExists(string email)
         {
             // Searches for a user with the given userId in the database
-            var userExists = await _userManager.FindByEmailAsync(email.ToLower());
+            var userExists = await _userManager.FindByEmailAsync(email);
 
             // Returns the user status if user exists
             if (userExists != null)
@@ -49,7 +49,7 @@ namespace Invidux_Core.Repository.Implementations
             var newUser = new AppUser
             {
                 Email = user.Email,
-                UserName = user.Email.ToLower(),
+                UserName = user.Email ,
                 RegistrationStatus = StatusStrings.Pending,
                 OtpSentCount = 5,
                 RegistrationDate = DateTime.UtcNow,
@@ -69,7 +69,7 @@ namespace Invidux_Core.Repository.Implementations
             var token = new SecurityToken
             {
                 UserId = newUser.Id,
-                Email = newUser.Email.ToLower(),
+                Email = newUser.Email ,
                 SecurityType = SecurityTypeStrings.UserRegistration,
                 Otp = TokenGenerator.GetUniqueKey(6)
             };
@@ -101,7 +101,7 @@ namespace Invidux_Core.Repository.Implementations
                 // Return null if the OTP does not exist
                 throw new Exception("Invalid otp");
             }
-            if (existingToken.Email.ToLower() == email.ToLower())
+            if (existingToken.Email == email)
             {
                 // Check if the token has not expired
                 if (existingToken.ExpiresOn >= DateTime.UtcNow)
@@ -144,7 +144,7 @@ namespace Invidux_Core.Repository.Implementations
         // This unit of work takes care of verifation otp request
         public async Task<int> ResendOtp(string email)
         {
-            var user = await _userManager.FindByEmailAsync(email.ToLower());
+            var user = await _userManager.FindByEmailAsync(email );
 
             if (user != null)
             {
@@ -157,7 +157,7 @@ namespace Invidux_Core.Repository.Implementations
                         var token = new SecurityToken
                         {
                             UserId = user.Id,
-                            Email = email.ToLower(),
+                            Email = email ,
                             SecurityType = SecurityTypeStrings.UserRegistration,
                             Otp = TokenGenerator.GetUniqueKey(6)
                         };
@@ -212,32 +212,11 @@ namespace Invidux_Core.Repository.Implementations
             throw new Exception("User not found or no OTP generated");
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="email"></param>
-        /// <returns>
-        /// -1 = if user is found and registration status is restricted
-        /// 0 = if user is not found
-        /// 1 = if user is found and registration status is pending
-        /// </returns>
-        public async Task<int> ValidateNewUser(string email)
-        {
-            // Find the existing user by their username or other unique identifier
-            var existingUser = await _userManager.FindByEmailAsync(email.ToLower());
-            if (existingUser != null) 
-            {
-                if (existingUser.RegistrationStatus == StatusStrings.Restricted) return -1;
-                if (existingUser.RegistrationStatus == StatusStrings.Pending) return 1;
-            }
-            return 0;
-        }
-
         // This unit of work takes care of user registration completion
         public async Task<UserRegistrationDto> CompleteRegistration(CompleteRegistration user)
         {
             // Find the existing user by their username or other unique identifier
-            var existingUser = await _userManager.FindByEmailAsync(user.Email.ToLower());
+            var existingUser = await _userManager.FindByEmailAsync(user.Email );
 
             if (existingUser != null)
             {

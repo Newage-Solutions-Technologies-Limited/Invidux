@@ -190,5 +190,16 @@ namespace Invidux_Core.Implementations
             var method = await dc.PaymentMethods.FirstOrDefaultAsync(x => x.Id == id);
             return method == null ? null : method;
         }
+
+        public async Task<IEnumerable<Country>> GetCountriesAsync()
+        {
+            var countries = await dc.Countries.ToListAsync();
+            return countries == null ? null : countries;
+        }
+        public async Task<Country> GetCountryAsync(int id)
+        {
+            var country = await dc.Countries.FirstOrDefaultAsync(x => x.Id == id);
+            return country == null ? null : country;
+        }
     }
 }

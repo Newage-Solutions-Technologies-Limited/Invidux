@@ -83,12 +83,8 @@ var app = builder.Build();
 {
     app.UseDeveloperExceptionPage();
     
-}
-else
-{
-    
 }*/
-app.ConfigureExceptionHandler(app.Environment);
+ app.ConfigureExceptionHandler(app.Environment);
 app.UseSwagger();
 app.UseSwaggerUI(c => c.SwaggerEndpoint("../swagger/v1/swagger.json", "Invidux v1"));
 

@@ -54,7 +54,7 @@ namespace Invidux_Core.Repository.Implementations
         }
         public async Task<int> ValidateOtp(int otp, string email)
         {
-            var securityToken = await dc.SecurityTokens.SingleOrDefaultAsync(t => t.Otp == otp || t.Email == email.ToLower());
+            var securityToken = await dc.SecurityTokens.SingleOrDefaultAsync(t => t.Otp == otp || t.Email == email );
             if (securityToken == null)
             {
                 return 0;
