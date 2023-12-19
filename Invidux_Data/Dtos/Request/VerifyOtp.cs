@@ -14,5 +14,6 @@ namespace Invidux_Data.Dtos.Request
         public string Email { get; set; }
         [Required]
         public int Otp { get; set; } // The OTP to be verified
+        public SourceEnums? Source { get; set; }
     }
 }

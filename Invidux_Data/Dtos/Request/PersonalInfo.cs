@@ -14,15 +14,16 @@ namespace Invidux_Data.Dtos.Request
         public DateTime? Dob { get; set; } // Date of Birth
         public string? Gender { get; set; }
         public string? MaritalStatus { get; set; }
+        public SourceEnums? Source { get; set; }
     }
 
     public class NextOfKinDto
     {
-        public string UserId { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
         public string Relationship { get; set; }
+        public SourceEnums? Source { get; set; }
     }
 
     public class KYCRequest
@@ -31,13 +32,14 @@ namespace Invidux_Data.Dtos.Request
         public string IdNumber { get; set; }
         public IFormFile IdImage { get; set; }
         public DateTime ExpiryDate { get; set; } // Nullable if expiry date can be empty
+        public SourceEnums? Source { get; set; }
     }
 
     public class SecurityDto
     {
-        public string UserId { get; set; }
         public bool TwofactorEnabled { get; set; }
         public string TwoFactorType { get; set; }
-        public List<string>? TwofactorCovers { get; set; } 
+        public List<string>? TwofactorCovers { get; set; }
+        public SourceEnums? Source { get; set; }
     }
 }

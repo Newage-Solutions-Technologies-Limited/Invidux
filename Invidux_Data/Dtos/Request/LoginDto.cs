@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Invidux_Domain.Utilities;
+using System.ComponentModel.DataAnnotations;
 
 namespace Invidux_Data.Dtos.Request
 {
@@ -10,7 +11,7 @@ namespace Invidux_Data.Dtos.Request
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        public string? Source { get; set; }
+        public SourceEnums? Source { get; set; }
     }
 
 }

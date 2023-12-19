@@ -12,6 +12,12 @@ namespace Invidux_Domain.Utilities
         Restricted
     }
 
+    public enum SourceEnums
+    {
+        Web,
+        Mobile
+    }
+
     public enum TwoFactorTypeEnums
     {
         [Description("Email")]

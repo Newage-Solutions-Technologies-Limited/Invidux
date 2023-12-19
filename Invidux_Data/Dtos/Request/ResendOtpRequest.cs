@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Invidux_Domain.Utilities;
+using System.ComponentModel.DataAnnotations;
 
 namespace Invidux_Data.Dtos.Request
 {
@@ -6,6 +7,7 @@ namespace Invidux_Data.Dtos.Request
     {
         [Required]
         public string Email { get; set; }
+        public SourceEnums? Source { get; set; }
     }
 
 }
