@@ -92,35 +92,6 @@ namespace Invidux_Core.Repository.Implementations
             return response;
         }
 
-        public async Task<int> CheckOtp(int otp, string email)
-        {
-            var securityToken = await dc.SecurityTokens.SingleOrDefaultAsync(t => t.Otp == otp || t.Email == email.ToLower());
-            if (securityToken == null)
-            {
-                return 0;
-            }
-
-            if(securityToken.Otp != otp)
-            {
-                var user = await _userManager.FindByIdAsync(securityToken.UserId);
-                if(securityToken.OtpAttemptCount == 0)
-                {
-                    user.RegistrationStatus = StatusStrings.Restricted;
-                    await _userManager.UpdateAsync(user);
-                    dc.SecurityTokens.Remove(securityToken);
-                }
-                else
-                {
-                    securityToken.OtpAttemptCount -= 1;
-                    dc.SecurityTokens.Update(securityToken);
-                }
-                
-                await dc.SaveChangesAsync();
-                return -1;
-            }
-            return 1;
-        }
-
         // This unit of work takes care of user email verifation
         public async Task<string> VerifyOtp(int otp, string email)
         {
