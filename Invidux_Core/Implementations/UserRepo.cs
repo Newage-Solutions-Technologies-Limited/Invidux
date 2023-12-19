@@ -144,7 +144,7 @@ namespace Invidux_Core.Repository.Implementations
             }
 
             // Returns null for any other scenarios not covered
-            return null;
+            throw new Exception();
         }
 
         public async Task<bool> CheckOtp(int otp, string email)
@@ -323,9 +323,9 @@ namespace Invidux_Core.Repository.Implementations
         /// </summary>
         /// <param name="securityDto"></param>
         /// <returns></returns>
-        public async Task<bool> UpdateSecurity(SecurityDto securityDto)
+        public async Task<bool> UpdateSecurity(SecurityDto securityDto, string userId)
         {
-            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == securityDto.UserId);
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == userId);
             if (user == null) return false;
             user.TwoFactorEnabled = securityDto.TwofactorEnabled;
             user.TwoFactorType = securityDto.TwoFactorType;
@@ -334,7 +334,7 @@ namespace Invidux_Core.Repository.Implementations
                 var _twoFactor = await dc.TwoFactorCovers.FirstOrDefaultAsync(t => t.Type == twofactorCover);
                 var newCover = new UserTwoFactorCover
                 {
-                    UserId = securityDto.UserId,
+                    UserId = userId,
                     TwoFactorCoverId = _twoFactor.Id,
                 };
                 dc.UserTwoFactorCovers.Add(newCover);

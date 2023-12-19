@@ -16,6 +16,6 @@ namespace Invidux_Core.Repository.Interfaces
         Task<KycIdCard> GetIdType(int id);
         void CreateNextOfKin(UserNextOfKin kin);
         Task<UserNextOfKin> GetUserNextOfKin (string userId);
-        Task<bool> UpdateSecurity(SecurityDto securityDto);
+        Task<bool> UpdateSecurity(SecurityDto securityDto, string userId);
     }
 }

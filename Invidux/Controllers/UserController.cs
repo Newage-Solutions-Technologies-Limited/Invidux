@@ -295,7 +295,7 @@ namespace Invidux_Api.Controllers
                 }
 
                 // Attempt to update the security information for the user
-                var result = await uow.UserRepo.UpdateSecurity(securityDto);
+                var result = await uow.UserRepo.UpdateSecurity(securityDto, userId);
 
                 // If the update operation fails, return a BadRequest response for an unknown error
                 if (!result)
