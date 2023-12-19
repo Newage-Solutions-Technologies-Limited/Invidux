@@ -92,55 +92,77 @@ namespace Invidux_Core.Repository.Implementations
             return response;
         }
 
+        public async Task<bool> CheckOtp(int otp, string email)
+        {
+            var securityToken = await dc.SecurityTokens.SingleOrDefaultAsync(t => t.Otp == otp || t.Email == email.ToLower());
+            if (securityToken == null)
+            {
+                return false;
+            }
+
+            if(securityToken.Otp != otp)
+            {
+                securityToken.OtpAttemptCount -= 1;
+                dc.SecurityTokens.Update(securityToken);
+                dc.SaveChanges();
+                return false;
+            }
+            return true;
+        }
+
         // This unit of work takes care of user email verifation
         public async Task<string> VerifyOtp(int otp, string email)
         {
-            // Find the OTP in the database
-            var existingToken = await dc.SecurityTokens.SingleOrDefaultAsync(t => t.Otp == otp);
-
-            if (existingToken != null)
+            var validOtp = await CheckOtp(otp, email);
+            if (!validOtp)
             {
-               if (existingToken.Email.ToLower() == email.ToLower())
+                throw new Exception("Invalid otp");
+            }
+
+            var existingToken = await dc.SecurityTokens.SingleOrDefaultAsync(t => t.Otp == otp);
+            if (existingToken == null)
+            {
+                // Return null if the OTP does not exist
+                throw new Exception("Invalid otp");
+            }
+            if (existingToken.Email.ToLower() == email.ToLower())
+            {
+                // Check if the token has not expired
+                if (existingToken.ExpiresOn >= DateTime.UtcNow)
                 {
-                    // Check if the token has not expired
-                    if (existingToken.ExpiresOn >= DateTime.UtcNow)
+
+                    if (existingToken.SecurityType == SecurityTypeStrings.UserRegistration)
                     {
-
-                        if (existingToken.SecurityType == SecurityTypeStrings.UserRegistration)
+                        // Set email verification to true for the user
+                        var user = await _userManager.FindByIdAsync(existingToken.UserId);
+                        if (user != null)
                         {
-                            // Set email verification to true for the user
-                            var user = await _userManager.FindByIdAsync(existingToken.UserId);
-                            if (user != null)
+                            if (user.RegistrationStatus == StatusStrings.Pending)
                             {
-                                if (user.RegistrationStatus == StatusStrings.Pending)
-                                {
-                                    user.EmailConfirmed = true;
-                                    user.RegistrationStatus = StatusStrings.Verified;
-                                    user.OtpSentCount = 5;
-                                    user.UpdatedAt = DateTime.UtcNow;
-                                    await _userManager.UpdateAsync(user);
-                                }
-
-                                // Delete the OTP record from the database
-                                dc.SecurityTokens.Remove(existingToken);
-                                await dc.SaveChangesAsync();
-
-                                return user.RegistrationStatus;
+                                user.EmailConfirmed = true;
+                                user.RegistrationStatus = StatusStrings.Verified;
+                                user.OtpSentCount = 5;
+                                user.UpdatedAt = DateTime.UtcNow;
+                                await _userManager.UpdateAsync(user);
                             }
 
-                            return null;
+                            // Delete the OTP record from the database
+                            dc.SecurityTokens.Remove(existingToken);
+                            await dc.SaveChangesAsync();
+
+                            return user.RegistrationStatus;
                         }
+
                         return null;
                     }
-                    dc.SecurityTokens.Remove(existingToken);
-                    await dc.SaveChangesAsync();
-                    // Return null if the OTP has expired
                     return null;
-               }
-               throw new Exception("Invalid account");
+                }
+                dc.SecurityTokens.Remove(existingToken);
+                await dc.SaveChangesAsync();
+                // Throw exception if the OTP has expired
+                throw new Exception("Otp has expired");
             }
-            // Return null if the OTP does not exist
-            return null;
+            throw new Exception("Invalid account");
         }
 
         // This unit of work takes care of verifation otp request
