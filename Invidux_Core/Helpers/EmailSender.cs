@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Configuration;
 using SendGrid;
-//using SendGrid.Helpers.Mail;
-using MimeKit;
-using MailKit.Net.Smtp;
-using MailKit.Security;
+using SendGrid.Helpers.Mail;
+//using MimeKit;
+//using MailKit.Net.Smtp;
+//using MailKit.Security;
 using Invidux_Domain.Models;
 using Microsoft.Extensions.Options;
 
@@ -12,14 +12,18 @@ namespace Invidux_Core.Helpers
 {
     public class EmailSender: IEmailSender
     {
-        //private readonly Sendgrid sendGrid;
-        private readonly MailSettings mailSettings;
-        public EmailSender(IOptions<MailSettings> _mailSettings)
+        private readonly Sendgrid sendGrid;
+        //private readonly MailSettings mailSettings;
+        public EmailSender(
+            //IOptions<MailSettings> _mailSettings,
+            IOptions<Sendgrid> sendGrid
+        )
         {
-            mailSettings = _mailSettings.Value;
+            //mailSettings = _mailSettings.Value;
+            this.sendGrid = sendGrid.Value;
         }
 
-        /*public async Task SendEmailAsync(string email, string subject, string message)
+        public async Task SendEmailAsync(string email, string subject, string message)
         {
             var apiKey = sendGrid.APIKey;
             var sendGridEmail = sendGrid.Email;
@@ -33,9 +37,9 @@ namespace Invidux_Core.Helpers
             Console.WriteLine($"Status Code: {response.StatusCode}");
             Console.WriteLine($"Body: {await response.Body.ReadAsStringAsync()}");
             Console.WriteLine($"Headers: {response.Headers}");
-        }*/
+        }
 
-        public async Task SendEmailAsync(string email, string subject, string htmlMessage)
+        /*public async Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
             var host = mailSettings.Host;
             var port = mailSettings.Port;
@@ -55,6 +59,6 @@ namespace Invidux_Core.Helpers
             smtp.Authenticate(mail, password);
             await smtp.SendAsync(message);
             smtp.Disconnect(true);
-        }
+        }*/
     }
 }
