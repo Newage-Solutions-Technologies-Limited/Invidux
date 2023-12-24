@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using SendGrid.Helpers.Mail;
+using System.Net.Mail;
 
 namespace Invidux_Core.Repository.Implementations
 {
@@ -49,15 +51,37 @@ namespace Invidux_Core.Repository.Implementations
             return user == null ? false : true;
         }
 
+        public bool IsValidEmail(string email)
+        {
+            try
+            {
+                MailAddress m = new MailAddress(email);
+
+                return true;
+            }
+            catch (FormatException)
+            {
+                return false;
+            }
+        }
+
         // To return jwt
         // Authenticates a user based on provided username and password
         public async Task<LoginResponse> Authenticate(string userName, string password)
         {
+            var emailOrUsername = userName;
             // Helper class for JWT operations
             var jwtHelper = new JWT(config);
-
+            if (IsValidEmail(userName))
+            {
+                var search = await _userManager.FindByEmailAsync(userName);
+                if (search != null)
+                {
+                    userName = search.UserName;
+                }
+            }
             // Fetches the user based on provided username or email
-            var user = await dc.AppUsers.FirstOrDefaultAsync(x => x.UserName == userName || x.Email == userName);
+            var user = await dc.AppUsers.FirstOrDefaultAsync(x => x.UserName == userName);
 
             // If user is not found, returns null
             if (user == null)

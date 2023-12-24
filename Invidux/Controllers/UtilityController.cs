@@ -1567,7 +1567,7 @@ namespace Invidux_Api.Controllers
         [ProducesResponseType(typeof(ResponseArrayDTO<CountryResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponseDTO), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
-        [HttpGet("countries")]
+        [HttpGet("locations/countries")]
         public async Task<IActionResult> GetCountries()
         {
             try
@@ -1611,7 +1611,7 @@ namespace Invidux_Api.Controllers
         [ProducesResponseType(typeof(Response<CountryResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponseDTO), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
-        [HttpGet("countries/{id}")]
+        [HttpGet("locations/countries/{id}")]
         public async Task<IActionResult> GetCountryById(int id)
         {
             try
