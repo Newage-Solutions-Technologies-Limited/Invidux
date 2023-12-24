@@ -1,12 +1,10 @@
 ﻿using Invidux_Core.Interfaces;
 using Invidux_Data.Context;
 using Invidux_Data.Dtos.Request;
+using Invidux_Data.Dtos.Response;
 using Invidux_Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 
 
 namespace Invidux_Core.Implementations
@@ -37,7 +35,49 @@ namespace Invidux_Core.Implementations
             return wallet;
         }
 
-        //public async Task<string> GetBvnDetailsAsync(string bvn, string secretKey)
+        public async Task<BvnResponse> GetBvnDetail(string bvn, string secretKey)
+        {
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", secretKey);
+                HttpResponseMessage response = await client.GetAsync($"https://api.paystack.co/bank/resolve_bvn/{bvn}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string jsonResponse = await response.Content.ReadAsStringAsync();
+                    return System.Text.Json.JsonSerializer.Deserialize<BvnResponse>(jsonResponse);
+                }
+                else
+                {
+                    // Handle the error (or throw an exception)
+                    throw new HttpRequestException($"Error: {response.StatusCode}");
+                }
+            }
+        }
+
+        public async Task<string> GetBvnDetails(string bvn, string secretKey)
+        {
+            using (var client = new HttpClient())
+            {
+                // Set the Authorization header
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", secretKey);
+
+                // Make the GET request
+                HttpResponseMessage response = await client.GetAsync($"https://api.paystack.co/bank/resolve_bvn/{bvn}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    // Read and return the response body
+                    Console.WriteLine(response.Content);
+                    return await response.Content.ReadAsStringAsync();
+                }
+                else
+                {
+                    // Handle the error (or throw an exception)
+                    return $"Error: {response.StatusCode}";
+                }
+            }
+        }
         public async Task<bool> GetBvnDetailsAsync(string bvn, string secretKey)
         {
             using (var client = new HttpClient())
@@ -77,9 +117,11 @@ namespace Invidux_Core.Implementations
             try
             {
                 string secretKey = config.GetSection("PaystackTest:SecretKey").Value;
-                // string response = await GetBvnDetailsAsync(activateWalletDto.BVN, secretKey);
                 bool response = await GetBvnDetailsAsync(activateWalletDto.BVN, secretKey);
-                Console.WriteLine(response);
+                string result = await GetBvnDetails(activateWalletDto.BVN, secretKey);
+                var bvn = await GetBvnDetail(activateWalletDto.BVN, secretKey);
+                Console.WriteLine(bvn.ToString());
+                Console.WriteLine(result);
                 if(response)
                 {
                     var wallet = await dc.Wallets.FirstOrDefaultAsync(w => w.UserId == userId);
