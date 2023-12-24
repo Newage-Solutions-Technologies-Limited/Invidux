@@ -69,7 +69,6 @@ namespace Invidux_Core.Repository.Implementations
         // Authenticates a user based on provided username and password
         public async Task<LoginResponse> Authenticate(string userName, string password)
         {
-            var emailOrUsername = userName;
             // Helper class for JWT operations
             var jwtHelper = new JWT(config);
             if (IsValidEmail(userName))

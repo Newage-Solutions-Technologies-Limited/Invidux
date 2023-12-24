@@ -4,7 +4,10 @@ using Invidux_Data.Dtos.Request;
 using Invidux_Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
+
 
 namespace Invidux_Core.Implementations
 {
@@ -34,20 +37,63 @@ namespace Invidux_Core.Implementations
             return wallet;
         }
 
+        //public async Task<string> GetBvnDetailsAsync(string bvn, string secretKey)
+        public async Task<bool> GetBvnDetailsAsync(string bvn, string secretKey)
+        {
+            using (var client = new HttpClient())
+            {
+                // Set the Authorization header
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", secretKey);
+
+                // Make the GET request
+                HttpResponseMessage response = await client.GetAsync($"https://api.paystack.co/bank/resolve_bvn/{bvn}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    // Read and return the response body
+                    Console.WriteLine(response.Content);
+                    // return await response.Content.ReadAsStringAsync();
+                    return true;
+                }
+                else
+                {
+                    // Handle the error (or throw an exception)
+                    // return $"Error: {response.StatusCode}";
+                    return false;
+                }
+            }
+        }
+
         /// <summary>
         /// In progress
+        /// Currently can't get response message back from paystack due to legal reasons
         /// </summary>
         /// <param name="activateWalletDto"></param>
         /// <param name="userId"></param>
         /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
         public async Task<bool> ActivateWallet(ActivateWalletDto activateWalletDto, string userId)
         {
             
             try
             {
-
-                throw new NotImplementedException();
+                string secretKey = config.GetSection("PaystackTest:SecretKey").Value;
+                // string response = await GetBvnDetailsAsync(activateWalletDto.BVN, secretKey);
+                bool response = await GetBvnDetailsAsync(activateWalletDto.BVN, secretKey);
+                Console.WriteLine(response);
+                if(response)
+                {
+                    var wallet = await dc.Wallets.FirstOrDefaultAsync(w => w.UserId == userId);
+                    if (wallet == null)
+                    {
+                        return false;
+                    }
+                    wallet.BVN = activateWalletDto.BVN;
+                    wallet.Active = true;
+                    dc.Wallets.Update(wallet);
+                    dc.SaveChanges();
+                    return true;
+                }
+                return false;
             }
             catch (Exception ex)
             {
