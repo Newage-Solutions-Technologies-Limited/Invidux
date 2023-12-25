@@ -168,5 +168,69 @@ namespace Invidux_Core.Implementations
             await dc.SaveChangesAsync();
             return true;
         }
+
+        /// <summary>
+        /// The following are to be implemented with proper dto
+        /// </summary>
+        /// <returns></returns>
+
+        public async Task<bool> ResendOtp(string email)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<int> FundWallet()
+        {
+            throw new NotImplementedException();
+        }
+        public async Task<int> TransferFunds()
+        {
+            throw new NotImplementedException();
+        }
+        public async Task<int> WithdrawToBank()
+        {
+            throw new NotImplementedException();
+        }
+        public async Task<int> AddWithdrawalAccount()
+        {
+            throw new NotImplementedException();
+        }
+        public Task<int> GetWithdrawalAccount(string userId)
+        {
+            throw new NotImplementedException();
+        }
+        public Task<int> RemoveWithdrawalAccount()
+        {
+            throw new NotImplementedException();
+        }
+        public Task<int> WithdrawToStellar()
+        {
+            throw new NotImplementedException();
+        }
+        public async Task<int> AddStellarAccount()
+        {
+            throw new NotImplementedException();
+        }
+        public async Task<int> RemoveStellarAccount()
+        {
+            throw new NotImplementedException();
+        }
+        // Get method
+        public async Task<int> RecentTransactions()
+        {
+            throw new NotImplementedException();
+        }
+        public async Task<int> GetTransactions()
+        {
+            throw new NotImplementedException();
+        }
+        public async Task<int> GetTransactionByRef(string transactionRef)
+        {
+            throw new NotImplementedException();
+        }
+        public async Task<int> GetStatement()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
