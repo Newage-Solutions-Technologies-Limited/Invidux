@@ -4,6 +4,7 @@ using Invidux_Data.Context;
 using Invidux_Data.Dtos;
 using Invidux_Data.Dtos.Request;
 using Invidux_Data.Dtos.Response;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -88,14 +89,31 @@ namespace Invidux_Api.Controllers
         /// Endpoint to activate user wallet
         /// </summary>
         /// <param name="walletDto"></param>
-        /// <returns></returns>
+        /// <returns></returns>]
+        [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponseDTO), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
         [HttpPatch("wallet/current-user/activate")]
         public async Task<IActionResult> ActivateWallet(ActivateWalletDto walletDto)
         {
             try
             {
                 string userId = GetUserId();
-                throw new NotImplementedException();
+                var result = await uow.WalletRepo.ActivateWallet(walletDto,userId);
+                if (!result)
+                {
+                    var errorResponse = new ErrorResponseDTO(
+                       HttpStatusCode.BadRequest,
+                       "Error activating wallet"
+                   );
+                    return BadRequest(errorResponse);
+                }
+                var response = new MessageResponse
+                {
+                    Successful = true,
+                    Message = "Walletc activated successfully",
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {

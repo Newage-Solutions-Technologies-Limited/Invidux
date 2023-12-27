@@ -2,6 +2,7 @@ using Invidux_Core.Extensions;
 using Invidux_Core.Helpers;
 using Invidux_Core.Repository.Implementations;
 using Invidux_Core.Repository.Interfaces;
+using Invidux_Core.Services;
 using Invidux_Data.Context;
 using Invidux_Data.Dtos.AutoMapping;
 using Invidux_Domain.Models;
@@ -29,6 +30,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IUserContextService, UserContextService>();
 builder.Services.AddAutoMapper(typeof(Mapping).Assembly);
 builder.Services.AddScoped<IUnitofWork, UnitofWork>();
+builder.Services.AddScoped<IPhotoService, PhotoService>();
 
 builder.Services.AddIdentity<AppUser, AppRole>(options => options.SignIn.RequireConfirmedAccount = true)
 .AddEntityFrameworkStores<InviduxDBContext>()

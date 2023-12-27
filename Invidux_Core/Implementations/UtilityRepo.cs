@@ -201,5 +201,15 @@ namespace Invidux_Core.Implementations
             var country = await dc.Countries.FirstOrDefaultAsync(x => x.Id == id);
             return country == null ? null : country;
         }
+
+        /// <summary>
+        /// To be implemented
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public async Task<int> CompleteTransaction()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

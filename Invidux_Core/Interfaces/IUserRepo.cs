@@ -7,6 +7,7 @@ namespace Invidux_Core.Repository.Interfaces
     public interface IUserRepo
     {
         Task<bool> UserExists(string userId);
+        bool IsValidEmail(string email);
         Task<LoginResponse> Authenticate(string userName, string password);
         Task<LoginResponse> VerifyOtp(int otp, string email);
         Task<AppUser> GetUserProfile(string userId);
