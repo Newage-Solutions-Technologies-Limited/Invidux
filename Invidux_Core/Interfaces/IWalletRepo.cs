@@ -19,19 +19,17 @@ namespace Invidux_Core.Interfaces
         /// </summary>
         /// <returns></returns>
         // DTO to be included
-        Task<int> FundWallet();
-        Task<int> TransferFunds();
-        Task<int> WithdrawToBank();
-        Task<int> AddWithdrawalAccount();
-        Task<int> GetWithdrawalAccount(string userId);
-        Task<int> RemoveWithdrawalAccount();
-        Task<int> WithdrawToStellar();
-        Task<int> AddStellarAccount();
-        Task<int> RemoveStellarAccount();
+        Task<Transaction> FundWallet(FundWalletDto walletDto, string userId);
+        Task<Transaction> TransferFunds(TranferFundsDto tranferFunds, string userId);
+        Task<Transaction> WithdrawToBank(WithdrawToBankDto withdrawTo, string userId);
+        Task<AccountResponseDto> AddWithdrawalAccount(AddWithdrawalAccountDto addWithdrawal, string userId);
+        Task<IEnumerable<BankAccount>> GetWithdrawalAccounts(string userId);
+        Task<string> WithdrawToStellar(WithdrawToStellar withdrawDto, string userId);
+        Task<int> AddStellarAccount(AddStellarDto stellarDto, string userId);
         // Get method
-        Task<int> RecentTransactions();
-        Task<int> GetTransactions();
-        Task<int> GetTransactionByRef(string transactionRef);
-        Task<int> GetStatement();
+        Task<IEnumerable<Transaction>> RecentTransactions(string userId);
+        Task<IEnumerable<Transaction>> GetTransactions(string userId);
+        Task<Transaction> GetTransactionByRef(string transactionRef);
+        Task<int> GetStatement(StatementReq statementReq, string userId);
     }
 }

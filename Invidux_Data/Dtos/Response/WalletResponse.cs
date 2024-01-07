@@ -1,4 +1,6 @@
-﻿namespace Invidux_Data.Dtos.Response
+﻿using Invidux_Domain.Utilities;
+
+namespace Invidux_Data.Dtos.Response
 {
     public class WalletResponseDto
     {
@@ -41,5 +43,51 @@
     {
         public string AccountNumber { get; set; }
         public string BankName { get; set; }
+    }
+
+    public class AccountResponseDto
+    {
+        public int AccountId { get; set; }
+        public string AccountNumber { get; set; }
+        public string BankName { get; set; }
+        public string Currency { get; set; }
+        public DateTime? Date { get; set; }
+    }
+
+    public class TransactionResponse
+    {
+        public string InternalRef { get; set; }
+        public string ExternalRef { get; set; }
+        public DateTime Date { get; set; }
+        public TransactionStatusStrings Status { get; set; }
+        public TransactionTypeStrings TransactionType { get; set; }
+        public bool Inflow { get; set; }
+        public PaymentMethodStrings PaymentMethod { get; set; }
+        public Decimal Amount { get; set; }
+        public string Currency { get; set; }
+    }
+
+    public class TransactionListResponse
+    {
+        public string InternalRef { get; set; }
+        public string ExternalRef { get; set; }
+        public DateTime Date { get; set; }
+        public TransactionStatusStrings Status { get; set; }
+        public TransactionTypeStrings TransactionType { get; set; }
+        public bool Inflow { get; set; }
+        public PaymentMethodStrings PaymentMethod { get; set; }
+        public Decimal Amount { get; set; }
+        public string Currency { get; set; }
+        public string Sender { get; set; }
+        public string Receiver { get; set; }
+        public string Description { get; set; }
+    }
+    
+    public class AccountStatement
+    {
+        public string Name { get; set; }
+        public string Username { get; set; }
+        public ICollection<WalletTokenDto> TokenBalances { get; set; }
+        public ICollection<TransactionListResponse> Transactions { get; set; }
     }
 }

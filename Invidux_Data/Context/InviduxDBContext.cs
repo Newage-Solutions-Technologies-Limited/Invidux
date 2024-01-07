@@ -45,11 +45,13 @@ namespace Invidux_Data.Context
                 entity.ToTable(name: "Roles");
             });
 
+            /*
             builder.Entity<AppUser>()
                .HasOne(au => au.SubRole) // AppUser has one SubRole
                .WithMany(sr => sr.Users) // SubRole can be associated with many AppUsers
                .HasForeignKey(au => au.SubRoleId) // Foreign key in AppUser
                .OnDelete(DeleteBehavior.NoAction); // Prevent cascade delete
+            */
 
             builder.Entity<AppRole>().HasData(
                 new AppRole { Id = adminRoleId, Name = RoleStrings.Admin, NormalizedName = RoleStrings.Admin.ToUpper(), ConcurrencyStamp = Guid.NewGuid().ToString() },
@@ -223,6 +225,7 @@ namespace Invidux_Data.Context
         public DbSet<UserInfo> UserInformation { get; set; }
         public DbSet<UserKycInfo> UserKycInfos { get; set; }
         public DbSet<UserNextOfKin> UserNextOfKins { get; set; }
+        public DbSet<UserSubRole> UserSubRoles { get; set; }
         public DbSet<UserTwoFactorCover> UserTwoFactorCovers { get; set; }
         public DbSet<UserToken> UserTokens {  get; set; }
         public DbSet<Wallet> Wallets { get; set; }

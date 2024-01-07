@@ -18,6 +18,18 @@ namespace Invidux_Data.Dtos.Request
         public SourceEnums? Source { get; set; }
     }
 
+    public class AddStellarDto
+    {
+        public string StellarId { get; set; }
+        public int WalletPin {  get; set; }
+    }
+
+    public class WithdrawToStellar
+    {
+        public decimal Amount { get; set; }
+        public int WalletPin { get; set; }
+    }
+
     public class FundWalletDto
     {
         public string Currency { get; set; }
@@ -40,6 +52,21 @@ namespace Invidux_Data.Dtos.Request
         public string AccountNumber { get; set; }
         public string BankName { get; set; }
         public bool Adding { get; set; }
+        public string Currency { get; set; }
         public SourceEnums? Source { get; set; }
+    }
+
+    public class TranferFundsDto
+    {
+        public string ReceiverUsername { get; set; }
+        public string Currency { get; set; }
+        public decimal Amount { get; set; }
+        public int WalletPin { get; set; }
+    }
+
+    public class StatementReq
+    {
+        public DateTime DateFrom { get; set; }
+        public DateTime DateTo { get; set; }
     }
 }
