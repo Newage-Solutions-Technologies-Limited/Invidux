@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using Invidux_Data.Dtos.Response;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using static System.Net.WebRequestMethods;
 
 namespace Invidux_Core.Repository.Implementations
 {
@@ -76,7 +77,7 @@ namespace Invidux_Core.Repository.Implementations
             dc.SecurityTokens.Add(token);
             await dc.SaveChangesAsync();
             string subject = "Confirm your email";
-            string message = $"<p>Your email confirmation token <span>{token.Otp}</span> expires in 10 minutes.</p>";
+            string message = $"<p>Your email confirmation token <span>{token.Otp}</span> expires in 1 hour.</p>";
             await _emailSender.SendEmailAsync(newUser.Email, subject, message);
             var response = new UserRegistrationDto
             {
@@ -144,7 +145,13 @@ namespace Invidux_Core.Repository.Implementations
         // This unit of work takes care of verifation otp request
         public async Task<int> ResendOtp(string email)
         {
+            string subject = "Confirm your email";
+            string message;
             var user = await _userManager.FindByEmailAsync(email );
+            var existingToken = await dc.SecurityTokens
+                .Where(st => 
+                    st.SecurityType == SecurityTypeStrings.UserRegistration)
+                .FirstOrDefaultAsync(st => st.Email == email);
 
             if (user != null)
             {
@@ -153,35 +160,57 @@ namespace Invidux_Core.Repository.Implementations
                     // Check if the user's otpsentcount is not 0
                     if (user.OtpSentCount != 0)
                     {
-                        // Generate a new OTP
-                        var token = new SecurityToken
+                        if(existingToken != null)
                         {
-                            UserId = user.Id,
-                            Email = email ,
-                            SecurityType = SecurityTypeStrings.UserRegistration,
-                            Otp = TokenGenerator.GetUniqueKey(6)
-                        };
-                        dc.SecurityTokens.Add(token);
-                        await dc.SaveChangesAsync();
-                        string subject = "Confirm your email";
-                        string message = $"<p>Your email confirmation token <span>{token.Otp}</span> expires in 10 minutes.</p>";
-                        await _emailSender.SendEmailAsync(email, subject, message);
+                            if(existingToken.OtpAttemptCount != 0)
+                            {
+                                existingToken.Otp = TokenGenerator.GetUniqueKey(6);
+                                existingToken.OtpAttemptCount -= 1;
+                                existingToken.ExpiresOn = DateTime.UtcNow.AddMinutes(60);
+                                dc.SecurityTokens.Update(existingToken);                                
+                                message = $"<p>Your email confirmation token <span>{existingToken.Otp}</span> expires in 1 hour.</p>";
+                                await _emailSender.SendEmailAsync(email, subject, message);
+                            }
+                            else
+                            {
+                                dc.SecurityTokens.Remove(existingToken);
+                                user.RegistrationStatus = StatusStrings.Restricted;
+                                await _userManager.UpdateAsync(user); 
+                                await dc.SaveChangesAsync();
+                                return -1;
+                            }
+                        }
+                        else
+                        {
+                            // Generate a new OTP
+                            var token = new SecurityToken
+                            {
+                                UserId = user.Id,
+                                Email = email,
+                                SecurityType = SecurityTypeStrings.UserRegistration,
+                                Otp = TokenGenerator.GetUniqueKey(6)
+                            };
+                            dc.SecurityTokens.Add(token);
+                            message = $"<p>Your email confirmation token <span>{token.Otp}</span> expires in 1 hour.</p>";
+                            await _emailSender.SendEmailAsync(email, subject, message);
+                        }
                         // Update the user's OTP-related properties
                         user.OtpSentCount -= 1; // Subtract otpcount
 
                         // Save the changes to the user
                         var result = await _userManager.UpdateAsync(user);
+                        await dc.SaveChangesAsync();
 
                         if (result.Succeeded)
                         {
                             await dc.SaveChangesAsync(); // Save changes to the database
-                            return token.Otp;
+                            return 1;
                         }
                         else
                         {
                             // Handle the case when updating the user fails
                             // You can return an error code or throw an exception as needed
-                            throw new Exception("User not found or no OTP generate");
+                            throw new Exception("User not found or no OTP generated");
                         }
                     }
                     else
@@ -193,7 +222,7 @@ namespace Invidux_Core.Repository.Implementations
                         {
                             // Handle the case when updating the user fails
                             // You can return an error code or throw an exception as needed
-                            throw new Exception("User not found or no OTP generate");
+                            throw new Exception("User not found or no OTP generated");
                         }
                         return -1;
                     }
@@ -233,7 +262,6 @@ namespace Invidux_Core.Repository.Implementations
                     existingUser.PhoneNumber = user.Phone;
                     existingUser.OtpSentCount = 5;
                     existingUser.UpdatedAt = DateTime.UtcNow;
-                    existingUser.SubRoleId = subRole.Id;
 
                     // Update the user's profile using the UserManager
                     var result = await _userManager.UpdateAsync(existingUser);
@@ -249,6 +277,11 @@ namespace Invidux_Core.Repository.Implementations
                             // Assuming uploadedFile is an array or a list
                             //ImageName = uploadedFile?[0] ?? "",
                             CreatedAt = DateTime.UtcNow,
+                        };
+                        var userSubRole = new UserSubRole
+                        {
+                            UserId = existingUser.Id,
+                            SubRoleId = subRole.Id,
                         };
                         var userAddress = new UserAddress
                         {
@@ -275,13 +308,14 @@ namespace Invidux_Core.Repository.Implementations
                         dc.Wallets.Add(wallet);
                         dc.UserKycInfos.Add(kycInfo);
                         dc.UserAddresses.Add(userAddress);
+                        dc.UserSubRoles.Add(userSubRole);
                         dc.UserInformation.Add(userInfo);
                         await dc.SaveChangesAsync();
                         var response = new UserRegistrationDto
                         {
                             Id = existingUser.Id,
                             Role = RoleStrings.Investor,
-                            SubRole = existingUser.SubRole.Name,
+                            SubRole = userSubRole.SubRole.Name,
                             Username = existingUser.UserName,
                             Status = existingUser.RegistrationStatus,
                             Email = existingUser.Email,

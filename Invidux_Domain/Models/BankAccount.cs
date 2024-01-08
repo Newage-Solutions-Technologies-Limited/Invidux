@@ -12,9 +12,13 @@ namespace Invidux_Domain.Models
         public string? AccountNumber { get; set; }
         public string? AccountName { get; set; }
         public string? BankName {  get; set; }
+        public string? Currency { get; set; }
         [ForeignKey("UserToken")]
         public int TokenId { get; set; }
         public UserToken UserToken { get; set; }
+        [ForeignKey("AppUser")]
+        public string UserId { get; set; }
+        public AppUser AccountOwner { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; }
     }

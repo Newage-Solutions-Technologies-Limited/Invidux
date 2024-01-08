@@ -195,6 +195,7 @@ namespace Invidux_Api.Controllers
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
+        [ProducesResponseType(typeof(Response<MessageResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponseDTO), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
         [HttpPost("request-otp")]
@@ -211,9 +212,9 @@ namespace Invidux_Api.Controllers
                 }
 
                 // Requesting to resend OTP using the provided email
-                var response = await uow.RegistrationRepo.ResendOtp(user.Email);
+                var result = await uow.RegistrationRepo.ResendOtp(user.Email);
 
-                if (response == -1)
+                if (result == -1)
                 {
                     // Returning a BadRequest response indicating the user is restricted
                     var errorResponse = new ErrorResponseDTO(
@@ -222,6 +223,11 @@ namespace Invidux_Api.Controllers
                     );
                     return BadRequest(errorResponse);
                 }
+                var response = new Response<MessageResponse>
+                {
+                    Successful = true,
+                    Message = "Check your email for new token"
+                };
 
                 // Returning a success response with the response from ResendOtp method
                 return Ok(response);

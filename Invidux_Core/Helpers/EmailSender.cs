@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Configuration;
-using SendGrid;
+//using SendGrid;
 //using SendGrid.Helpers.Mail;
 using MimeKit;
 using MailKit.Net.Smtp;
@@ -14,9 +14,13 @@ namespace Invidux_Core.Helpers
     {
         //private readonly Sendgrid sendGrid;
         private readonly MailSettings mailSettings;
-        public EmailSender(IOptions<MailSettings> _mailSettings)
+        public EmailSender(
+            IOptions<MailSettings> _mailSettings
+            //IOptions<Sendgrid> sendGrid
+        )
         {
-            mailSettings = _mailSettings.Value;
+            this.mailSettings = _mailSettings.Value;
+            //this.sendGrid = sendGrid.Value;
         }
 
         /*public async Task SendEmailAsync(string email, string subject, string message)

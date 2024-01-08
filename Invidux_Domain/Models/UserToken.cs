@@ -13,6 +13,6 @@ namespace Invidux_Domain.Models
         [ForeignKey("Wallet")]
         public string WalletId { get; set; }
         public virtual Wallet Wallet { get; set; }
-        public ICollection<BankAccount> BankAccounts { get; set; }
+        public ICollection<BankAccount>? BankAccounts { get; set; }
     }
 }

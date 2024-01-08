@@ -1,5 +1,6 @@
 ﻿using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting.Internal;
@@ -9,8 +10,8 @@ namespace Invidux_Core.Services
     public class PhotoService: IPhotoService
     {
         private readonly Cloudinary cloudinary;
-        private readonly HostingEnvironment _hostingEnv;
-        public PhotoService(IConfiguration config, HostingEnvironment _hostingEnv)
+        private readonly IWebHostEnvironment _hostingEnv;
+        public PhotoService(IConfiguration config, IWebHostEnvironment _hostingEnv)
         {
             Account account = new Account(
                 config.GetSection("CloudinarySettings:CloudName").Value,

@@ -103,6 +103,25 @@ namespace Invidux_Data.Dtos.AutoMapping
             // Mapping for BankAccount to DepositAccountDto and WithdrawalAccountDto
             CreateMap<BankAccount, DepositAccountDto>();
             CreateMap<BankAccount, WithdrawalAccountDto>();
+
+            // Mapping for transsactions
+            CreateMap<Transaction, TransactionResponse>()
+                .ForMember(dest => dest.Currency, opt => opt.MapFrom(src => src.CurrencySymbol))
+                .ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.TransactionDate));
+
+
+            CreateMap<Transaction, TransactionListResponse>()
+                .ForMember(dest => dest.Currency, opt => opt.MapFrom(src => src.CurrencySymbol))
+                .ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.TransactionDate));
+            
+            CreateMap<Wallet, AccountStatement>()
+                .ForMember(dest => dest.TokenBalances, opt => opt.MapFrom(src => src.UserTokens));
+
+            CreateMap<Transaction, AccountStatement>()
+                .ForMember(dest => dest.Transactions, opt => opt.MapFrom(src => src));
+
+            CreateMap<BankAccount, AccountResponseDto>()
+                .ForMember(dest => dest.AccountId, opt => opt.MapFrom(src => src.Id));
         }
     }
 }

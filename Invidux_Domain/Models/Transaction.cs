@@ -12,6 +12,7 @@ namespace Invidux_Domain.Models
         public string InternalRef { get; set; }
         public string ExternalRef { get; set; }
         public string Type { get; set; }
+        public string PaymentMethod { get; set; }
         public string Status { get; set; }
         public string Amount { get; set; }
         public bool Inflow { get; set; }
