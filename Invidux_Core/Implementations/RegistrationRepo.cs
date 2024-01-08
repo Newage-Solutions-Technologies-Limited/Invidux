@@ -262,7 +262,6 @@ namespace Invidux_Core.Repository.Implementations
                     existingUser.PhoneNumber = user.Phone;
                     existingUser.OtpSentCount = 5;
                     existingUser.UpdatedAt = DateTime.UtcNow;
-                    existingUser.SubRoleId = subRole.Id;
 
                     // Update the user's profile using the UserManager
                     var result = await _userManager.UpdateAsync(existingUser);
@@ -278,6 +277,11 @@ namespace Invidux_Core.Repository.Implementations
                             // Assuming uploadedFile is an array or a list
                             //ImageName = uploadedFile?[0] ?? "",
                             CreatedAt = DateTime.UtcNow,
+                        };
+                        var userSubRole = new UserSubRole
+                        {
+                            UserId = existingUser.Id,
+                            SubRoleId = subRole.Id,
                         };
                         var userAddress = new UserAddress
                         {
@@ -304,13 +308,14 @@ namespace Invidux_Core.Repository.Implementations
                         dc.Wallets.Add(wallet);
                         dc.UserKycInfos.Add(kycInfo);
                         dc.UserAddresses.Add(userAddress);
+                        dc.UserSubRoles.Add(userSubRole);
                         dc.UserInformation.Add(userInfo);
                         await dc.SaveChangesAsync();
                         var response = new UserRegistrationDto
                         {
                             Id = existingUser.Id,
                             Role = RoleStrings.Investor,
-                            SubRole = existingUser.SubRole.Name,
+                            SubRole = userSubRole.SubRole.Name,
                             Username = existingUser.UserName,
                             Status = existingUser.RegistrationStatus,
                             Email = existingUser.Email,

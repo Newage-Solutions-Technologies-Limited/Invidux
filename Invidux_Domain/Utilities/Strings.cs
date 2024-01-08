@@ -78,4 +78,17 @@ namespace Invidux_Domain.Utilities
         public const string Inflow = "Inflow";
         public const string Outflow = "Outflow";
     }
+
+    public class TransactionTypeStrings
+    {
+        public const string Deposit = "Deposit";
+        public const string Withdrawal = "Withdrawal";
+        public const string Transfer = "Transfer";
+    }
+
+    public class PaymentMethodStrings
+    {
+        public const string Card = "Card";
+        public const string BankTransfer = "Bank Transfer";
+    }
 }

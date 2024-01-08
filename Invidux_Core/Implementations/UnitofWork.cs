@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Invidux_Core.Interfaces;
 using Invidux_Core.Implementations;
 using Invidux_Domain.Utilities;
+using AutoMapper;
 
 namespace Invidux_Core.Repository.Implementations
 {
@@ -19,6 +20,7 @@ namespace Invidux_Core.Repository.Implementations
         private readonly SignInManager<AppUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly IConfiguration config;
+        private readonly IMapper mapper;
 
         public UnitofWork(
             InviduxDBContext dc, 
@@ -26,7 +28,8 @@ namespace Invidux_Core.Repository.Implementations
             UserManager<AppUser> _userManager, 
             SignInManager<AppUser> _signInManager,
             IEmailSender _emailSender,
-            IConfiguration config)
+            IConfiguration config,
+            IMapper mapper)
         {
             this.dc = dc;
             this._roleManager = _roleManager;
@@ -34,6 +37,7 @@ namespace Invidux_Core.Repository.Implementations
             this._signInManager = _signInManager;
             this._emailSender = _emailSender;
             this.config = config;
+            this.mapper = mapper;
         }
 
         public IRegistrationRepo RegistrationRepo =>
@@ -46,7 +50,7 @@ namespace Invidux_Core.Repository.Implementations
             new UtilityRepo(dc, _roleManager);
 
         public IWalletRepo WalletRepo =>
-            new WalletRepo(config, dc);
+            new WalletRepo(config, dc, mapper, _emailSender);
 
         public async Task<bool> SaveAsync()
         {
