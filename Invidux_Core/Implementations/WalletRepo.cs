@@ -533,12 +533,16 @@ namespace Invidux_Core.Implementations
             {
                 throw new Exception("Invalid wallet pin");
             }
-
-            Network.UsePublicNetwork(); // Use `Network.UseTestNetwork();` for testing
+            // Use for mainnet
+            // Network.UsePublicNetwork();
+            // Use for testing
+            Network.UseTestNetwork();
             var server = new Server("https://horizon.stellar.org");
 
+            var secretKey = config.GetSection("Stellar:SecretKey").Value;
+
             // Load your account
-            var sourceAccountKeyPair = KeyPair.FromSecretSeed("Your_Secret_Seed");
+            var sourceAccountKeyPair = KeyPair.FromSecretSeed(secretKey);
             var sourceAccount = await server.Accounts.Account(sourceAccountKeyPair.AccountId);
 
             // Build a transaction
