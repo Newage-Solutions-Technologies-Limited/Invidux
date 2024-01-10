@@ -209,10 +209,12 @@ namespace Invidux_Data.Context
         public DbSet<KycIdCard> IdCards { get; set; }
         public DbSet<KycLevel> KycLevels { get; set; }
         public DbSet<KycStatus> KycStatuses { get; set; }
+        public DbSet<Order> Orders { get; set; }
         public DbSet<PaymentMethod> PaymentMethods { get; set; }
         public DbSet<PropertyClass> PropertyClasses { get; set; }
         public DbSet<SecurityToken> SecurityTokens { get; set; }
         public DbSet<SecurityType> SecurityTypes { get; set; }
+        public DbSet<StellarAccount> StellarAccounts { get; set; }
         public DbSet<SubRole> SubRoles { get; set; }
         public DbSet<TokenListingStatus> TokenListingStatuses { get; set; }
         public DbSet<TokenTransactionType> TokenTransactionTypes { get; set; }
