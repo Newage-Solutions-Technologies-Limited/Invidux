@@ -24,19 +24,20 @@ namespace Invidux_Core.Implementations
                                             .FirstOrDefaultAsync(w => w.UserId == userId);
             if(wallet == null || !wallet.Active)
             {
-
+                throw new InvalidOperationException("Invalid wallet");
             }
             var inAppTokens = wallet.UserTokens.Where(t => t.TokenType == TokenTypeStrings.InAppToken).ToList();
             var externalTokens = wallet.UserTokens.Where(t => t.TokenType == TokenTypeStrings.ExternalToken).ToList();
 
-            if (!inAppTokens.Any())
+            /*if (!inAppTokens.Any())
             {
                 // Handle the case where there are no in-app tokens
+                throw new Exception();
             }
             if (!externalTokens.Any())
             {
                 // Handle the case where there are no external tokens
-            }
+            }*/
 
 
             var inApp = new Inapp
