@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Invidux_Data.Migrations
 {
     /// <inheritdoc />
-    public partial class WalletTransaction : Migration
+    public partial class PortfolioDomain : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -111,6 +111,30 @@ namespace Invidux_Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OrdeyBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TokenCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TradedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    OrderStatus = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    OrderSide = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    OrderDate = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    OrderPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    OrderVolume = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    FilledVolume = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    OrderType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PaymentMethods",
                 columns: table => new
                 {
@@ -190,6 +214,39 @@ namespace Invidux_Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Token",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ListingStatus = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TokenCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TokenIssuer = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PropertyClass = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TokenDeployed = table.Column<bool>(type: "bit", nullable: false),
+                    Currency = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CurrencySymbol = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Estate = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Area = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Lga = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    State = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Volume = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Available = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    IssuePrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    CurrentPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    MarketCap = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    DistributionFrequency = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Token", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TokenListingStatuses",
                 columns: table => new
                 {
@@ -230,6 +287,9 @@ namespace Invidux_Data.Migrations
                     InternalRef = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ExternalRef = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Market = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TokenCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TokenVolume = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     PaymentMethod = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Amount = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -331,6 +391,97 @@ namespace Invidux_Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "TokenAnnualYield",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RegularReturns = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    OperatingYieldEstimate = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    AppreciationEstimate = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    TokenId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TokenAnnualYield", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TokenAnnualYield_Token_TokenId",
+                        column: x => x.TokenId,
+                        principalTable: "Token",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TokenApproval",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    By = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ApprovalDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TokenId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TokenApproval", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TokenApproval_Token_TokenId",
+                        column: x => x.TokenId,
+                        principalTable: "Token",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TokenImage",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ImageName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsPrimary = table.Column<bool>(type: "bit", nullable: false),
+                    TokenId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TokenImage", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TokenImage_Token_TokenId",
+                        column: x => x.TokenId,
+                        principalTable: "Token",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TokenPresell",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PledgeRate = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    PledgedToken = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    NoOfParticipants = table.Column<int>(type: "int", nullable: false),
+                    ExpiresAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    StartsAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    MinimumUnit = table.Column<int>(type: "int", nullable: true),
+                    TokenId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TokenPresell", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TokenPresell_Token_TokenId",
+                        column: x => x.TokenId,
+                        principalTable: "Token",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -420,7 +571,7 @@ namespace Invidux_Data.Migrations
                     CountryId = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -435,8 +586,7 @@ namespace Invidux_Data.Migrations
                         name: "FK_UserAddresses_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -473,7 +623,7 @@ namespace Invidux_Data.Migrations
                     RemainingAllowance = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -482,8 +632,7 @@ namespace Invidux_Data.Migrations
                         name: "FK_UserIncomeInfos_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -502,7 +651,7 @@ namespace Invidux_Data.Migrations
                     MaritalStatus = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -511,8 +660,7 @@ namespace Invidux_Data.Migrations
                         name: "FK_UserInformation_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -531,7 +679,7 @@ namespace Invidux_Data.Migrations
                     CanExpire = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -540,8 +688,7 @@ namespace Invidux_Data.Migrations
                         name: "FK_UserKycInfos_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -576,7 +723,7 @@ namespace Invidux_Data.Migrations
                     Relationship = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -585,8 +732,7 @@ namespace Invidux_Data.Migrations
                         name: "FK_UserNextOfKins_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -622,7 +768,7 @@ namespace Invidux_Data.Migrations
                     TwoFactorCoverId = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -637,8 +783,7 @@ namespace Invidux_Data.Migrations
                         name: "FK_UserTwoFactorCovers_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -673,11 +818,23 @@ namespace Invidux_Data.Migrations
                     Currency = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Available = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     Earnings = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
-                    WalletId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    CurrentValue = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    TotalCost = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    CoolingOffVolume = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    TokenCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TokenType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    WalletId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    TokenId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserTokens", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserTokens_Token_TokenId",
+                        column: x => x.TokenId,
+                        principalTable: "Token",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_UserTokens_Wallets_WalletId",
                         column: x => x.WalletId,
@@ -698,10 +855,9 @@ namespace Invidux_Data.Migrations
                     BankName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Currency = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TokenId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AccountOwnerId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -713,9 +869,43 @@ namespace Invidux_Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_BankAccounts_Users_AccountOwnerId",
-                        column: x => x.AccountOwnerId,
+                        name: "FK_BankAccounts_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StellarAccounts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DepositStellarId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    WalletId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    TokenId = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StellarAccounts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_StellarAccounts_UserTokens_TokenId",
+                        column: x => x.TokenId,
+                        principalTable: "UserTokens",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_StellarAccounts_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_StellarAccounts_Wallets_WalletId",
+                        column: x => x.WalletId,
+                        principalTable: "Wallets",
                         principalColumn: "Id");
                 });
 
@@ -724,10 +914,10 @@ namespace Invidux_Data.Migrations
                 columns: new[] { "Id", "CreatedAt", "Expires", "Name", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6456), true, "Driver License", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 2, new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6457), true, "International Passport", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 3, new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6458), false, "NIN", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 4, new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6459), false, "Voter's Card", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { 1, new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4588), true, "Driver License", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4589), true, "International Passport", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 3, new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4591), false, "NIN", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 4, new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4592), false, "Voter's Card", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(
@@ -735,11 +925,11 @@ namespace Invidux_Data.Migrations
                 columns: new[] { "Id", "CreatedAt", "Type", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6419), "Long Co-own", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 2, new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6422), "Medium Co-own", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 3, new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6423), "Debt", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 4, new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6423), "Co-build", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 5, new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6424), "Rental", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { 1, new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4532), "Long Co-own", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4539), "Medium Co-own", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 3, new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4540), "Debt", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 4, new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4541), "Co-build", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 5, new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4542), "Rental", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(
@@ -747,9 +937,9 @@ namespace Invidux_Data.Migrations
                 columns: new[] { "Id", "CreatedAt", "Status", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6483), "Level1", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 2, new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6484), "Level2", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 3, new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6485), "Level2", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { 1, new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4632), "Level1", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4634), "Level2", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 3, new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4635), "Level2", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(
@@ -757,9 +947,9 @@ namespace Invidux_Data.Migrations
                 columns: new[] { "Id", "CreatedAt", "Status", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6505), "Pending", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 2, new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6506), "Verified", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 3, new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6507), "Restricted", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { 1, new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4664), "Pending", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4666), "Verified", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 3, new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4667), "Restricted", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(
@@ -767,10 +957,10 @@ namespace Invidux_Data.Migrations
                 columns: new[] { "Id", "CreatedAt", "Name", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6535), "Wallet", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 2, new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6536), "Card", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 3, new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6537), "Bank Transfer", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 4, new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6575), "KongaPay", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { 1, new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4698), "Wallet", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4699), "Card", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 3, new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4700), "Bank Transfer", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 4, new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4701), "KongaPay", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(
@@ -778,12 +968,12 @@ namespace Invidux_Data.Migrations
                 columns: new[] { "Id", "Class", "CreatedAt", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, "Off-plan", new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6598), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 2, "Pre-purchased", new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6599), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 3, "Wait-listed", new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6600), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 4, "Rented", new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6601), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 5, "Mortgage-Like", new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6602), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 6, "Under Management", new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6603), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { 1, "Off-plan", new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4735), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, "Pre-purchased", new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4736), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 3, "Wait-listed", new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4738), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 4, "Rented", new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4739), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 5, "Mortgage-Like", new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4740), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 6, "Under Management", new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4741), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(
@@ -791,11 +981,11 @@ namespace Invidux_Data.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Discriminator", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "8b4c04ff-e056-42ce-9972-717d870fb9f7", "8849f6c6-35ad-4690-a16d-ebb29f894dae", "AppRole", "Partner", "PARTNER" },
-                    { "9e2a2db1-8169-4c7c-91be-e6f050946f76", "2b40c611-b191-439c-a03b-9610521f68d3", "AppRole", "Token Issuer", "TOKEN ISSUER" },
-                    { "a4c08851-f050-4e87-90c9-9cdd354ade16", "41c38981-860e-4c3f-9792-4b680bbb24aa", "AppRole", "Investor", "INVESTOR" },
-                    { "a56c1d26-6e0d-4ffc-bd3a-39cd7c358657", "2db0ae8c-172c-4bcf-9c9d-7dac2cfecbef", "AppRole", "Admin", "ADMIN" },
-                    { "ad9490c5-cad7-431c-8f6f-598e8d1f599a", "12fef7a9-bb49-430c-9534-48095d782971", "AppRole", "Dealer/Broker", "DEALER/BROKER" }
+                    { "2b8fb2fb-df83-486e-8b1e-fdbea1233270", "38b6a007-242b-4f13-8ba4-a0f55bf09d6e", "AppRole", "Investor", "INVESTOR" },
+                    { "64891cb0-a4b6-477c-b1e2-9b72852a9977", "d09fcefe-bff0-478c-a1e2-055f154c190f", "AppRole", "Partner", "PARTNER" },
+                    { "d27c78aa-bfe6-4132-8376-2664bb436378", "3a94ba5a-ac0e-47e3-9fcf-84e571f68dec", "AppRole", "Admin", "ADMIN" },
+                    { "eb2cfd2a-6b80-4455-94ad-c6b10d109602", "721d370c-1130-4ca4-bbb9-d304332522fd", "AppRole", "Token Issuer", "TOKEN ISSUER" },
+                    { "ff71bb50-78f7-49cc-8e97-8c676dd4b3c4", "1f9f29d0-934b-464f-aaea-be210d9fb978", "AppRole", "Dealer/Broker", "DEALER/BROKER" }
                 });
 
             migrationBuilder.InsertData(
@@ -803,10 +993,10 @@ namespace Invidux_Data.Migrations
                 columns: new[] { "Id", "CreatedAt", "Type", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6625), "User Registration", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 2, new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6626), "Two Factor Activation", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 3, new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6627), "Two Factor Verification", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 4, new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6627), "BVN Verification", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { 1, new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4778), "User Registration", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4780), "Two Factor Activation", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 3, new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4781), "Two Factor Verification", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 4, new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4782), "BVN Verification", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(
@@ -814,12 +1004,12 @@ namespace Invidux_Data.Migrations
                 columns: new[] { "Id", "CreatedAt", "Status", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6705), "Off-Plan", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 2, new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6706), "Wait-listed", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 3, new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6707), "Selling", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 4, new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6708), "Fully Sold", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 5, new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6709), "Trading", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 6, new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6710), "Exited", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { 1, new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4893), "Off-Plan", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4894), "Wait-listed", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 3, new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4895), "Selling", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 4, new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4896), "Fully Sold", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 5, new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4897), "Trading", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 6, new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4898), "Exited", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(
@@ -827,11 +1017,11 @@ namespace Invidux_Data.Migrations
                 columns: new[] { "Id", "CreatedAt", "TransactionType", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6730), "Buy", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 2, new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6731), "Sell", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 3, new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6732), "Transfer-in", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 4, new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6733), "Transfer-out", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 5, new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6734), "Exited", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { 1, new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4948), "Buy", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4950), "Sell", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 3, new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4951), "Transfer-in", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 4, new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4952), "Transfer-out", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 5, new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4953), "Exited", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(
@@ -839,13 +1029,13 @@ namespace Invidux_Data.Migrations
                 columns: new[] { "Id", "CreatedAt", "Type", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6763), "Deposit", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 2, new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6764), "Withdrawal", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 3, new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6765), "Token Earnings", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 4, new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6765), "Referal Earnings", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 5, new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6766), "Tranfer-in", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 6, new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6767), "Transfer-out", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 7, new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6768), "Payment", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { 1, new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4991), "Deposit", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4993), "Withdrawal", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 3, new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4994), "Token Earnings", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 4, new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4995), "Referal Earnings", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 5, new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4996), "Tranfer-in", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 6, new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4997), "Transfer-out", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 7, new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4998), "Payment", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(
@@ -853,9 +1043,9 @@ namespace Invidux_Data.Migrations
                 columns: new[] { "Id", "CreatedAt", "Type", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6792), "Login", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 2, new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6793), "Transaction", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 3, new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6794), "Trading", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { 1, new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(5033), "Login", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(5034), "Transaction", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 3, new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(5035), "Trading", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(
@@ -863,8 +1053,8 @@ namespace Invidux_Data.Migrations
                 columns: new[] { "Id", "CreatedAt", "Type", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6814), "Email", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 2, new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6815), "Google Auth", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { 1, new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(5074), "Email", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(5076), "Google Auth", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(
@@ -872,27 +1062,27 @@ namespace Invidux_Data.Migrations
                 columns: new[] { "Id", "CreatedAt", "Name", "RoleId", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { "07247e9f-1d28-4bea-817d-da0e5df2f1f5", new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6676), "Custodian", "8b4c04ff-e056-42ce-9972-717d870fb9f7", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { "4d323d6c-0791-482a-864c-d882e3b314ec", new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6664), "Dealer", "ad9490c5-cad7-431c-8f6f-598e8d1f599a", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { "6b67c8f1-eef4-45a5-8d3b-75ed17cfaaf3", new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6672), "Token Issuer", "9e2a2db1-8169-4c7c-91be-e6f050946f76", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { "94e52a7e-2b72-4cdb-a0ef-181593b76a26", new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6660), "Customer Support", "a56c1d26-6e0d-4ffc-bd3a-39cd7c358657", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { "9bd53b52-2cd7-4b51-bca6-ab5f2c27e1be", new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6668), "Institutional", "a4c08851-f050-4e87-90c9-9cdd354ade16", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { "a7679ad4-fdc7-47fc-833b-6bb74f6623ba", new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6666), "Accrediated", "a4c08851-f050-4e87-90c9-9cdd354ade16", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { "b90cee86-ad12-4da1-af2c-c2020d05ce02", new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6678), "Property Manager", "8b4c04ff-e056-42ce-9972-717d870fb9f7", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { "c598a3f9-ecd5-427e-bd41-163e071a8033", new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6657), "Super Admin", "a56c1d26-6e0d-4ffc-bd3a-39cd7c358657", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { "c8de7080-67f6-4f2f-ade9-68b2966cfc1a", new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6670), "Retail", "a4c08851-f050-4e87-90c9-9cdd354ade16", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { "cecfe8d0-3ab8-4e76-9400-6cc53561b6d2", new DateTime(2024, 1, 7, 22, 54, 46, 267, DateTimeKind.Utc).AddTicks(6662), "Broker", "ad9490c5-cad7-431c-8f6f-598e8d1f599a", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { "01787612-3259-4479-baed-d08bee8cda77", new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4824), "Super Admin", "d27c78aa-bfe6-4132-8376-2664bb436378", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { "0fb6b778-2f7e-49f1-84fa-1def0c12932f", new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4841), "Institutional", "2b8fb2fb-df83-486e-8b1e-fdbea1233270", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { "4f17088a-c546-4248-82af-77b1250f5e58", new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4832), "Broker", "ff71bb50-78f7-49cc-8e97-8c676dd4b3c4", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { "683c90fb-0446-4af2-9029-176a8c9c936c", new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4835), "Dealer", "ff71bb50-78f7-49cc-8e97-8c676dd4b3c4", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { "68db8e32-b141-40b4-81a6-0d4cc6e8a906", new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4829), "Customer Support", "d27c78aa-bfe6-4132-8376-2664bb436378", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { "75f522d9-ec50-4632-bdb2-ea487c4d9ed1", new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4852), "Token Issuer", "eb2cfd2a-6b80-4455-94ad-c6b10d109602", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { "7673cbc8-c0e3-4b11-9faf-3ad0c5f30185", new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4848), "Retail", "2b8fb2fb-df83-486e-8b1e-fdbea1233270", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { "89a1924c-77a0-42c1-bcad-ea6df3dbc19c", new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4854), "Custodian", "64891cb0-a4b6-477c-b1e2-9b72852a9977", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { "8def1d5e-427c-4e92-a1e3-4280a8477655", new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4838), "Accrediated", "2b8fb2fb-df83-486e-8b1e-fdbea1233270", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { "e10c911a-208f-46b3-ae77-2dd408b936da", new DateTime(2024, 1, 11, 13, 48, 7, 329, DateTimeKind.Utc).AddTicks(4858), "Property Manager", "64891cb0-a4b6-477c-b1e2-9b72852a9977", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BankAccounts_AccountOwnerId",
-                table: "BankAccounts",
-                column: "AccountOwnerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_BankAccounts_TokenId",
                 table: "BankAccounts",
                 column: "TokenId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BankAccounts_UserId",
+                table: "BankAccounts",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RoleClaims_RoleId",
@@ -907,9 +1097,47 @@ namespace Invidux_Data.Migrations
                 filter: "[NormalizedName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_StellarAccounts_TokenId",
+                table: "StellarAccounts",
+                column: "TokenId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StellarAccounts_UserId",
+                table: "StellarAccounts",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StellarAccounts_WalletId",
+                table: "StellarAccounts",
+                column: "WalletId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SubRoles_RoleId",
                 table: "SubRoles",
                 column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TokenAnnualYield_TokenId",
+                table: "TokenAnnualYield",
+                column: "TokenId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TokenApproval_TokenId",
+                table: "TokenApproval",
+                column: "TokenId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TokenImage_TokenId",
+                table: "TokenImage",
+                column: "TokenId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TokenPresell_TokenId",
+                table: "TokenPresell",
+                column: "TokenId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserAddresses_CountryId",
@@ -920,7 +1148,8 @@ namespace Invidux_Data.Migrations
                 name: "IX_UserAddresses_UserId",
                 table: "UserAddresses",
                 column: "UserId",
-                unique: true);
+                unique: true,
+                filter: "[UserId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserClaims_UserId",
@@ -931,19 +1160,22 @@ namespace Invidux_Data.Migrations
                 name: "IX_UserIncomeInfos_UserId",
                 table: "UserIncomeInfos",
                 column: "UserId",
-                unique: true);
+                unique: true,
+                filter: "[UserId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserInformation_UserId",
                 table: "UserInformation",
                 column: "UserId",
-                unique: true);
+                unique: true,
+                filter: "[UserId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserKycInfos_UserId",
                 table: "UserKycInfos",
                 column: "UserId",
-                unique: true);
+                unique: true,
+                filter: "[UserId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserLogins_UserId",
@@ -954,7 +1186,8 @@ namespace Invidux_Data.Migrations
                 name: "IX_UserNextOfKins_UserId",
                 table: "UserNextOfKins",
                 column: "UserId",
-                unique: true);
+                unique: true,
+                filter: "[UserId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserRoles_RoleId",
@@ -982,6 +1215,11 @@ namespace Invidux_Data.Migrations
                 name: "IX_UserSubRoles_SubRoleId",
                 table: "UserSubRoles",
                 column: "SubRoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserTokens_TokenId",
+                table: "UserTokens",
+                column: "TokenId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserTokens_WalletId",
@@ -1030,6 +1268,9 @@ namespace Invidux_Data.Migrations
                 name: "KycStatuses");
 
             migrationBuilder.DropTable(
+                name: "Orders");
+
+            migrationBuilder.DropTable(
                 name: "PaymentMethods");
 
             migrationBuilder.DropTable(
@@ -1045,7 +1286,22 @@ namespace Invidux_Data.Migrations
                 name: "SecurityTypes");
 
             migrationBuilder.DropTable(
+                name: "StellarAccounts");
+
+            migrationBuilder.DropTable(
+                name: "TokenAnnualYield");
+
+            migrationBuilder.DropTable(
+                name: "TokenApproval");
+
+            migrationBuilder.DropTable(
+                name: "TokenImage");
+
+            migrationBuilder.DropTable(
                 name: "TokenListingStatuses");
+
+            migrationBuilder.DropTable(
+                name: "TokenPresell");
 
             migrationBuilder.DropTable(
                 name: "TokenTransactionTypes");
@@ -1097,6 +1353,9 @@ namespace Invidux_Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "TwoFactorCovers");
+
+            migrationBuilder.DropTable(
+                name: "Token");
 
             migrationBuilder.DropTable(
                 name: "Wallets");

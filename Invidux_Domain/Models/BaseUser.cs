@@ -7,12 +7,10 @@ namespace Invidux_Domain.Models
     {
         [Key]
         public int Id { get; set; }
-
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; }
-
         [ForeignKey("AppUser")]
-        public string UserId { get; set; }
-        public virtual AppUser User { get; set; }
+        public string? UserId { get; set; }
+        public virtual AppUser? User { get; set; }
     }
 }

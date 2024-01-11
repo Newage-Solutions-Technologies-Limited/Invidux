@@ -91,4 +91,16 @@ namespace Invidux_Domain.Utilities
         public const string Card = "Card";
         public const string BankTransfer = "Bank Transfer";
     }
+
+    public class TokenTypeStrings
+    {
+        public const string InAppToken = "In-App Token";
+        public const string ExternalToken = "External Token";
+    }
+
+    public class OrderTypeStrings
+    {
+        public const string BuyOrder = "Buy Order";
+        public const string SellOrder = "Sell Order";
+    }
 }

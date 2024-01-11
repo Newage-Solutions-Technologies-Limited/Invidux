@@ -50,6 +50,7 @@ namespace Invidux_Api.Controllers
         {
             try
             {
+                
                 // Attempt to retrieve a list of roles asynchronously
                 var roles = await uow.UtitlityRepo.GetRolesAsync();
 
@@ -74,7 +75,6 @@ namespace Invidux_Api.Controllers
                     Message = "success",
                     Data = rolesDto,
                 };
-
                 // Return the successful response
                 return Ok(response);
             }

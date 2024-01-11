@@ -53,6 +53,24 @@ namespace Invidux_Data.Context
                .OnDelete(DeleteBehavior.NoAction); // Prevent cascade delete
             */
 
+            builder.Entity<BankAccount>()
+                .HasOne(ba => ba.User)
+                .WithMany(u => u.BankAccounts)
+                .HasForeignKey(ba => ba.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<StellarAccount>()
+                .HasOne(sa => sa.User) 
+                .WithMany(u => u.StellarAccounts)
+                .HasForeignKey(sa => sa.UserId) 
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<StellarAccount>()
+                .HasOne(sa => sa.Wallet)
+                .WithMany(w => w.StellarAccounts)
+                .HasForeignKey(sa => sa.WalletId)
+                .OnDelete(DeleteBehavior.NoAction);
+
             builder.Entity<AppRole>().HasData(
                 new AppRole { Id = adminRoleId, Name = RoleStrings.Admin, NormalizedName = RoleStrings.Admin.ToUpper(), ConcurrencyStamp = Guid.NewGuid().ToString() },
                 new AppRole { Id = dealerBrokerRoleId, Name = RoleStrings.Dealer_Broker, NormalizedName = RoleStrings.Dealer_Broker.ToUpper(), ConcurrencyStamp = Guid.NewGuid().ToString() },
@@ -209,10 +227,12 @@ namespace Invidux_Data.Context
         public DbSet<KycIdCard> IdCards { get; set; }
         public DbSet<KycLevel> KycLevels { get; set; }
         public DbSet<KycStatus> KycStatuses { get; set; }
+        public DbSet<Order> Orders { get; set; }
         public DbSet<PaymentMethod> PaymentMethods { get; set; }
         public DbSet<PropertyClass> PropertyClasses { get; set; }
         public DbSet<SecurityToken> SecurityTokens { get; set; }
         public DbSet<SecurityType> SecurityTypes { get; set; }
+        public DbSet<StellarAccount> StellarAccounts { get; set; }
         public DbSet<SubRole> SubRoles { get; set; }
         public DbSet<TokenListingStatus> TokenListingStatuses { get; set; }
         public DbSet<TokenTransactionType> TokenTransactionTypes { get; set; }

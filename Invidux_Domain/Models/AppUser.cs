@@ -19,6 +19,7 @@ namespace Invidux_Domain.Models
         public virtual Wallet? Wallet { get; set; }
         public virtual ICollection<BankAccount>? BankAccounts { get; set; }
         public virtual ICollection<UserTwoFactorCover>? TwoFactorCovers { get; set; }
+        public ICollection<StellarAccount>? StellarAccounts { get; set; }
 
     }
 }

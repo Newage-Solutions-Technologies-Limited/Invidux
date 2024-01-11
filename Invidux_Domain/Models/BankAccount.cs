@@ -4,10 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Invidux_Domain.Models
 {
-    public class BankAccount
+    public class BankAccount: BaseUser
     {
-        [Key]
-        public int Id { get; set; }
         public BankAccountTypeEnums AccountType { get; set; }
         public string? AccountNumber { get; set; }
         public string? AccountName { get; set; }
@@ -15,11 +13,6 @@ namespace Invidux_Domain.Models
         public string? Currency { get; set; }
         [ForeignKey("UserToken")]
         public int TokenId { get; set; }
-        public UserToken UserToken { get; set; }
-        [ForeignKey("AppUser")]
-        public string UserId { get; set; }
-        public AppUser AccountOwner { get; set; }
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public DateTime UpdatedAt { get; set; }
+        public UserToken? UserToken { get; set; }
     }
 }
