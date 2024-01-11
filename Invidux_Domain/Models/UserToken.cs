@@ -1,11 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Invidux_Domain.Models
 {
     public class UserToken: BaseToken
     {
-        [Key]
         public string? Currency { get; set; }
         public decimal Available { get; set; }
         public decimal Earnings { get; set; }
