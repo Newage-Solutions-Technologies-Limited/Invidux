@@ -41,7 +41,7 @@ namespace Invidux_Core.Repository.Implementations
         }
 
         public IPortfolioRepo PortfolioRepo =>
-            new PortfolioRepo(dc);
+            new PortfolioRepo(dc, mapper);
 
         public IRegistrationRepo RegistrationRepo =>
             new RegistrationRepo(dc, _userManager, _emailSender);

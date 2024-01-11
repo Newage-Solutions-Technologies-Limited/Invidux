@@ -9,6 +9,9 @@ namespace Invidux_Domain.Models
         public string? Currency { get; set; }
         public decimal Available { get; set; }
         public decimal Earnings { get; set; }
+        public decimal CurrentValue { get; set; }
+        public decimal TotalCost { get; set; }
+        public decimal CoolingOffVolume { get; set; }
         public string TokenCode { get; set; }
         public string TokenType { get; set; }
         [ForeignKey("Wallet")]

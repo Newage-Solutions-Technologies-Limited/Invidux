@@ -17,11 +17,11 @@ namespace Invidux_Data.Dtos.Response
     {
         public int TokenCount { get; set; }
         public string[] TokenCodes { get; set; }
-        public float OwnedVolume { get; set; }
-        public float CoolingOffVolume { get; set; }
+        public decimal OwnedVolume { get; set; }
+        public decimal CoolingOffVolume { get; set; }
         public string Currency { get; set; }
-        public float TotalCost { get; set; }
-        public float CurrentValue { get; set; }
+        public decimal TotalCost { get; set; }
+        public decimal CurrentValue { get; set; }
     }
 
     public class External
@@ -29,9 +29,9 @@ namespace Invidux_Data.Dtos.Response
         public object[] ExternalStellarIds { get; set; }
         public int TokenCount { get; set; }
         public string[] TokenCodes { get; set; }
-        public float OwnedVolume { get; set; }
+        public decimal OwnedVolume { get; set; }
         public string Currency { get; set; }
-        public float CurrentValue { get; set; }
+        public decimal CurrentValue { get; set; }
     }
    
 
@@ -39,12 +39,12 @@ namespace Invidux_Data.Dtos.Response
     {
         public string TokenCode { get; set; }
         public string[] PropertyImages { get; set; }
-        public float SupplyVolume { get; set; }
-        public float OwnedVolume { get; set; }
-        public float CoolingOffVolume { get; set; }
+        public decimal SupplyVolume { get; set; }
+        public decimal OwnedVolume { get; set; }
+        public decimal CoolingOffVolume { get; set; }
         public string Currency { get; set; }
-        public float TotalCost { get; set; }
-        public float TotalValue { get; set; }
+        public decimal TotalCost { get; set; }
+        public decimal TotalValue { get; set; }
         public string DistributionFrequency { get; set; }
         public TransactionRes[] Transactions { get; set; }
         public AnnualYield AnnualYield { get; set; }
@@ -52,15 +52,15 @@ namespace Invidux_Data.Dtos.Response
 
     public class AnnualYield
     {
-        public float RegularReturns { get; set; }
+        public decimal RegularReturns { get; set; }
         public object OperatingYieldEstimate { get; set; }
-        public float AppreciationEstimate { get; set; }
+        public decimal AppreciationEstimate { get; set; }
     }
 
     public class TransactionRes
     {
-        public float Units { get; set; }
-        public int PurchasePrice { get; set; }
+        public decimal Units { get; set; }
+        public decimal PurchasePrice { get; set; }
         public DateTime PurchaseDate { get; set; }
     }
 }

@@ -4,6 +4,7 @@ namespace Invidux_Core.Repository.Interfaces
 {
     public interface IUnitofWork
     {
+        IPortfolioRepo PortfolioRepo { get; }
         IRegistrationRepo RegistrationRepo { get; }
         IUserRepo UserRepo { get; }
         IUtitlityRepo UtitlityRepo { get; }

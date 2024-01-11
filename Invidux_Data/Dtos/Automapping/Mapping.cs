@@ -122,6 +122,26 @@ namespace Invidux_Data.Dtos.AutoMapping
 
             CreateMap<BankAccount, AccountResponseDto>()
                 .ForMember(dest => dest.AccountId, opt => opt.MapFrom(src => src.Id));
+
+            // Portfolio mappings
+
+            // Mapping from UserToken to Inapp
+            CreateMap<UserToken, Inapp>()
+                .ForMember(dest => dest.TokenCount, opt => opt.MapFrom(src => src.BankAccounts.Count))
+                .ForMember(dest => dest.TokenCodes, opt => opt.MapFrom(src => new string[] { src.TokenCode }))
+                .ForMember(dest => dest.Currency, opt => opt.MapFrom(src => src.Currency))
+                .ForMember(dest => dest.OwnedVolume, opt => opt.MapFrom(src => src.Available))
+                // Other properties mapping
+                ;
+
+            // Mapping from UserToken to External
+            CreateMap<UserToken, External>()
+                .ForMember(dest => dest.TokenCount, opt => opt.MapFrom(src => src.StellarAccounts.Count))
+                .ForMember(dest => dest.TokenCodes, opt => opt.MapFrom(src => new string[] { src.TokenCode }))
+                .ForMember(dest => dest.Currency, opt => opt.MapFrom(src => src.Currency))
+                .ForMember(dest => dest.OwnedVolume, opt => opt.MapFrom(src => src.Available))
+                // Other properties mapping
+                ;
         }
     }
 }
