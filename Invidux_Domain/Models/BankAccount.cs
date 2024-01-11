@@ -13,6 +13,6 @@ namespace Invidux_Domain.Models
         public string? Currency { get; set; }
         [ForeignKey("UserToken")]
         public int TokenId { get; set; }
-        public UserToken UserToken { get; set; }
+        public UserToken? UserToken { get; set; }
     }
 }

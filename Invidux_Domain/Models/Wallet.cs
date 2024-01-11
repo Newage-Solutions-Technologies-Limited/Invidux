@@ -20,5 +20,6 @@ namespace Invidux_Domain.Models
         public string UserId { get; set; }
         public virtual AppUser User { get; set; }
         public virtual ICollection<UserToken> UserTokens { get; set; }
+        public virtual ICollection<StellarAccount> StellarAccounts { get; set; }
     }
 }

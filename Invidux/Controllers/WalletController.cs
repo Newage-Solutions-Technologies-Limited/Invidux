@@ -25,6 +25,23 @@ namespace Invidux_Api.Controllers
             this.mapper = mapper;
         }
 
+        [HttpGet("user")]
+        public IActionResult GetNothing()
+        {
+            Console.WriteLine("lol");
+            if (Request.Headers.TryGetValue("Authorization", out var authorizationHeader))
+            {
+                Console.WriteLine($"Authorization header: {authorizationHeader}");
+            }
+            else
+            {
+                Console.WriteLine("Authorization header not found.");
+            }
+
+
+            return Ok();
+        }
+
         /// <summary>
         /// Endpoint to fetch user wallet by user Id
         /// </summary>
@@ -76,6 +93,8 @@ namespace Invidux_Api.Controllers
                     Message = "success",
                     Data = walletDto
                 };
+
+                Console.WriteLine(Request.Headers);
                 return Ok(response);
             }
             catch (Exception ex)

@@ -11,6 +11,7 @@ namespace Invidux_Api.Controllers
     {
         protected string GetUserId()
         {
+            Console.WriteLine(Request.Headers.Authorization);
             return User.FindFirst(ClaimTypes.NameIdentifier).Value;
         }
     }
