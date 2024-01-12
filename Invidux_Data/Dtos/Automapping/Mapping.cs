@@ -142,6 +142,18 @@ namespace Invidux_Data.Dtos.AutoMapping
                 .ForMember(dest => dest.OwnedVolume, opt => opt.MapFrom(src => src.Available))
                 // Other properties mapping
                 ;
+
+            // Mapping from Transaction to Portfolio Token Transaction response
+            CreateMap<Transaction, TransactionRes>()
+                .ForMember(dest => dest.Units, opt => opt.MapFrom(src => src.TokenVolume))
+                .ForMember(dest => dest.PurchaseDate, opt => opt.MapFrom(src => src.TransactionDate))
+                .ForMember(dest => dest.PurchasePrice, opt => opt.MapFrom(src => src.Amount));
+
+            // Map Token Annual Yield to Portfolio token annual yield
+            CreateMap<TokenAnnualYield, AnnualYield>();
+
+            // Mapping of Portfolio Transaction
+            CreateMap<Transaction, PortfolioTransaction>();
         }
     }
 }

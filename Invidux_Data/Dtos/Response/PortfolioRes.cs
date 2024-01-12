@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,7 +34,7 @@ namespace Invidux_Data.Dtos.Response
         public string Currency { get; set; }
         public decimal CurrentValue { get; set; }
     }
-   
+
 
     public class PortfolioToken
     {
@@ -46,7 +47,7 @@ namespace Invidux_Data.Dtos.Response
         public decimal TotalCost { get; set; }
         public decimal TotalValue { get; set; }
         public string DistributionFrequency { get; set; }
-        public TransactionRes[] Transactions { get; set; }
+        public IEnumerable<TransactionRes> Transactions { get; set; }
         public AnnualYield AnnualYield { get; set; }
     }
 
@@ -63,4 +64,28 @@ namespace Invidux_Data.Dtos.Response
         public decimal PurchasePrice { get; set; }
         public DateTime PurchaseDate { get; set; }
     }
+
+
+    public class PortfolioTransactions
+    {
+        public string Id { get; set; }
+        public IEnumerable<PortfolioTransaction> Transactions { get; set; }
+    }
+
+    public class PortfolioTransaction
+    {
+        public string InternalRef { get; set; }
+        public DateTime Date { get; set; }
+        public string Status { get; set; }
+        public string TransactionType { get; set; }
+        public bool Inflow { get; set; }
+        public string Market { get; set; }
+        public string TokenCode { get; set; }
+        public string TokenVolume { get; set; }
+        public string Currency { get; set; }
+        public string Amount { get; set; }
+        public string Sender { get; set; }
+        public string Receiver { get; set; }
+    }
+
 }
