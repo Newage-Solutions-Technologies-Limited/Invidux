@@ -234,6 +234,10 @@ namespace Invidux_Data.Context
         public DbSet<SecurityType> SecurityTypes { get; set; }
         public DbSet<StellarAccount> StellarAccounts { get; set; }
         public DbSet<SubRole> SubRoles { get; set; }
+        public DbSet<Token> Tokens { get; set; }
+        public DbSet<TokenAnnualYield> TokenAnnualYields { get; set; }
+        public DbSet<TokenApproval> TokenApprovals { get; set; }
+        public DbSet<TokenImage> TokenImages { get; set; }
         public DbSet<TokenListingStatus> TokenListingStatuses { get; set; }
         public DbSet<TokenTransactionType> TokenTransactionTypes { get; set; }
         public DbSet<Transaction> Transactions { get; set; }

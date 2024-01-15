@@ -2,6 +2,7 @@
 using Invidux_Core.Interfaces;
 using Invidux_Data.Context;
 using Invidux_Data.Dtos.Response;
+using Invidux_Domain.Models;
 using Invidux_Domain.Utilities;
 using Microsoft.EntityFrameworkCore;
 
@@ -74,17 +75,56 @@ namespace Invidux_Core.Implementations
 
         public async Task<PortfolioToken> GetPortfolioToken(int id, string userId)
         {
-            throw new NotImplementedException();
+            var user = await dc.AppUsers.FirstOrDefaultAsync(u => u.Id == userId);
+            var userToken = await dc.UserTokens
+                        .Include(ut => ut.Token)
+                        .ThenInclude(t => t.Images)
+                        .FirstOrDefaultAsync(ut => ut.Id == id);
+
+            if (userToken == null)
+            {
+                throw new Exception($"No user token with the Id: {id}");
+            }
+            var propertyImages = userToken.Token.Images.Select(img => img.ImageUrl).ToArray();
+
+            var tokenYield = await dc.TokenAnnualYields.FirstOrDefaultAsync(ay => ay.TokenId == userToken.TokenId);
+            var tokenTxns = await dc.Transactions
+                                            .Where(txn => txn.TokenCode == userToken.TokenCode && 
+                                            (txn.Sender == user.UserName || txn.Receiver == user.UserName))
+                                            .ToListAsync();
+
+            var transactions = mapper.Map<IEnumerable<TransactionRes>>(tokenTxns);
+            var annualYield = mapper.Map<AnnualYield>(tokenYield);
+            var portfolio = new PortfolioToken
+            {
+                TokenCode = userToken.TokenCode,
+                PropertyImages = propertyImages,
+                SupplyVolume = userToken.Token.Volume,
+                OwnedVolume = userToken.Available,
+                CoolingOffVolume = userToken.CoolingOffVolume,
+                Currency = userToken.Currency,
+                TotalCost = userToken.TotalCost,
+                TotalValue = userToken.Token.MarketCap,
+                DistributionFrequency = userToken.Token.DistributionFrequency,
+                Transactions = transactions,
+                AnnualYield = annualYield
+            };
+
+            return portfolio;
         }
 
-        public async Task<int> GetTransactions(string userId)
+        public async Task<IEnumerable<Transaction>> GetTransactions(string userId)
         {
-            throw new NotImplementedException();
-        }
-
-        public async Task<int> GetTransaction(string userId)
-        {
-            throw new NotImplementedException();
+            var user = await dc.AppUsers.FirstOrDefaultAsync(u => u.Id == userId);
+            if(user == null)
+            {
+                throw new Exception("User does not exist");
+            }
+            var transactions = await dc.Transactions
+                                       .Where(tr => tr.Sender == user.UserName || tr.Receiver == user.UserName)
+                                       .OrderByDescending(tr => tr.TransactionDate) // Sort by date, most recent first
+                                       .ToListAsync();
+            return transactions;
         }
 
     }
